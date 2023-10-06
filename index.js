@@ -14,6 +14,16 @@ const exphbs  = require('express-handlebars'); //Para el manejo de los HTML
 const bodyParser = require('body-parser'); //Para el manejo de los strings JSON
 const MySQL = require('./modulos/mysql'); //Añado el archivo mysql.js presente en la carpeta módulos
 const session = require('express-session');
+const { initializeApp } = require("firebase/app");
+const {
+    getAuth,
+    createUserWithEmailAndPassword,
+    signInWithEmailAndPassword,
+    sendEmailVerification,
+    signOut,
+    GoogleAuthProvider,
+  } = require("firebase/auth");
+
 const app = express(); //Inicializo express para el manejo de las peticiones
 
 app.use(express.static('public')); //Expongo al lado cliente la carpeta "public"
@@ -44,6 +54,21 @@ io.use(function(socket, next) {
     sessionMiddleware(socket.request, socket.request.res, next);
 });
 app.use(session({secret: '123456', resave: true, saveUninitialized: true}));
+
+const firebaseConfig = {
+    apiKey: "AIzaSyAnd3eT_dYP5hQIRp6Yh8e2k6bc7RByh2U",
+    authDomain: "proyecto-final-b0b19.firebaseapp.com",
+    projectId: "proyecto-final-b0b19",
+    storageBucket: "proyecto-final-b0b19.appspot.com",
+    messagingSenderId: "176515864772",
+    appId: "1:176515864772:web:8466acfbcb26072a729191",
+  };
+  
+const appFirebase = initializeApp(firebaseConfig);
+const auth = getAuth(appFirebase);
+const authService = require("./authService");
+
+
 /*
     A PARTIR DE ESTE PUNTO GENERAREMOS NUESTRO CÓDIGO (PARA RECIBIR PETICIONES, MANEJO DB, ETC.)
     A PARTIR DE ESTE PUNTO GENERAREMOS NUESTRO CÓDIGO (PARA RECIBIR PETICIONES, MANEJO DB, ETC.)
@@ -56,42 +81,53 @@ app.use(session({secret: '123456', resave: true, saveUninitialized: true}));
     A PARTIR DE ESTE PUNTO GENERAREMOS NUESTRO CÓDIGO (PARA RECIBIR PETICIONES, MANEJO DB, ETC.)
 */
 
-app.get('/', function(req, res)
-{
-    //Petición GET con URL = "/", lease, página principal.
-    console.log(req.query); //En req.query vamos a obtener el objeto con los parámetros enviados desde el frontend por método GET
-    res.render('login', null); //Renderizo página "login" sin pasar ningún objeto a Handlebars
-});
-
-app.get('/login', function(req, res)
-{
-    //Petición GET con URL = "/login"
-    console.log("Soy un pedido GET", req.query); 
-    //En req.query vamos a obtener el objeto con los parámetros enviados desde el frontend por método GET
-    res.render('home', null); //Renderizo página "home" sin pasar ningún objeto a Handlebars
-
-    //    req.session.conectado = req.body.usuario;
-
-});
-
-
-app.post('/login', function(req, res)
-{
-    //Petición POST con URL = "/login"
-    console.log("Soy un pedido POST", req.body); 
-    //En req.body vamos a obtener el objeto con los parámetros enviados desde el frontend por método POST
-    //res.render('home', { mensaje: "Hola mundo!", usuario: req.body.usuario}); //Renderizo página "home" enviando un objeto de 2 parámetros a Handlebars
-    res.render('home', null); //Renderizo página "home" sin pasar ningún objeto a Handlebars
-});
-
-app.put('/login', function(req, res) {
-    //Petición PUT con URL = "/login"
-    console.log("Soy un pedido PUT", req.body); //En req.body vamos a obtener el objeto con los parámetros enviados desde el frontend por método PUT
-    res.send(null);
-});
-
-app.delete('/login', function(req, res) {
-    //Petición DELETE con URL = "/login"
-    console.log("Soy un pedido DELETE", req.body); //En req.body vamos a obtener el objeto con los parámetros enviados desde el frontend por método DELETE
-    res.send(null);
-});
+app.get("/", (req, res) => {
+    res.render("login");
+  });
+  
+  app.get("/register", (req, res) => {
+    res.render("register");
+  });
+  
+  app.post("/register", async (req, res) => {
+    const { email, password } = req.body;
+  
+    try {
+      await authService.registerUser(auth, { email, password });
+      res.render("register", {
+        message: "Registro exitoso. Puedes iniciar sesión ahora.",
+      });
+    } catch (error) {
+      console.error("Error en el registro:", error);
+      res.render("register", {
+        message: "Error en el registro: " + error.message,
+      });
+    }
+  });
+  
+  app.get("/login", (req, res) => {
+    res.render("login");
+  });
+  
+  app.post("/login", async (req, res) => {
+    const { email, password } = req.body;
+  
+    try {
+      const userCredential = await authService.loginUser(auth, {
+        email,
+        password,
+      });
+      // Aquí puedes redirigir al usuario a la página que desees después del inicio de sesión exitoso
+      res.redirect("/home");
+    } catch (error) {
+      console.error("Error en el inicio de sesión:", error);
+      res.render("login", {
+        message: "Error en el inicio de sesión: " + error.message,
+      });
+    }
+  });
+  
+  app.get("/home", (req, res) => {
+    // Agrega aquí la lógica para mostrar la página del dashboard
+    res.render("home");
+  });
