@@ -1,8 +1,24 @@
 <!-- login.handlebars -->
-<h1>Iniciar sesión</h1>
-<form action="/login" method="post">
-  <input type="email" name="email" placeholder="Correo electrónico" required />
-  <input type="password" name="password" placeholder="Contraseña" required />
-  <button type="submit">Iniciar sesión</button>
-</form>
-<div>{{message}}</div>
+<header>
+  <h1 id="login">Iniciar sesión</h1>
+</header>  
+<body id="fondo" name="fondo">
+  <form action="/login" method="post">
+    <center>
+      <div class="card" id="cardLogin" style="width: 28rem; float:center; display:block" >
+        <div class="card-body">
+          <h5 class="card-title">Ingresar</h5>
+          <div class="mb-3 form-group">
+            <input type="email" name="email" placeholder="Correo electrónico" required />
+          </div>
+          <div class="mb-3 form-group">
+            <input type="password" name="password" placeholder="Contraseña" required />
+          </div>
+          <button href="#" class="btn btn-primary" type="submit">Iniciar sesión</button>
+        </div>
+      </div>
+    </center>  
+  </form>
+  <div>{{message}}</div>
+</body>
+
