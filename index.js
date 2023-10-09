@@ -111,7 +111,6 @@ app.get("/", (req, res) => {
   
   app.post("/login", async (req, res) => {
     const { email, password } = req.body;
-  
     try {
       const userCredential = await authService.loginUser(auth, {
         email,
@@ -125,6 +124,13 @@ app.get("/", (req, res) => {
         message: "Error en el inicio de sesión: " + error.message,
       });
     }
+  });
+
+  app.get('/registrarse', function(req, res){
+    //Petición GET con URL = "/login"
+    console.log("Soy un pedido GET", req.query); 
+    //En req.query vamos a obtener el objeto con los parámetros enviados desde el frontend por método GET
+    res.render('register', null); //Renderizo página "home" sin pasar ningún objeto a Handlebars
   });
   
   app.get("/home", (req, res) => {
