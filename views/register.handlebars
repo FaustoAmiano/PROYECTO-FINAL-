@@ -8,16 +8,30 @@
         <div class="card-body">
           <h5 class="card-title">registrarse</h5>
           <div class="mb-3 form-group">
-            <input type="email" name="email" placeholder="Correo electrónico" required />
+            <input type="email" name="email" placeholder="Correo electrónico" id= "mail"required />
           </div>
           <div class="mb-3 form-group">
-            <input type="password" name="password" placeholder="Contraseña" required />
+            <input type="Usuario" name="user" placeholder="Nombre de usuario" id= "usuarioId"required />
           </div>
-          <button href="#" class="btn btn-primary" type="submit">Iniciar sesión</button>
+          <div class="mb-3 form-group">
+            <input type="password" name="password" placeholder="Contraseña" id="passwordId" required />
+          </div>
+          <button href="#" class="btn btn-primary" type="button" onclick="nuevoUsuario()">Iniciar sesión</button>
         </div>
       </div>
     </center>  
   </form>
-  <br>
+  <br><center>
+    <div class="card" id="cardLogin" style="width: 28rem; float:center; display:block" >
+        <div class="card-body">
+          <h7 class="card-title">¿No tienes una cuenta? Registrate!</h7>
+            <form action="/volver" method="GET" class="container-sm">
+              <div class="mb-3 form-check">
+                <input type="submit" class="btn btn-primary" id="botonRegistro" value="Inciar Sesion">
+              </div> 
+            </form>
+        </div>
+    </div>
+  </center>
   <div>{{message}}</div>
 </body>
