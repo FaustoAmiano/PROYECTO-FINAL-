@@ -1,10 +1,23 @@
 <!-- register.handlebars -->
-<div id="fondo" name="fondo"><h1>Registro</h1>
-  <form action="/register" method="post">
-    <input type="email" name="email" placeholder="Correo electrónico" required />
-    <input type="password" name="password" placeholder="Contraseña" required />
+<h1>Registro</h1>
 
-    <button type="submit">Registrarse</button>
+<body id="fondo" name="fondo">
+  <form action="/register" method="post">
+    <center>
+      <div class="card" id="cardLogin" style="width: 28rem; float:center; display:block" >
+        <div class="card-body">
+          <h5 class="card-title">registrarse</h5>
+          <div class="mb-3 form-group">
+            <input type="email" name="email" placeholder="Correo electrónico" required />
+          </div>
+          <div class="mb-3 form-group">
+            <input type="password" name="password" placeholder="Contraseña" required />
+          </div>
+          <button href="#" class="btn btn-primary" type="submit">Iniciar sesión</button>
+        </div>
+      </div>
+    </center>  
   </form>
+  <br>
   <div>{{message}}</div>
-</div>
+</body>
