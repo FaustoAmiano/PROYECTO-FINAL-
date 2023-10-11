@@ -178,6 +178,7 @@ app.post('/Admin', async function(req, res){
 
 app.post('/ingreso', async function(req, res){
   console.log("Soy un pedido GET", req.query);
+  console.log("Soyhome")
   res.render('home', null);
 
 });
@@ -198,14 +199,15 @@ app.post('/nuevoUsuario', async function(req, res)
         }
     }
     if (validar==true) {
-      const { email, user, password } = req.body;
+      const email = req.body.mail;
+      const user = req.body.user;
+      const password  = req.body.pass;
+      
       try {
         await authService.registerUser(auth, { email, user, password });
-        await MySQL.realizarQuery (`INSERT INTO Jugadores VALUES("${req.body.mail}", "${req.body.user}", ${false},${0})`)
+        await MySQL.realizarQuery (`INSERT INTO Jugadores VALUES("${email}", "${user}", ${false},${0})`)
 
-        res.send({validar:true}, {
-          message: "Registro exitoso. Puedes iniciar sesión ahora.",
-        });
+        res.send({validar:true});
       } 
       catch (error) {
         console.error("Error en el registro:", error);

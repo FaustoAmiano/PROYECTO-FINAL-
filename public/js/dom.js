@@ -80,7 +80,7 @@ async function entrar(data) {
     }
     else{
       console.log("Usuario creado con exito")
-      location.href = '/home'
+      location.href = '/volver'
     }
   } catch (error) {
     console.error("Error:", error);
