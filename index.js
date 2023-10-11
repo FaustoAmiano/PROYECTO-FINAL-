@@ -138,17 +138,21 @@ app.get("/", (req, res) => {
 
   app.put('/login', async function(req, res) {
     //Petición PUT con URL = "/login"
+    const  email  = req.body.user;
+    const password  = req.body.pass;
+    console.log(email, password)
     console.log("Soy un pedido PUT", req.body); //En req.body vamos a obtener el objeto con los parámetros enviados desde el frontend por método PUT
     let respuesta= await MySQL.realizarQuery(` SELECT * FROM Jugadores WHERE mail= "${req.body.user}"`)
     console.log(respuesta)
     if (respuesta.length > 0) {
       console.log("sql correcto")
       try {
+        console.log(req.body.user)
         const userCredential = await authService.loginUser(auth, {
           email,
           password,
         });
-        req.session.conectado = req.body.mail;
+        req.session.conectado = req.body.user;
         res.send({validar: true, esadmin:respuesta[0].esadmin})
       } catch (error) {
         console.error("Error en el inicio de sesión:", error);
