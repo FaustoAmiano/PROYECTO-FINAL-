@@ -13,6 +13,7 @@ async function entrar(data) {
       //En result obtengo la respuesta
       const result = await response.json();
       console.log("Success:", result);
+      console.log("hola")
   
       if (result.validar == false) {
         alert("Los datos son incorrectos")

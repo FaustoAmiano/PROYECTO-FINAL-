@@ -144,6 +144,7 @@ app.get("/", (req, res) => {
     console.log("Soy un pedido PUT", req.body); //En req.body vamos a obtener el objeto con los parámetros enviados desde el frontend por método PUT
     let respuesta= await MySQL.realizarQuery(` SELECT * FROM Jugadores WHERE mail= "${req.body.user}"`)
     console.log(respuesta)
+    console.log(respuesta[0].esadmin)
     if (respuesta.length > 0) {
       console.log("sql correcto")
       try {
