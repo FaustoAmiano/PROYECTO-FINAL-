@@ -1,7 +1,9 @@
 <!-- login.handlebars -->
 <header>
-  <center><img src="/public/ph/LOGO.png"></center>
+  <hr>
+  <center><img src="./ph/LOGO.png"></center>
 </header>  
+<hr>
 <body id="fondo" name="fondo">
   <form action="/ingreso" method="post" id="loguearse">
     <center>
@@ -14,7 +16,7 @@
           <div class="mb-3 form-group">
             <input type="password" name="password" placeholder="Contraseña" id= "passwordId" required />
           </div>
-          <button href="#" class="btn btn-primary" type="submit" onclick="login()">Iniciar sesión</button>
+          <button class="btn btn-primary" type="button" onclick="login()">Iniciar sesión</button>
         </div>
       </div>
     </center>  

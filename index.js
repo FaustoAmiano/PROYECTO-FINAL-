@@ -89,7 +89,7 @@ app.get("/", (req, res) => {
     res.render("register");
   });
   
-  /*app.post("/register", async (req, res) => {
+  app.post("/register", async (req, res) => {
     const { email, user, password } = req.body;
   
     try {
@@ -103,11 +103,11 @@ app.get("/", (req, res) => {
         message: "Error en el registro: " + error.message,
       });
     }
-  });*/
+  });
   
 
   
-  /*app.post("/login", async (req, res) => {
+  app.post("/login", async (req, res) => {
     const { email, password } = req.body;
     try {
       const userCredential = await authService.loginUser(auth, {
@@ -122,7 +122,7 @@ app.get("/", (req, res) => {
         message: "Error en el inicio de sesión: " + error.message,
       });
     }
-  });*/
+  });
 
   app.get('/registrarse', function(req, res){
     //Petición GET con URL = "/login"
@@ -158,9 +158,10 @@ app.get("/", (req, res) => {
       } catch (error) {
         console.error("Error en el inicio de sesión:", error);
         console.log("error en firebase")
-        res.render("login", {
+        /*res.render("login", {
           message: "Error en el inicio de sesión: " + error.message,
-        });
+        });*/
+        res.send({validar:false})    
         }
     
     }
