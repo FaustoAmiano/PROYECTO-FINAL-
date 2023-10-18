@@ -17,23 +17,21 @@
             <input type="password" name="password" placeholder="Contraseña" id= "passwordId" required />
           </div>
           <button class="btn btn-primary" type="button" onclick="login()">Iniciar sesión</button>
+          <br>
+          <br>
+          <h7 class="card-title">¿No tienes una cuenta? Registrate!</h7>
+          <br>
+          <form action="/registrarse" method="GET" class="container-sm">
+             <center><div classs="mb-3 form-check">
+             <input type="submit" class="btn btn-primary" id="botonRegistro" value="Crear Cuenta">
+            </div> </center>
+          </form>
         </div>
       </div>
     </center>  
   </form>
   <br>
-  <center>
-    <div class="card" id="cardLogin" style="width: 28rem; float:center; display:block" >
-        <div class="card-body">
-          <h7 class="card-title">¿No tienes una cuenta? Registrate!</h7>
-            <form action="/registrarse" method="GET" class="container-sm">
-              <div class="mb-3 form-check">
-                <input type="submit" class="btn btn-primary" id="botonRegistro" value="Crear Cuenta">
-              </div> 
-            </form>
-        </div>
-    </div>
-  </center>
+
 
   <div>{{message}}</div>
   <form action="/Admin" method="POST" id = "administrador" class="container-sm">

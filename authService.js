@@ -6,12 +6,11 @@ const {
 } = require("firebase/auth");
 
 // Función para registrar un usuario
-const registerUser = async (auth, { email, user, password }) => {
+const registerUser = async (auth, { email, password }) => {
   try {
     const userCredential = await createUserWithEmailAndPassword(
       auth,
       email,
-      user,
       password
     );
     await sendEmailVerification(auth.currentUser);

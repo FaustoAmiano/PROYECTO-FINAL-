@@ -21,7 +21,7 @@ async function entrar(data) {
         
         //Envio el formularia desde dom para cambiar de pagina
         //Podria usar tambien un changeScreen()
-        
+        console.log(result.esadmin)
         if (result.esadmin == true){
           document.getElementById("administrador").submit()  
           }  else 
