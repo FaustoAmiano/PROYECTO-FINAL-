@@ -1,9 +1,13 @@
 <!-- login.handlebars -->
 <header>
-  <h1 id="login">Iniciar sesión</h1>
+  <hr>
+  <center><img src="./ph/LOGO.png"></center>
 </header>  
+<hr>
 <body id="fondo" name="fondo">
-  <form action="/login" method="post" id = "login">
+
+  <form action="/ingreso" method="post" id="loguearse">
+
     <center>
       <div class="card" id="cardLogin" style="width: 28rem; float:center; display:block" >
         <div class="card-body">
@@ -12,26 +16,25 @@
             <input type="email" name="email" placeholder="Correo electrónico" id="usuarioId" required />
           </div>
           <div class="mb-3 form-group">
-            <input type="password" name="password" placeholder="Contraseña" id="passwordId" required />
+
+            <input type="password" name="password" placeholder="Contraseña" id= "passwordId" required />
           </div>
-          <button href="#" class="btn btn-primary" type="button" onclick="login();">Iniciar sesión</button>
+          <button class="btn btn-primary" type="button" onclick="login()">Iniciar sesión</button>
+          <br>
+          <br>
+          <h7 class="card-title">¿No tienes una cuenta? Registrate!</h7>
+          <br>
+          <form action="/registrarse" method="GET" class="container-sm">
+             <center><div classs="mb-3 form-check">
+             <input type="submit" class="btn btn-primary" id="botonRegistro" value="Crear Cuenta">
+            </div> </center>
+          </form>
         </div>
       </div>
     </center>  
   </form>
   <br>
-  <center>
-    <div class="card" id="cardLogin" style="width: 28rem; float:center; display:block" >
-        <div class="card-body">
-          <h7 class="card-title">¿No tienes una cuenta? Registrate!</h7>
-            <form action="/registrarse" method="GET" class="container-sm">
-              <div class="mb-3 form-check">
-                <input type="submit" class="btn btn-primary" id="botonRegistro" value="Crear Cuenta">
-              </div> 
-            </form>
-        </div>
-    </div>
-  </center>
+
 
   <div>{{message}}</div>
   <form action="/Admin" method="POST" id = "administrador" class="container-sm">
