@@ -90,10 +90,10 @@ app.get("/", (req, res) => {
   });
   
   app.post("/register", async (req, res) => {
-    const { email, password } = req.body;
+    const { email, user, password } = req.body;
   
     try {
-      await authService.registerUser(auth, { email, password });
+      await authService.registerUser(auth, { email, user, password });
       res.render("register", {
         message: "Registro exitoso. Puedes iniciar sesión ahora.",
       });
@@ -105,13 +105,10 @@ app.get("/", (req, res) => {
     }
   });
   
-  app.get("/login", (req, res) => {
-    res.render("login");
-  });
+
   
   app.post("/login", async (req, res) => {
     const { email, password } = req.body;
-  
     try {
       const userCredential = await authService.loginUser(auth, {
         email,
@@ -126,8 +123,107 @@ app.get("/", (req, res) => {
       });
     }
   });
-  
-  app.get("/home", (req, res) => {
-    // Agrega aquí la lógica para mostrar la página del dashboard
-    res.render("home");
+
+  app.get('/registrarse', function(req, res){
+    //Petición GET con URL = "/login"
+    console.log("Soy un pedido GET", req.query); 
+    //En req.query vamos a obtener el objeto con los parámetros enviados desde el frontend por método GET
+    res.render('register', null); //Renderizo página "home" sin pasar ningún objeto a Handlebars
   });
+  
+  app.get("/volver", (req, res) => {
+    // Agrega aquí la lógica para mostrar la página del dashboard
+    res.render("login");
+  });
+
+  app.put('/login', async function(req, res) {
+    //Petición PUT con URL = "/login"
+    const  email  = req.body.user;
+    const password  = req.body.pass;
+    console.log(email, password)
+    console.log("Soy un pedido PUT", req.body); //En req.body vamos a obtener el objeto con los parámetros enviados desde el frontend por método PUT
+    let respuesta= await MySQL.realizarQuery(` SELECT * FROM Jugadores WHERE mail= "${req.body.user}"`)
+    console.log(respuesta)
+    console.log(respuesta[0].esadmin)
+    if (respuesta.length > 0) {
+      console.log("sql correcto")
+      try {
+        console.log(req.body.user)
+        const userCredential = await authService.loginUser(auth, {
+          email,
+          password,
+        });
+        req.session.conectado = req.body.user;
+        res.send({validar: true, esadmin:respuesta[0].esadmin})
+      } catch (error) {
+        console.error("Error en el inicio de sesión:", error);
+        console.log("error en firebase")
+        /*res.render("login", {
+          message: "Error en el inicio de sesión: " + error.message,
+        });*/
+        res.send({validar:false})    
+        }
+    
+    }
+    else{
+      console.log("sql error")
+      res.send({validar:false})    
+    }
+});
+
+
+app.post('/Admin', async function(req, res){
+  console.log("Soy un pedido GET", req.query);
+  res.render('Admin', null); 
+
+});
+
+app.post('/ingreso', async function(req, res){
+  console.log("Soy un pedido GET", req.query);
+  console.log("Soyhome")
+  res.render('home', null);
+
+});
+
+app.post('/nuevoUsuario', async function(req, res)
+{
+    let validar = true
+    //Petición POST con URL = "/login"
+    console.log("Soy un pedido POST", req.body); 
+    let users= await MySQL.realizarQuery("SELECT * FROM Jugadores")
+    if (req.body.mail.length == 0 || req.body.user.length == 0 || req.body.pass.length == 0 ){
+        validar = false 
+    }
+    for (let i in users){
+        if (req.body.mail == users[i].mail){
+            console.log("falso")
+            validar = false
+        }
+    }
+    if (validar==true) {
+      const email = req.body.mail;
+      const user = req.body.user;
+      const password  = req.body.pass;
+      
+      try {
+        await authService.registerUser(auth, { email, password });
+        await MySQL.realizarQuery (`INSERT INTO Jugadores VALUES("${email}", "${user}", ${false},${0})`)
+
+        res.send({validar:true});
+      } 
+      catch (error) {
+        console.error("Error en el registro:", error);
+        res.render("register", {
+          message: "Error en el registro: " + error.message,
+        });
+      }        
+         //Renderizo página "home" enviando un objeto de 2 parámetros a Handlebars
+    }
+    else if (validar==false){
+        res.send({validar:false})
+    }
+    
+    //En req.body vamos a obtener el objeto con los parámetros enviados desde el frontend por método POST
+    
+    //res.render('home', null); //Renderizo página "home" sin pasar ningún objeto a Handlebars
+});
