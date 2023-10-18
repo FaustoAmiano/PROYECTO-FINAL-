@@ -19,7 +19,7 @@ CREATE TABLE IF NOT EXISTS Lista (
 );
 DROP TABLE IF exists Categorias;
 CREATE TABLE Categorias (
-	ID_categoria int primary key,
+	ID_categoria int primary key //sumar auto_increment en sql,
     contenido varchar(100)
 );
 INSERT INTO Jugadores (mail, nom_usuario, esadmin, puntaje)

@@ -226,3 +226,11 @@ app.post('/nuevoUsuario', async function(req, res)
     
     //res.render('home', null); //Renderizo página "home" sin pasar ningún objeto a Handlebars
 });
+
+app.put('/traerCategorias', async function(req, res){
+  
+  let vector = await MySQL.realizarQuery(` SELECT * FROM Categorias`)
+
+  res.send({categorias: vector})
+
+});

@@ -1,2 +1,26 @@
-<h2>Hola mundo!</h2>
-<h3>Bienvenido!</h3>
+<header>
+  <hr>
+  <center><img src="./ph/LOGO.png"></center>
+</header> 
+<br>
+<br>
+<body id="fondo" name="fondo">
+    <center>
+    <div class="card" id="cardLogin" style="width: 28rem; float:center; display:block" >
+        <div class="card-body">
+          <h5 class="card-title">Categorias:</h5>
+        </div>
+        <div>
+            <h6>Sumar una categoría</h6>
+            <input type="button" name="addCategories" placeholder="Ingrese una categoría" id = "inputCategory" onclick="addCategory()"/>
+        </div>  
+    </div>
+    
+    </center>
+    <div class="container-md" id="contenedorCategorias">
+    </div>
+</body>
+
+<script>
+    traerCategorias()
+</script>

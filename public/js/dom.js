@@ -90,3 +90,32 @@ async function entrar(data) {
     console.error("Error:", error);
   }
 }
+
+ async function traerCategorias(){
+  try {
+    const response = await fetch("/traerCategorias", {
+      method: "PUT", // or 'POST'
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(),
+    });
+    
+    //En result obtengo la respuesta
+    const result = await response.json();
+    console.log("Success Categorias:", result);
+    let categorias = result.categorias
+    console.log(categorias)
+    //falta el inner HTML con las categorias que existen y el tipo de boton para poder seleccionarlas (estilo true/false)
+  } catch (error) {
+    console.error("Error:", error);
+  }
+ }
+
+async function addCategory(){
+  let text = document.getElementById("inputCategory").value
+
+  data = {
+    txt: text
+  }
+}
