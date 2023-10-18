@@ -53,7 +53,6 @@ app.use(sessionMiddleware);
 io.use(function(socket, next) {
     sessionMiddleware(socket.request, socket.request.res, next);
 });
-app.use(session({secret: '123456', resave: true, saveUninitialized: true}));
 
 const firebaseConfig = {
     apiKey: "AIzaSyAnd3eT_dYP5hQIRp6Yh8e2k6bc7RByh2U",
@@ -105,18 +104,17 @@ app.get("/", (req, res) => {
     }
   });
   
-  app.get("/login", (req, res) => {
-    res.render("login");
+  app.post("/login", (req, res) => {
+    res.render("home");
   });
   
-  app.post("/login", async (req, res) => {
+  /*app.post("/login", async (req, res) => {
     const { email, password } = req.body;
     try {
       const userCredential = await authService.loginUser(auth, {
         email,
         password,
       });
-      // Aquí puedes redirigir al usuario a la página que desees después del inicio de sesión exitoso
       res.redirect("/home");
     } catch (error) {
       console.error("Error en el inicio de sesión:", error);
@@ -124,7 +122,9 @@ app.get("/", (req, res) => {
         message: "Error en el inicio de sesión: " + error.message,
       });
     }
-  });
+  });*/
+
+
 
   app.get('/registrarse', function(req, res){
     //Petición GET con URL = "/login"
@@ -137,3 +137,52 @@ app.get("/", (req, res) => {
     // Agrega aquí la lógica para mostrar la página del dashboard
     res.render("home");
   });
+
+  app.get("/volver", (req, res) => {
+    // Agrega aquí la lógica para mostrar la página del dashboard
+    res.render("login");
+  });
+
+  app.put("/ingresar",async (req,res) => {
+    console.log(req.body)
+
+    let respuesta= await MySQL.realizarQuery(` SELECT * FROM Jugadores WHERE mail= "${req.body.user}"`)
+    console.log(respuesta)
+    
+    
+    if (respuesta.length > 0) {
+      
+      console.log("SQL OK");
+      try {
+        const userCredential = await authService.loginUser(auth, {
+          email: req.body.user,
+          password: req.body.pass,
+        });
+
+        req.session.conectado = req.body.nom_usuario;
+        req.session.id = req.body.mail;
+        res.send({validar: true})
+      }
+      catch(err) {
+        console.log("Fallo firebase");
+        console.log(err);
+        res.send({validar:false})     
+      }
+
+
+
+      
+        
+    
+    }
+    else{
+      console.log("SQL fallo");
+        res.send({validar:false})    
+    } 
+
+  })
+
+  app.post('/Admin', async function(req, res){
+    console.log("Soy un pedido POST", req.query);
+    res.render('Admin', null);
+});

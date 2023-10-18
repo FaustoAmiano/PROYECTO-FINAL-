@@ -3,18 +3,18 @@
   <h1 id="login">Iniciar sesión</h1>
 </header>  
 <body id="fondo" name="fondo">
-  <form action="/login" method="post">
+  <form action="/login" method="post" id = "login">
     <center>
       <div class="card" id="cardLogin" style="width: 28rem; float:center; display:block" >
         <div class="card-body">
           <h5 class="card-title">Ingresar</h5>
           <div class="mb-3 form-group">
-            <input type="email" name="email" placeholder="Correo electrónico" required />
+            <input type="email" name="email" placeholder="Correo electrónico" id="usuarioId" required />
           </div>
           <div class="mb-3 form-group">
-            <input type="password" name="password" placeholder="Contraseña" required />
+            <input type="password" name="password" placeholder="Contraseña" id="passwordId" required />
           </div>
-          <button href="#" class="btn btn-primary" type="submit">Iniciar sesión</button>
+          <button href="#" class="btn btn-primary" type="button" onclick="login();">Iniciar sesión</button>
         </div>
       </div>
     </center>  
@@ -34,4 +34,7 @@
   </center>
 
   <div>{{message}}</div>
+  <form action="/Admin" method="POST" id = "administrador" class="container-sm">
+
+  </form>
 </body>
