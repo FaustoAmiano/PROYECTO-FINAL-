@@ -19,7 +19,7 @@ CREATE TABLE IF NOT EXISTS Lista (
 );
 DROP TABLE IF exists Categorias;
 CREATE TABLE Categorias (
-	ID_categoria int primary key //sumar auto_increment en sql,
+	ID_categoria int primary key auto_increment,
     contenido varchar(100)
 );
 INSERT INTO Jugadores (mail, nom_usuario, esadmin, puntaje)
@@ -30,13 +30,15 @@ INSERT INTO Sala (ID_sala, nombre_sala)
 Values (1, "Los Pibardos");
 INSERT INTO Sala (ID_sala, nombre_sala)
 Values (2, "Camioneros");
-INSERT INTO Categorias (ID_categoria, contenido)
-Values (1, "Lugares del mundo");
-INSERT INTO Categorias (ID_categoria, contenido)
-Values (2, "Colores");
+INSERT INTO Categorias (contenido)
+Values ("Lugares del mundo");
+INSERT INTO Categorias (contenido)
+Values ("Colores");
 Select *
 From Jugadores
+
 ;
+
 delete FROM Jugadores
 Where mail="nbasile@pioix.edu.ar"
 ;

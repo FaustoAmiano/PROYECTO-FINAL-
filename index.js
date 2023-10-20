@@ -234,3 +234,16 @@ app.put('/traerCategorias', async function(req, res){
   res.send({categorias: vector})
 
 });
+app.put('/category', async function(req, res){
+  let text=req.body.txt
+  console.log(text)
+  await MySQL.realizarQuery(` INSERT INTO Categorias(contenido) VALUES ("${text}")`)
+  //await MySQL.realizarQuery(` Select (ID_categoria) From Categorias Where contenido = "${text}" `)
+  //await MySQL.realizarQuery(` INSERT INTO Lista (ID_sala, ID_categoria) VALUES =  `)
+  let resp = await MySQL.realizarQuery(` SELECT * FROM Categorias WHERE contenido="${text}"`)
+  if(resp.length > 0){
+    res.send({validar:true})
+  }else{
+    res.send({validar:false})
+  }
+});

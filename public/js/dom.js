@@ -112,10 +112,34 @@ async function entrar(data) {
   }
  }
 
-async function addCategory(){
+ function addCategory(){
   let text = document.getElementById("inputCategory").value
-
+  console.log(text)
   data = {
     txt: text
   }
+  category(data)
 }
+async function category(data){
+  try {
+    const response = await fetch("/category", {
+      method: "PUT", // or 'POST'
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(data),
+    });
+    
+    //En result obtengo la respuesta
+    const result = await response.json();
+    console.log("Success Categorias:", result);
+    if(result.validar==true){
+      alert("Se agregó correctamente")
+    }else{
+      alert("Hubo un problema al agregar la categoria")
+    }
+    //falta el inner HTML con las categorias que existen y el tipo de boton para poder seleccionarlas (estilo true/false)
+  } catch (error) {
+    console.error("Error:", error);
+  }
+ }
