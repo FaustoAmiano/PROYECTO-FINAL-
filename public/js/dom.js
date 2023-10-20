@@ -13,6 +13,7 @@ async function entrar(data) {
       //En result obtengo la respuesta
       const result = await response.json();
       console.log("Success:", result);
+
       console.log("hola")
   
       if (result.validar == false) {
@@ -21,12 +22,13 @@ async function entrar(data) {
         
         //Envio el formularia desde dom para cambiar de pagina
         //Podria usar tambien un changeScreen()
+
         console.log(result.esadmin)
         if (result.esadmin == true){
           document.getElementById("administrador").submit()  
           }  else 
           {document.getElementById("loguearse").submit()}
-        
+       
         }
   
     } catch (error) {
@@ -45,6 +47,7 @@ async function entrar(data) {
         user: usuario,
         pass: contraseña
     }
+
   
     //data es el objeto que le paso al back
     entrar(data)
@@ -87,3 +90,56 @@ async function entrar(data) {
     console.error("Error:", error);
   }
 }
+
+ async function traerCategorias(){
+  try {
+    const response = await fetch("/traerCategorias", {
+      method: "PUT", // or 'POST'
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(),
+    });
+    
+    //En result obtengo la respuesta
+    const result = await response.json();
+    console.log("Success Categorias:", result);
+    let categorias = result.categorias
+    console.log(categorias)
+    //falta el inner HTML con las categorias que existen y el tipo de boton para poder seleccionarlas (estilo true/false)
+  } catch (error) {
+    console.error("Error:", error);
+  }
+ }
+
+ function addCategory(){
+  let text = document.getElementById("inputCategory").value
+  console.log(text)
+  data = {
+    txt: text
+  }
+  category(data)
+}
+async function category(data){
+  try {
+    const response = await fetch("/category", {
+      method: "PUT", // or 'POST'
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(data),
+    });
+    
+    //En result obtengo la respuesta
+    const result = await response.json();
+    console.log("Success Categorias:", result);
+    if(result.validar==true){
+      alert("Se agregó correctamente")
+    }else{
+      alert("Hubo un problema al agregar la categoria")
+    }
+    //falta el inner HTML con las categorias que existen y el tipo de boton para poder seleccionarlas (estilo true/false)
+  } catch (error) {
+    console.error("Error:", error);
+  }
+ }
