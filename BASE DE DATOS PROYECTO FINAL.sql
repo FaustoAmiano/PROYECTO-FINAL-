@@ -51,7 +51,9 @@ Values (1, 1);
 
 Select *
 From Jugadores
+
 ;
+
 delete FROM Jugadores
 Where mail="nbasile@pioix.edu.ar"
 ;

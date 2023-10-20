@@ -53,7 +53,6 @@ app.use(sessionMiddleware);
 io.use(function(socket, next) {
     sessionMiddleware(socket.request, socket.request.res, next);
 });
-app.use(session({secret: '123456', resave: true, saveUninitialized: true}));
 
 const firebaseConfig = {
     apiKey: "AIzaSyAnd3eT_dYP5hQIRp6Yh8e2k6bc7RByh2U",
@@ -106,15 +105,13 @@ app.get("/", (req, res) => {
   });
   
 
-  
-  app.post("/login", async (req, res) => {
+  /*app.post("/login", async (req, res) => {
     const { email, password } = req.body;
     try {
       const userCredential = await authService.loginUser(auth, {
         email,
         password,
       });
-      // Aquí puedes redirigir al usuario a la página que desees después del inicio de sesión exitoso
       res.redirect("/home");
     } catch (error) {
       console.error("Error en el inicio de sesión:", error);
@@ -122,7 +119,9 @@ app.get("/", (req, res) => {
         message: "Error en el inicio de sesión: " + error.message,
       });
     }
-  });
+  });*/
+
+
 
   app.get('/registrarse', function(req, res){
     //Petición GET con URL = "/login"
@@ -226,4 +225,25 @@ app.post('/nuevoUsuario', async function(req, res)
     //En req.body vamos a obtener el objeto con los parámetros enviados desde el frontend por método POST
     
     //res.render('home', null); //Renderizo página "home" sin pasar ningún objeto a Handlebars
+});
+
+app.put('/traerCategorias', async function(req, res){
+  
+  let vector = await MySQL.realizarQuery(` SELECT * FROM Categorias`)
+
+  res.send({categorias: vector})
+
+});
+app.put('/category', async function(req, res){
+  let text=req.body.txt
+  console.log(text)
+  await MySQL.realizarQuery(` INSERT INTO Categorias(contenido) VALUES ("${text}")`)
+  //await MySQL.realizarQuery(` Select (ID_categoria) From Categorias Where contenido = "${text}" `)
+  //await MySQL.realizarQuery(` INSERT INTO Lista (ID_sala, ID_categoria) VALUES =  `)
+  let resp = await MySQL.realizarQuery(` SELECT * FROM Categorias WHERE contenido="${text}"`)
+  if(resp.length > 0){
+    res.send({validar:true})
+  }else{
+    res.send({validar:false})
+  }
 });
