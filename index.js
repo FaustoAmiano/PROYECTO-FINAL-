@@ -179,8 +179,8 @@ app.post('/Admin', async function(req, res){
 
 app.post('/ingreso', async function(req, res){
   console.log("Soy un pedido GET", req.query);
-  console.log("Soyhome")
-  res.render('home', null);
+  console.log("Soy Salas")
+  res.render('Salas', null);
 
 });
 
@@ -247,3 +247,17 @@ app.put('/category', async function(req, res){
     res.send({validar:false})
   }
 });
+
+app.put('/salas', async function(req,res) {
+
+  let vector = [await MySQL.realizarQuery(` Select * From Sala`)]
+  console.log(vector)
+  if (vector.length > 0) {
+    res.send({sala: vector})    
+  }
+  else{
+    res.send({sala:false})    
+  }
+
+
+})
