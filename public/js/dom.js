@@ -143,3 +143,7 @@ async function category(data){
     console.error("Error:", error);
   }
  }
+function hola(){
+  let s=document.getElementById("slave").value
+  console.log(s)
+}
