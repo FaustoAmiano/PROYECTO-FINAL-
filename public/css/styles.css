@@ -13,3 +13,10 @@
 #cardLogin {
     background-color: #FEF7F5;
 }
+
+#dolar{
+    font-family: "terminal";
+    src: url("ds-terminal");
+    background-color: #FEF7F5;
+    color: #387C44 ;
+}

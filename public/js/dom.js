@@ -143,3 +143,58 @@ async function category(data){
     console.error("Error:", error);
   }
  }
+
+
+ async function traerSalas(){
+  try {
+    const response = await fetch("/salas", {
+      method: "PUT", // or 'POST'
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(),
+    });
+    const result = await response.json();
+
+    console.log("Success:", result);
+    let vector = result
+    console.log(vector)
+
+    //falta terminar
+  }
+  catch (error) {
+    console.error("Error:", error);
+  }
+ }
+
+ async function API(){
+  try {
+    const response = await fetch("https://dolarapi.com/v1/dolares", {
+      method: "GET", 
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(),
+    });
+    const result = await response.json();
+    console.log("Success API:", result);
+
+    dolarOFicial = result[0]
+    dolarBlue = result[1]
+    dolarBolsa = result[2]
+    dolarLiqui = result[3]
+    dolarSolidario = result[4]
+    dolarMayorista = result[5]
+
+    console.log(dolarOFicial.venta)
+    console.log(dolarBlue.venta)
+
+    let html =  ` <marquee id= dolar> Valor actual del dolar: oficial: $${dolarOFicial.venta} - Blue: $${dolarBlue.venta}- Contado con Liqui: $${dolarLiqui.venta} - Solidario: $${dolarSolidario.venta} - Mayorista: $${dolarMayorista.venta}</marquee>`
+    document.getElementById("header").innerHTML = html
+
+    
+  }
+  catch (error) {
+    console.error("Error:", error);
+  }
+ }
