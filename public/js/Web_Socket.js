@@ -70,7 +70,13 @@ function createRoom(){
     <h5 class="card-title">Ingresar</h5>
     <div class="mb-3 form-group">
       <input type="email" name="email" placeholder="Nombre Sala" id="salita" required />
-      
+      <button class="btn btn-primary" type="button" onclick="joinRoom()">Crear</button>
     </div>
     `; 
+   
+}
+function joinRoom(){
+  let al=document.getElementById("salita").value
+  console.log(al)
+  socket.emit("room", al)
 }

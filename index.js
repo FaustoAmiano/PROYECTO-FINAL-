@@ -261,3 +261,7 @@ app.put('/salas', async function(req,res) {
 
 
 })
+
+io.on("connection", socket => {
+  socket.join();
+});
