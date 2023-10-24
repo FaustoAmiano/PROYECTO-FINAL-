@@ -182,10 +182,13 @@ async function category(data){
     dolarOFicial = result[0]
     dolarBlue = result[1]
 
-    console.log(dolarOFicial)
-    console.log(dolarBlue)
+    console.log(dolarOFicial.venta)
+    console.log(dolarBlue.venta)
 
-    
+    let html =  ` <div id= dolar> Valor actual del dolar oficial: $${dolarOFicial.venta} </div>`
+    let html2 =  ` <div id= dolar> Valor actual del dolar blue: $${dolarBlue.venta}</div>`
+    document.getElementById("header").innerHTML = html
+    document.getElementById("header2").innerHTML = html2   
   }
   catch (error) {
     console.error("Error:", error);
