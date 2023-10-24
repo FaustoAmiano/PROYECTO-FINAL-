@@ -143,7 +143,13 @@ async function category(data){
     console.error("Error:", error);
   }
  }
-function hola(){
-  let s=document.getElementById("slave").value
-  console.log(s)
+
+var checkbox = document.getElementById('alo');
+checkbox.addEventListener("change", validaCheckbox(), false);
+function validaCheckbox()
+{
+  var check = checkbox.checked;
+  if(check){
+    alert('checkbox1 esta seleccionado');
+  }
 }
