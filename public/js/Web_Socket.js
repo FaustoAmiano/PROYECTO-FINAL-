@@ -63,3 +63,14 @@ async function backChats(){
     console.error("Error:", error);
   }
 }
+
+
+function createRoom(){
+  document.getElementById("pedilo").innerHTML += `
+    <h5 class="card-title">Ingresar</h5>
+    <div class="mb-3 form-group">
+      <input type="email" name="email" placeholder="Nombre Sala" id="salita" required />
+      
+    </div>
+    `; 
+}
