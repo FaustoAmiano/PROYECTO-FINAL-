@@ -322,3 +322,27 @@ async function eliminarPuntaje(data) {
     console.error("Error:", error);
   }
 }
+
+async function salir(){
+  try {
+    const response = await fetch("/logout", {
+      method: "PUT", // or 'POST'
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(),
+    });
+    const result = await response.json();
+    
+    if (result.validar == false) {
+      alert("Error al desloguear")
+    }
+    else {
+     console.log("Puntaje borrado")
+     location.href = '/volver'
+  } 
+}
+  catch (error) {
+    console.error("Error:", error);
+  }
+}

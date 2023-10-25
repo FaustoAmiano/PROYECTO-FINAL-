@@ -332,3 +332,18 @@ app.get('/volver2', async function(req, res){
   res.render('Admin', null); 
 
 });
+
+app.put('/logout', async function(req, res){
+
+  req.session.destroy();
+
+  res.send({validar:true})
+  
+  
+});
+
+app.get('/volver2', async function(req, res){
+  console.log("Soy un pedido POST", req.query);
+  res.render('Admin', null); 
+
+});
