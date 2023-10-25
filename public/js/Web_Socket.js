@@ -108,5 +108,9 @@ async function newRoomFetch(data){
 }
 }
 async function joinRoom(al){
-  socket.emit('joinRoom', al);
+  data={
+    roomName:al,
+    categories:x
+  }
+  socket.emit('joinRoom', data);
 }

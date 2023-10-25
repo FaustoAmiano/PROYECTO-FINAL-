@@ -273,9 +273,9 @@ app.post('/newRoom', async function(req, res){
   }
 });
 io.on("connection", socket => {
-  socket.join();
-  socket.on("joinRoom", room => {
-
+  socket.on("joinRoom", data => {
+    socket.join(data.room)
+    
   })
 
 });
