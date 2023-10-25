@@ -141,6 +141,7 @@ app.get("/", (req, res) => {
     const password  = req.body.pass;
     console.log(email, password)
     console.log("Soy un pedido PUT", req.body); //En req.body vamos a obtener el objeto con los parámetros enviados desde el frontend por método PUT
+    console.log(req.body.user)
     let respuesta= await MySQL.realizarQuery(` SELECT * FROM Jugadores WHERE mail= "${req.body.user}"`)
     console.log(respuesta)
     if (respuesta.length > 0) {
@@ -205,7 +206,7 @@ app.post('/nuevoUsuario', async function(req, res)
       
       try {
         await authService.registerUser(auth, { email, password });
-        await MySQL.realizarQuery (`INSERT INTO Jugadores VALUES("${email}", "${user}", ${false},${0})`)
+        await MySQL.realizarQuery (`INSERT INTO Jugadores VALUES("${email}", "${user}", ${false},${0},${-1})`)
 
         res.send({validar:true});
       } 
@@ -324,4 +325,10 @@ app.put('/eliminarPuntaje', async function(req, res){
       res.send({validar:false})    
   }
   
+});
+
+app.get('/volver2', async function(req, res){
+  console.log("Soy un pedido POST", req.query);
+  res.render('Admin', null); 
+
 });

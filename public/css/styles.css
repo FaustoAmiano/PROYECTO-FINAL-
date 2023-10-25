@@ -16,17 +16,17 @@
 
 @font-face {
     font-family: 'ds-terminalnormal';
-    src: url('ds-term-webfont.woff2') format('woff2'),
-         url('ds-term-webfont.woff') format('woff');
+    src: url('/FONTS/DS-TERM.TTF');
     font-weight: normal;
     font-style: normal;
 
 }
 
 #dolar{
-    font-family: 'DS Terminal';
+    font-family: 'ds-terminalnormal';
     background-color: #FEF7F5;
     color: #387C44 ;
+    font-size: larger;
 }
 #mainAdmin1 {
     margin-top: 100px;

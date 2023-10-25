@@ -278,7 +278,7 @@ async function eliminarUsuario(data) {
     }
     else {
      console.log("Usuario borrado")
-     location.href = '/Admin'
+     location.href = '/volver2'
   } 
 }
   catch (error) {
@@ -315,7 +315,7 @@ async function eliminarPuntaje(data) {
     }
     else {
      console.log("Puntaje borrado")
-     location.href = '/Admin'
+     location.href = '/volver2'
   } 
 }
   catch (error) {
