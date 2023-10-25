@@ -321,6 +321,23 @@ app.put('/salas', async function(req,res) {
 
 })
 
+
+app.post('/newRoom', async function(req, res){
+  console.log(req.body.nom_sala)
+  let x=await MySQL.realizarQuery(` SELECT nombre_sala FROM Sala WHERE nombre_sala like "${req.body.nom_sala}"`)
+  if(x.length ==0){
+    await MySQL.realizarQuery(` INSERT INTO Sala(nombre_sala) VALUES ("${req.body.nom_sala}")`)
+    res.send({validar:true})
+  }else{
+    res.send({validar:false})
+  }
+});
+io.on("connection", socket => {
+  socket.on("joinRoom", data => {
+    socket.join(data.room)
+    
+  })
+
 app.put('/vectores', async function(req, res) {
   //Petición PUT con URL = "/login"
   console.log("Soy un pedido PUT", req.body); //En req.body vamos a obtener el objeto con los parámetros enviados desde el frontend por método PUT
@@ -389,5 +406,6 @@ app.put('/eliminarPuntaje', async function(req, res){
 app.get('/volver2', async function(req, res){
   console.log("Soy un pedido POST", req.query);
   res.render('Admin', null); 
+
 
 });
