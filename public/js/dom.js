@@ -144,6 +144,16 @@ async function category(data){
   }
  }
 
+var checkbox = document.getElementById('alo');
+checkbox.addEventListener("change", validaCheckbox(), false);
+function validaCheckbox()
+{
+  var check = checkbox.checked;
+  if(check){
+    alert('checkbox1 esta seleccionado');
+  }
+}
+
 
  async function traerSalas(){
   try {
