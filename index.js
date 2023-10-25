@@ -262,6 +262,20 @@ app.put('/salas', async function(req,res) {
 
 })
 
+app.post('/newRoom', async function(req, res){
+  console.log(req.body.nom_sala)
+  let x=await MySQL.realizarQuery(` SELECT nombre_sala FROM Sala WHERE nombre_sala like "${req.body.nom_sala}"`)
+  if(x.length ==0){
+    await MySQL.realizarQuery(` INSERT INTO Sala(nombre_sala) VALUES ("${req.body.nom_sala}")`)
+    res.send({validar:true})
+  }else{
+    res.send({validar:false})
+  }
+});
 io.on("connection", socket => {
   socket.join();
+  socket.on("joinRoom", room => {
+
+  })
+
 });
