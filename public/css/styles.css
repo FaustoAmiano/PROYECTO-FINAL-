@@ -13,3 +13,53 @@
 #cardLogin {
     background-color: #FEF7F5;
 }
+
+@font-face {
+    font-family: 'ds-terminalnormal';
+    src: url('/FONTS/DS-TERM.TTF');
+    font-weight: normal;
+    font-style: normal;
+
+}
+
+#dolar{
+    font-family: 'ds-terminalnormal';
+    background-color: #FEF7F5;
+    color: #387C44 ;
+    font-size: larger;
+}
+#mainAdmin1 {
+    margin-top: 100px;
+    margin-left: 35%;
+    min-width: 100px;
+    border-radius: 10% ;
+}
+#mainAdmin2 {
+    margin-top: 100px;
+    margin-right: 35% ;
+    min-width: 100px;
+    border-radius: 10% ;
+}   
+#elegirCategoria {
+    border-color:#252525;
+}
+#seleccionarCategoria {
+    text-align: justify;
+    display: block;
+    padding: 14px 32px;
+
+}
+
+#botonEliminarPuntaje {
+    margin-top: 10px;
+    background-color: #808080; 
+    border-color: #1a1a1a;
+    color:#1a1a1a;
+}
+
+#botonEliminar {
+    margin-top: 10px;
+    background-color: #808080; 
+    border-color: #1a1a1a;
+    color:#1a1a1a;
+}
