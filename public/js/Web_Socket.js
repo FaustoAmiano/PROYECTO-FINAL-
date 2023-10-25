@@ -70,7 +70,47 @@ function createRoom(){
     <h5 class="card-title">Ingresar</h5>
     <div class="mb-3 form-group">
       <input type="email" name="email" placeholder="Nombre Sala" id="salita" required />
-      
+      <button class="btn btn-primary" type="button" onclick="newRoom()">Crear</button>
     </div>
     `; 
+   
+}
+function newRoom(){
+  let al=document.getElementById("salita").value
+  let data={
+    nom_sala: al
+  }
+  newRoomFetch(data)
+  joinRoom(al)
+}
+async function newRoomFetch(data){
+  try {
+  const response = await fetch("/newRoom", {
+    method: "POST", // or 'POST'
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(data),
+  });
+  
+  //En result obtengo la respuesta
+  const result = await response.json();
+  console.log("Success:", result);
+  if (result.validar == false) {
+    alert("Ya existe una sala con ese nombre")
+    
+  }
+  else{
+    console.log("Sala creada con exito")
+  }
+} catch (error) {
+  console.error("Error:", error);
+}
+}
+async function joinRoom(al){
+  data={
+    roomName:al,
+    categories:x
+  }
+  socket.emit('joinRoom', data);
 }
