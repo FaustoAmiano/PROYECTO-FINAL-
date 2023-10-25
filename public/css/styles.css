@@ -14,9 +14,17 @@
     background-color: #FEF7F5;
 }
 
+@font-face {
+    font-family: 'ds-terminalnormal';
+    src: url('ds-term-webfont.woff2') format('woff2'),
+         url('ds-term-webfont.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+
+}
+
 #dolar{
-    font-family: "terminal";
-    src: url("ds-terminal");
+    font-family: 'DS Terminal';
     background-color: #FEF7F5;
     color: #387C44 ;
 }
