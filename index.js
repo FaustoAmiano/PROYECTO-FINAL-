@@ -121,6 +121,65 @@ app.get("/", (req, res) => {
     }
   });*/
 
+  
+  app.get('/users', function(req, res) {
+    //req.query.id
+    let users = MySQL.realizarQuery("select * from Jugadores");
+    res.send(users);
+  });
+
+  app.get('/categorias', function(req, res) {
+    //req.query.id
+    let users = MySQL.realizarQuery("select * from Categorias");
+    res.send(users);
+  });
+
+  app.get('/salas', function(req, res) {
+    //req.query.id
+    let users = MySQL.realizarQuery("select * from Sala");
+    res.send(users);
+  });
+  
+  app.get('/users/rooms', function(req, res) {
+    //req.query.roomId
+    let users = MySQL.realizarQuery("select * from Jugadores");
+    res.send(users);
+  });
+  
+  app.post('/users', function(req, res) {
+    //req.body.user, req.body.pass, req.body.name
+    let users = MySQL.realizarQuery("insert into Jugadores");
+    body: JSON.stringify( {
+      "usuarios": {
+        "mail": "cirorosental@pioix.edu.ar",
+        "nombre": "ciro",
+      }
+     } 
+     ) ,
+    res.send({inserted: true});
+  });
+  
+  // datos mandados con la solicutud POST
+/*let _datos = {
+  titulo: "foo",
+  principal: "bar", 
+  Id:1
+}
+
+fetch('https://jsonplaceholder.typicode.com/posts', {
+  method: "POST",
+  body: JSON.stringify(_datos),
+  headers: {"Content-type": "application/json; charset=UTF-8"}
+})
+.then(response => response.json()) 
+.then(json => console.log(json));
+.catch(err => console.log(err));*/
+
+  app.put('/users', function(req, res) {
+    //req.body.user, req.body.pass, req.body.name
+    let users = MySQL.realizarQuery("insert into Jugadores");
+    res.send({inserted: true});
+  });
 
 
   app.get('/registrarse', function(req, res){
