@@ -111,7 +111,6 @@ async function entrar(data) {
     console.error("Error:", error);
   }
  }
-
  function addCategory(){
   let text = document.getElementById("inputCategory").value
   console.log(text)

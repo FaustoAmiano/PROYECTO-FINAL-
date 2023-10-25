@@ -278,6 +278,7 @@ io.on("connection", socket => {
     socket.join(data.room)
     
   })
+});
 
 app.put('/vectores', async function(req, res) {
   //Petición PUT con URL = "/login"
@@ -350,3 +351,4 @@ app.get('/volver2', async function(req, res){
 
 
 });
+
