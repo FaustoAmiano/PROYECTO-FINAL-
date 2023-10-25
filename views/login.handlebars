@@ -6,11 +6,12 @@
 <hr>
 <body id="fondo" name="fondo">
 
-  <form action="/ingreso" method="post" id="loguearse">
+  
 
     <center>
       <div class="card" id="cardLogin" style="width: 28rem; float:center; display:block" >
         <div class="card-body">
+          <form action="/ingreso" method="post" id="loguearse">
           <h5 class="card-title">Ingresar</h5>
           <div class="mb-3 form-group">
             <input type="email" name="email" placeholder="Correo electrónico" id="usuarioId" required />
@@ -20,8 +21,7 @@
             <input type="password" name="password" placeholder="Contraseña" id= "passwordId" required />
           </div>
           <button class="btn btn-primary" type="button" onclick="login()">Iniciar sesión</button>
-          <br>
-          <br>
+          <br></form>
           <h7 class="card-title">¿No tienes una cuenta? Registrate!</h7>
           <br>
           <form action="/registrarse" method="GET" class="container-sm">
@@ -32,13 +32,11 @@
         </div>
       </div>
     </center>  
-  </form>
+  
   <br>
-
 
   <div>{{message}}</div>
   <form action="/Admin" method="POST" id = "administrador" class="container-sm">
-
   </form>
 </body>
 
