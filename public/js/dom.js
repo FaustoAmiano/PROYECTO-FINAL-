@@ -142,15 +142,15 @@ async function category(data){
     console.error("Error:", error);
   }
  }
-
-var checkbox = document.getElementById('alo');
-checkbox.addEventListener("change", validaCheckbox(), false);
-function validaCheckbox()
-{
-  var check = checkbox.checked;
-  if(check){
-    alert('checkbox1 esta seleccionado');
+function validaCheckbox(){
+  x=document.getElementsByClassName("btn btn-outline-primary")
+  let a=[];
+  for(let i=0;i<x.length;i++){
+    if(document.getElementById('btnradio'+(i+1)).checked){
+      a.push(x[i].innerHTML);
+    }
   }
+  return(a)
 }
 
 

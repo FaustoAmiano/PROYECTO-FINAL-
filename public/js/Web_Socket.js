@@ -110,7 +110,7 @@ async function newRoomFetch(data){
 async function joinRoom(al){
   data={
     roomName:al,
-    categories:x
+    categories:validaCheckbox()//estoconvertiloenunavariable,ledecisqespereendomydpspscuandoempiezaemit:)
   }
   socket.emit('joinRoom', data);
 }
