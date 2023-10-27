@@ -144,6 +144,16 @@ async function category(data){
   }
  }
 
+var checkbox = document.getElementById('alo');
+checkbox.addEventListener("change", validaCheckbox(), false);
+function validaCheckbox()
+{
+  var check = checkbox.checked;
+  if(check){
+    alert('checkbox1 esta seleccionado');
+  }
+}
+
 
  async function traerSalas(){
   try {
@@ -197,6 +207,47 @@ async function category(data){
   catch (error) {
     console.error("Error:", error);
   }
+ }
+
+ async function APIJugadores() {
+  try{
+     const response = await fetch("http://localhost:3000/users", {
+       method: "POST", 
+       headers: {
+         "Content-Type": "application/json",
+       },
+     });
+     const result = await response.json();
+     console.log("Success API:", result);
+
+     Jugadores = result[0]
+
+     console.log(Jugadores)
+   }
+   catch (error) {
+     console.error("Error:", error);
+   }
+ }
+
+ 
+async function APICategorias() {
+  try{
+   const response = await fetch ("http://localhost:3000/categorias", {
+     method: "GET", 
+     headers: {
+       "Content-Type": "application/json",
+       },
+     });
+     const result = await response.json();
+     console.log("Success API:", result);
+
+     Categorias = result[0]
+
+     console.log(Categorias.categorias)
+   }
+   catch (error) {
+     console.error("Error:", error);
+   }
  }
 
  async function mostrar() {

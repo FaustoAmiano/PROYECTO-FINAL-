@@ -121,6 +121,65 @@ app.get("/", (req, res) => {
     }
   });*/
 
+  
+  app.get('/users', function(req, res) {
+    //req.query.id
+    let users = MySQL.realizarQuery("select * from Jugadores");
+    res.send(users);
+  });
+
+  app.get('/categorias', function(req, res) {
+    //req.query.id
+    let users = MySQL.realizarQuery("select * from Categorias");
+    res.send(users);
+  });
+
+  app.get('/salas', function(req, res) {
+    //req.query.id
+    let users = MySQL.realizarQuery("select * from Sala");
+    res.send(users);
+  });
+  
+  app.get('/users/rooms', function(req, res) {
+    //req.query.roomId
+    let users = MySQL.realizarQuery("select * from Jugadores");
+    res.send(users);
+  });
+  
+  app.post('/users', function(req, res) {
+    //req.body.user, req.body.pass, req.body.name
+    let users = MySQL.realizarQuery("insert into Jugadores");
+    body: JSON.stringify( {
+      "usuarios": {
+        "mail": "cirorosental@pioix.edu.ar",
+        "nombre": "ciro",
+      }
+     } 
+     ) ,
+    res.send({inserted: true});
+  });
+  
+  // datos mandados con la solicutud POST
+/*let _datos = {
+  titulo: "foo",
+  principal: "bar", 
+  Id:1
+}
+
+fetch('https://jsonplaceholder.typicode.com/posts', {
+  method: "POST",
+  body: JSON.stringify(_datos),
+  headers: {"Content-type": "application/json; charset=UTF-8"}
+})
+.then(response => response.json()) 
+.then(json => console.log(json));
+.catch(err => console.log(err));*/
+
+  app.put('/users', function(req, res) {
+    //req.body.user, req.body.pass, req.body.name
+    let users = MySQL.realizarQuery("insert into Jugadores");
+    res.send({inserted: true});
+  });
 
 
   app.get('/registrarse', function(req, res){
@@ -262,6 +321,23 @@ app.put('/salas', async function(req,res) {
 
 })
 
+
+app.post('/newRoom', async function(req, res){
+  console.log(req.body.nom_sala)
+  let x=await MySQL.realizarQuery(` SELECT nombre_sala FROM Sala WHERE nombre_sala like "${req.body.nom_sala}"`)
+  if(x.length ==0){
+    await MySQL.realizarQuery(` INSERT INTO Sala(nombre_sala) VALUES ("${req.body.nom_sala}")`)
+    res.send({validar:true})
+  }else{
+    res.send({validar:false})
+  }
+});
+io.on("connection", socket => {
+  socket.on("joinRoom", data => {
+    socket.join(data.room)
+    
+  })
+
 app.put('/vectores', async function(req, res) {
   //Petición PUT con URL = "/login"
   console.log("Soy un pedido PUT", req.body); //En req.body vamos a obtener el objeto con los parámetros enviados desde el frontend por método PUT
@@ -331,6 +407,7 @@ app.get('/volver2', async function(req, res){
   console.log("Soy un pedido POST", req.query);
   res.render('Admin', null); 
 
+
 });
 
 app.put('/logout', async function(req, res){
@@ -345,5 +422,3 @@ app.put('/logout', async function(req, res){
 app.get('/volver2', async function(req, res){
   console.log("Soy un pedido POST", req.query);
   res.render('Admin', null); 
-
-});
