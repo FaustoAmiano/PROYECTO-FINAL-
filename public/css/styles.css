@@ -32,6 +32,9 @@
 #nombre{
 
     font-family: 'super Milk';
+    color:red;
+    font-size: 80px;
+    float:center;
 
 }
 
@@ -83,3 +86,7 @@
     margin-right: 1%;
 }
 
+.header-content {
+    text-align: center; /* Centra el contenido horizontalmente */
+  }
+ 
