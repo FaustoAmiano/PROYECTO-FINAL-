@@ -211,7 +211,7 @@ function validaCheckbox()
 
  async function APIJugadores() {
   try{
-     const response = await fetch("http://localhost:3000/users", {
+     const response = await fetch("/users", {
        method: "POST", 
        headers: {
          "Content-Type": "application/json",
@@ -220,9 +220,9 @@ function validaCheckbox()
      const result = await response.json();
      console.log("Success API:", result);
 
-     Jugadores = result[0]
+     usuarios = result[0]
 
-     console.log(Jugadores)
+     console.log(usuariosCreados)
    }
    catch (error) {
      console.error("Error:", error);
@@ -232,7 +232,7 @@ function validaCheckbox()
  
 async function APICategorias() {
   try{
-   const response = await fetch ("http://localhost:3000/categorias", {
+   const response = await fetch ("/categorias", {
      method: "GET", 
      headers: {
        "Content-Type": "application/json",

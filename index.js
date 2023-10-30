@@ -149,16 +149,28 @@ app.get("/", (req, res) => {
   app.post('/users', function(req, res) {
     //req.body.user, req.body.pass, req.body.name
     let users = MySQL.realizarQuery("insert into Jugadores");
-    body: JSON.stringify( {
-      "usuarios": {
-        "mail": "cirorosental@pioix.edu.ar",
-        "nombre": "ciro",
+   
+    let usuariosCreados = {
+      body: JSON.stringify( 
+        {
+          "mail": "cirorosental@pioix.edu.ar",
+          "nombre": "ciro",
+        },
+        {
+          "mail": "famiano@pioix.edu.ar",
+          "nombre": "famiano",
+        },
+        {
+          "mail": "nbasile@pioix.edu.ar",
+          "nombre": "nbasile",
+        },
+        ) ,
       }
-     } 
-     ) ,
-    res.send({inserted: true});
-  });
-  
+      console.log(usuariosCreados)
+      res.send({inserted: true});
+    });
+    
+    
   // datos mandados con la solicutud POST
 /*let _datos = {
   titulo: "foo",
@@ -332,6 +344,7 @@ app.post('/newRoom', async function(req, res){
     res.send({validar:false})
   }
 });
+  
 io.on("connection", socket => {
   socket.on("joinRoom", data => {
     socket.join(data.room)
@@ -419,6 +432,8 @@ app.put('/logout', async function(req, res){
   
 });
 
-app.get('/volver2', async function(req, res){
+app.get('/volver2', async function(req, res) {
   console.log("Soy un pedido POST", req.query);
   res.render('Admin', null); 
+});
+})
