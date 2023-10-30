@@ -146,8 +146,22 @@ function validaCheckbox(){
   x=document.getElementsByClassName("btn btn-outline-primary")
   let a=[];
   for(let i=0;i<x.length;i++){
-    if(document.getElementById('btnradio'+(i+1)).checked){
-      a.push(x[i].innerHTML);
+    if(document.getElementById('btnradio'+(i+1))){
+      if(document.getElementById('btnradio'+(i+1)).checked){
+        a.push(x[i].innerHTML);
+      }
+    }
+  }
+  return(a)
+}
+function validaRadio(){
+  x=document.getElementsByClassName("btn btn-outline-primary")
+  let a=0;
+  for(let i=0;i<x.length;i++){
+    if(document.getElementById('btnRadio'+(i+1))){
+      if(document.getElementById('btnRadio'+(i+1)).checked){
+        a=x[i+12].innerHTML;
+      }
     }
   }
   return(a)

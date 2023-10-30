@@ -76,6 +76,7 @@ function createRoom(){
    
 }
 function newRoom(){
+  
   let al=document.getElementById("salita").value
   let data={
     nom_sala: al
@@ -110,7 +111,8 @@ async function newRoomFetch(data){
 async function joinRoom(al){
   data={
     roomName:al,
-    categories:validaCheckbox()//estoconvertiloenunavariable,ledecisqespereendomydpspscuandoempiezaemit:)
+    categories:validaCheckbox(),//estoconvertiloenunavariable,ledecisqespereendomydpspscuandoempiezaemit:)
+    rounds: validaRadio()
   }
   socket.emit('joinRoom', data);
 }
