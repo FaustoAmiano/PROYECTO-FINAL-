@@ -96,3 +96,7 @@
     text-align: center; /* Centra el contenido horizontalmente */
   }
  
+
+.contenedor {
+    display: inline-block; /* Esto coloca los elementos en línea uno al lado del otro */
+}
