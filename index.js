@@ -337,6 +337,7 @@ io.on("connection", socket => {
     socket.join(data.room)
     
   })
+});
 
 app.put('/vectores', async function(req, res) {
   //Petición PUT con URL = "/login"
@@ -418,7 +419,3 @@ app.put('/logout', async function(req, res){
   
   
 });
-
-app.get('/volver2', async function(req, res){
-  console.log("Soy un pedido POST", req.query);
-  res.render('Admin', null); 
