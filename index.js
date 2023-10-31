@@ -128,10 +128,13 @@ app.get("/", (req, res) => {
     res.send(users);
   });
 
-  app.get('/categorias', function(req, res) {
+  app.get('/categorias',async function(req, res) {
     //req.query.id
-    let users = MySQL.realizarQuery("select * from Categorias");
-    res.send(users);
+    console.log("GET /Categorias")
+
+    let categorias =await MySQL.realizarQuery("select * from Categorias");
+    console.log(categorias)//muestro categorias que tiene una propiedad que esl id y otra que es la descripcion del contenido
+    res.send(categorias);
   });
 
   app.get('/salas', function(req, res) {
