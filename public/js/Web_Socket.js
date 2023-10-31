@@ -67,13 +67,26 @@ async function backChats(){
 
 function createRoom(){
   document.getElementById("pedilo").innerHTML += `
-    <h5 class="card-title">Ingresar</h5>
     <div class="mb-3 form-group">
       <input type="email" name="email" placeholder="Nombre Sala" id="salita" required />
       <button class="btn btn-primary" type="button" onclick="newRoom()">Crear</button>
     </div>
     `; 
-   
+}
+function join(){
+  document.getElementById("unirse").innerHTML += `
+  <div class="mb-3 form-group">
+    <input type="email" name="email" placeholder="Nombre Sala" id="salita2" required />
+    <button class="btn btn-primary" type="button" onclick="connectRoom()">Unirse</button>
+  </div>
+  `; 
+}
+function connectRoom(){
+  let ol=document.getElementById("salita2").value
+  let data={
+    nameRoom: ol
+  }
+  socket.emit('connectRoom', data)
 }
 function newRoom(){
   

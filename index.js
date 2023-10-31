@@ -276,7 +276,10 @@ app.post('/newRoom', async function(req, res){
 io.on("connection", socket => {
   socket.on("joinRoom", data => {
     socket.join(data.roomName)
-    socket.emit(data.categories)
+    socket.to(data.roomName).emit(data.categories)
+  })
+  socket.on('connectRoom', data=>{
+    socket.join(data.nameRoom)
   })
 });
 
