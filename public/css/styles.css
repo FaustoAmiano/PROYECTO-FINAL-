@@ -66,6 +66,12 @@
 
 }
 
+#elegirpalabra {
+    text-align: justify;
+    display: block;
+    padding: 14px 32px;
+}
+
 #botonEliminarPuntaje {
     margin-top: 10px;
     background-color: #808080; 
@@ -81,9 +87,9 @@
 }
 
 #logout{
-    float: right;
+    float: left;
     width:60px;
-    margin-right: 1%;
+    margin-left: 1%;
 }
 
 .header-content {
