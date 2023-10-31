@@ -356,3 +356,38 @@ async function salir(){
     console.error("Error:", error);
   }
 }
+
+function borrarCategoria(){
+  categoriaBorrar= document.getElementById("categorie").value
+  console.log(categoriaBorrar)
+  let data = {
+    borrar: categoriaBorrar
+  }
+  eliminarCategoria(data)
+}
+
+async function eliminarCategoria(data) {
+  console.log(data)
+  try {
+    const response = await fetch("/eliminarCategoria", {
+      method: "PUT", // or 'POST'
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(data),
+    });
+    const result = await response.json();
+    console.log("borrar ok ", result);
+
+    if (result.validar == false) {
+      alert("No se pudo borrar la categoria")
+    }
+    else {
+     console.log("Categoria borrada")
+     location.href = '/volver2'
+  } 
+}
+  catch (error) {
+    console.error("Error:", error);
+  }
+}
