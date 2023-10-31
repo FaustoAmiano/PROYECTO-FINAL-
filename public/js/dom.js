@@ -209,47 +209,6 @@ function validaCheckbox()
   }
  }
 
- async function APIJugadores() {
-  try{
-     const response = await fetch("/users", {
-       method: "POST", 
-       headers: {
-         "Content-Type": "application/json",
-       },
-     });
-     const result = await response.json();
-     console.log("Success API:", result);
-
-     usuarios = result[0]
-
-     console.log(usuariosCreados)
-   }
-   catch (error) {
-     console.error("Error:", error);
-   }
- }
-
- 
-async function APICategorias() {
-  try{
-   const response = await fetch ("/categorias", {
-     method: "GET", 
-     headers: {
-       "Content-Type": "application/json",
-       },
-     });
-     const result = await response.json();
-     console.log("Success API:", result);
-
-     Categorias = result[0]
-
-     console.log(Categorias.categorias)
-   }
-   catch (error) {
-     console.error("Error:", error);
-   }
- }
-
  async function mostrar() {
   try {
     const response = await fetch("/vectores", {
