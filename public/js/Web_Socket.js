@@ -94,7 +94,7 @@ function newRoom(){
   let data={
     nom_sala: al
   }
-  newRoomFetch(data)
+  newRoomFetch(data);
   joinRoom(al)
 }
 async function newRoomFetch(data){

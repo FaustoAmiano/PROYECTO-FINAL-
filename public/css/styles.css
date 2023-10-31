@@ -16,7 +16,11 @@
 #cardLogin {
     background-color: #FEF7F5;
 }
-
+#esperaUsersList {
+    background-color: #ffa086;
+    max-width: 10%;
+    margin: 10px;
+}
 @font-face {
     font-family: 'ds-terminalnormal';
     src: url('/FONTS/DS-TERM.TTF');
@@ -86,4 +90,4 @@
             from {
               transform:translate(-50%,-50%) rotate(-360deg);
       }
-          }
+}

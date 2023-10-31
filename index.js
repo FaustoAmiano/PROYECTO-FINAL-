@@ -273,15 +273,6 @@ app.post('/newRoom', async function(req, res){
     res.send({validar:false})
   }
 });
-io.on("connection", socket => {
-  socket.on("joinRoom", data => {
-    socket.join(data.roomName)
-    socket.to(data.roomName).emit(data.categories)
-  })
-  socket.on('connectRoom', data=>{
-    socket.join(data.nameRoom)
-  })
-});
 
 app.put('/vectores', async function(req, res) {
   //Petición PUT con URL = "/login"
@@ -355,3 +346,21 @@ app.get('/volver2', async function(req, res){
 
 });
 
+app.get('/paginadeespera', function(req, res){
+  res.render('espera', null)
+});
+
+io.on("connection", socket => {
+  socket.on("joinRoom", data => {
+    socket.join(data.roomName);
+    
+  })
+  socket.on('connectRoom', data=>{
+    socket.join(data.nameRoom)
+    //Select JSON.parse(jugadores)
+    //Push
+    //UPDATE Sala JSON.stringify(vector)
+    //Emit vector al front y mostrarlo en pantalla
+    //crear en base de datos columna jugadores donde le paso el json con el vector de jugadores adentro
+  })
+});
