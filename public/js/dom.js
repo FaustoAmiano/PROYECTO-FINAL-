@@ -399,7 +399,7 @@ async function salir(){
 }
 
 function borrarCategoria(){
-  categoriaBorrar= document.getElementById("elegirCategoria").value
+  categoriaBorrar= document.getElementById("categorie").value
   console.log(categoriaBorrar)
   let data = {
     borrar: categoriaBorrar
@@ -421,10 +421,10 @@ async function eliminarCategoria(data) {
     console.log("borrar ok ", result);
 
     if (result.validar == false) {
-      alert("No se pudo borrar el puntaje")
+      alert("No se pudo borrar la categoria")
     }
     else {
-     console.log("Puntaje borrado")
+     console.log("Categoria borrada")
      location.href = '/volver2'
   } 
 }

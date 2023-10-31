@@ -419,3 +419,26 @@ app.put('/logout', async function(req, res){
   
   
 });
+
+app.put('/eliminarCategoria', async function(req, res){
+
+  let validar = true
+  console.log("Soy un pedido PUT", req.body); 
+  let categorias= await MySQL.realizarQuery("SELECT * FROM Categorias")
+  let entre = false
+  console.log(req.body.borrar)
+  for (let i in categorias){
+      if (categorias[i].contenido == req.body.borrar){
+          entre = true
+          respuesta = await MySQL.realizarQuery(`DELETE FROM Categorias WHERE contenido = "${req.body.borrar}";`)
+
+          res.send({validar: true})    
+          
+          
+      }
+  }
+  if (entre == false) {
+      res.send({validar:false})    
+  }
+  
+});
