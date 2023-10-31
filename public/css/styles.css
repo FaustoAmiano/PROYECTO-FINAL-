@@ -66,3 +66,24 @@
     border-color: #1a1a1a;
     color:#1a1a1a;
 }
+#Cargando {
+    width: .01em;
+    height: .01em;
+    background: white;
+    position: fixed;
+    z-index: -1;
+    left: 50%;
+    top: 50%;
+      border:2em solid #aaa;
+      Border-bottom-color:white;
+    transform: translate(-50%,-50%) rotate(0deg);
+    border-radius: 100%;
+            animation: cargando 1.5s infinite linear;
+      -webkit-animation: cargando 1.5s infinite linear;
+      box-shadow:0 0 0 1em #aaa;
+          }
+          @keyframes cargando {
+            from {
+              transform:translate(-50%,-50%) rotate(-360deg);
+      }
+          }
