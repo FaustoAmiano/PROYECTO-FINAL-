@@ -345,4 +345,3 @@ async function eliminarPuntaje(data) {
     console.error("Error:", error);
   }
 }
-

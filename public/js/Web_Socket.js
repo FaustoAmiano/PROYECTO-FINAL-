@@ -83,8 +83,10 @@ function join(){
 }
 function connectRoom(){
   let ol=document.getElementById("salita2").value
+  let name=document.getElementById("usuarioId").value
   let data={
-    nameRoom: ol
+    nameRoom: ol,
+    namePlayer: name
   }
   socket.emit('connectRoom', data)
 }
@@ -128,4 +130,26 @@ async function joinRoom(al){
     rounds: validaRadio()
   }
   socket.emit('joinRoom', data);
+}
+
+
+function traerJugadores(){
+  fetchJugadores()
+}
+async function fetchJugadores(data){
+  try {
+    const response = await fetch("/fetchJugadores", {
+      method: "PUT", // or 'POST'
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(data),
+    });
+    const result = await response.json();
+    console.log("vector: ", result);
+    
+}
+  catch (error) {
+    console.error("Error:", error);
+  }
 }

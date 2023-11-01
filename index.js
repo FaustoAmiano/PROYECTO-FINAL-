@@ -311,7 +311,10 @@ app.put('/eliminarUsuario', async function(req, res){
   }
   
 });
-
+app.put('/fetchJugadores', async function(req, res){
+  let vectorPlayer=await MySQL.realizarQuery("SELECT jugadores FROM Sala")
+  res.send(vectorPlayer)
+});
 app.put('/eliminarPuntaje', async function(req, res){
 
   let validar = true
@@ -352,12 +355,14 @@ app.get('/paginadeespera', function(req, res){
 
 io.on("connection", socket => {
   socket.on("joinRoom", data => {
+    
     socket.join(data.roomName);
     console.log("la sala ", data.roomName, " fue creada con exito")
-    
+      
   })
   socket.on('connectRoom', data=>{
     socket.join(data.nameRoom)
+    unirseSala(data)
     // al unirse que mande el nom de la sala y el usuario asi desp lo comparamos con la base de datos
     //Select JSON.parse(jugadores)
     //Push
@@ -366,4 +371,19 @@ io.on("connection", socket => {
     //crear en base de datos columna jugadores donde le paso el json con el vector de jugadores adentro
     
   })
+  socket.on('probar la cosa esa', data=>{
+    unirseSala(data)
+  })
 });
+async function unirseSala(data){
+  let vectorSala=await MySQL.realizarQuery(`SELECT nombre_sala FROM Sala WHERE nombre_sala LIKE'${data.nameRoom}'`)
+  let vectorJugadores=await MySQL.realizarQuery(`SELECT jugadores FROM Sala WHERE nombre_sala LIKE'${data.nameRoom}'`)
+  console.log("a", vectorSala)
+  console.log("b", vectorJugadores)
+  vectorJugadores.push(data.namePlayer)
+  console.log("bb", vectorJugadores)
+  await MySQL.realizarQuery(`UPDATE Sala SET jugadores= '${vectorJugadores}' WHERE nombre_sala='${data.nameRoom}'`)
+  console.log("aa", vectorSala)
+  console.log("bbb", vectorJugadores)
+
+};
