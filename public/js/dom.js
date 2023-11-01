@@ -111,7 +111,6 @@ async function entrar(data) {
     console.error("Error:", error);
   }
  }
-
  function addCategory(){
   let text = document.getElementById("inputCategory").value
   console.log(text)
@@ -143,6 +142,30 @@ async function category(data){
     console.error("Error:", error);
   }
  }
+function validaCheckbox(){
+  x=document.getElementsByClassName("btn btn-outline-primary")
+  let a=[];
+  for(let i=0;i<x.length;i++){
+    if(document.getElementById('btnradio'+(i+1))){
+      if(document.getElementById('btnradio'+(i+1)).checked){
+        a.push(x[i].innerHTML);
+      }
+    }
+  }
+  return(a)
+}
+function validaRadio(){
+  x=document.getElementsByClassName("btn btn-outline-primary")
+  let a=0;
+  for(let i=0;i<x.length;i++){
+    if(document.getElementById('btnRadio'+(i+1))){
+      if(document.getElementById('btnRadio'+(i+1)).checked){
+        a=x[i+12].innerHTML;
+      }
+    }
+  }
+  return(a)
+}
 
 
  async function traerSalas(){
@@ -198,3 +221,128 @@ async function category(data){
     console.error("Error:", error);
   }
  }
+
+ async function mostrar() {
+  try {
+    const response = await fetch("/vectores", {
+      method: "PUT", // or 'POST'
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({validar: true}),
+    });
+    
+    //En result obtengo la respuesta
+    const result = await response.json();
+    console.log("Success:", result);
+    let vector = result.categorias[0]
+    let vector2 = result.usuarios[0]
+
+    console.log("Success:", vector);
+    console.log("Success:", vector2);
+    let html = `
+        <select name="select" id="categorie">
+          <option value="value1" selected> Elegir Categoria</option>`
+    for (let i in vector){
+      html+=
+      `
+          <option>${vector[i].contenido}</option>
+        
+      `;
+    }
+    html += `</select>`;
+    document.getElementById("seleccion").innerHTML = html;
+
+    let html2 = `
+        <select name="select" id="user">
+          <option value="value1" selected> Elegir Usuario</option>`
+    for (let i in vector2){
+      html2+=
+      `
+          <option>${vector2[i].nom_usuario}</option>
+        
+      `;
+    }
+    html2 += `</select>`;
+    document.getElementById("seleccionUsuario").innerHTML = html2;
+   
+  }
+    catch (error) {
+      console.error("Error:", error);
+    
+  }
+}
+
+function borrarUsuario(){
+  usuario= document.getElementById("user").value
+  console.log(usuario)
+  let data = {
+    pregunta: usuario
+  }
+  eliminarUsuario(data)
+}
+
+async function eliminarUsuario(data) {
+  //putJSON() es solo el nombre de esta funcion que lo pueden cambiar    
+  console.log(data)
+  try {
+    const response = await fetch("/eliminarUsuario", {
+      method: "PUT", // or 'POST'
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(data),
+    });
+    const result = await response.json();
+    console.log("borrar ok ", result);
+
+    if (result.validar == false) {
+      alert("No se pudo borrar el usuario")
+    }
+    else {
+     console.log("Usuario borrado")
+     location.href = '/volver2'
+  } 
+}
+  catch (error) {
+    console.error("Error:", error);
+  }
+
+}
+
+function borrarPuntaje(){
+  usuario= document.getElementById("user").value
+  console.log(usuario)
+  let data = {
+    pregunta: usuario
+  }
+  eliminarPuntaje(data)
+}
+
+async function eliminarPuntaje(data) {
+  //putJSON() es solo el nombre de esta funcion que lo pueden cambiar    
+  console.log(data)
+  try {
+    const response = await fetch("/eliminarPuntaje", {
+      method: "PUT", // or 'POST'
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(data),
+    });
+    const result = await response.json();
+    console.log("borrar ok ", result);
+
+    if (result.validar == false) {
+      alert("No se pudo borrar el puntaje")
+    }
+    else {
+     console.log("Puntaje borrado")
+     location.href = '/volver2'
+  } 
+}
+  catch (error) {
+    console.error("Error:", error);
+  }
+}
+
