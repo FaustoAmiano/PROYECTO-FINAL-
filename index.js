@@ -353,6 +353,7 @@ app.get('/paginadeespera', function(req, res){
 io.on("connection", socket => {
   socket.on("joinRoom", data => {
     socket.join(data.roomName);
+    console.log("la sala ", data.roomName, " fue creada con exito")
     
   })
   socket.on('connectRoom', data=>{
