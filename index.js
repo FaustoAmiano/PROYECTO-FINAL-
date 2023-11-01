@@ -407,8 +407,6 @@ app.put('/eliminarPuntaje', async function(req, res){
           let usuario = await MySQL.realizarQuery(`SELECT * FROM Jugadores WHERE mail = "${req.body.pregunta}"`)// traer el puntajer del usuario logeado
           console.log(usuario)
           res.send({validar: true})    
-          
-          
       }
   }
   if (entre == false) {

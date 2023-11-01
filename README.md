@@ -49,6 +49,7 @@ Obtiene los datos de los usuarios
     "puntaje": "el rango de puntaje que obtuvo el usuario",
     "ID_sala": "el id de la sala",)
 
+
 GET  http://localhost:3000/salas
 
 Obtiene los datos de las salas
@@ -78,6 +79,10 @@ Obtiene los datos de las categorias
   ("ID_categoria": "el id de la categoria seleccionada",
     "contenido": "el texto que describe la categoria")
 
+GET  http://localhost:3000/users/rooms
+
+Obtiene los usuarios que se encuentran en cada room
+
 
 POST http://localhost:3000/Admin
 
@@ -103,32 +108,17 @@ Obtiene los datos para el nuevo usuario:
     "ID_sala": "number",
   }
 ]
+PUT http://localhost:3000/eliminarPuntaje
 
-PUT  http://localhost:3000/traerCategorías
-
-Una vez que ingresemos, tendremos que traer las categorías para que el usuario las pueda elegir
-
-[
-  {
-    "ID_categoria": "number",
-    "contenido": "string"
-  }
-]
-
-PUT  http://localhost:3000/traerSalas
-
-Una vez que ingresemos, tendremos que traer las salas a las que se quiere unir el usuario
+Debemos entrar a los datos del usuario para convertir el dato "puntaje" a 0
 
 [
   {
-    "ID_sala": "number",
-    "nombre_sala": "string"
+    "puntaje": "number"
   }
 ]
 
 PUT http://localhost:3000/eliminarUsuario
-
-Debemos ingresar a la tabla de usuarios para seleccionar uno y borrar sus datos:
 
 [
   {
@@ -140,18 +130,47 @@ Debemos ingresar a la tabla de usuarios para seleccionar uno y borrar sus datos:
   }
 ]
 
-PUT http://localhost:3000/eliminarPuntaje
-
-Debemos entrar a los datos del usuario para convertir el dato "puntaje" a 0
+PUT http://localhost:3000/eliminarCategoria
 
 [
   {
-    "puntaje": "number"
+    "contenido": "string"
+    "ID_categoria": "number",
   }
 ]
 
 
+PUT http://localhost:3000/vectores
 
+Traer las categorias y los usuarios para meterlos en un vector respectivamente
 
+[
+  {
+    "mail": "string",
+    "nom_usuario": "string"
+    "esadmin": "boolean",
+    "puntaje": "number",
+    "ID_sala": "number",
+  }
+]
+[
+  {
+    "contenido": "string"
+    "ID_categoria": "number",
+  }
+]
+
+POST http://localhost:3000/newRoom
+
+Crear una sala nueva 
+
+[
+  {
+    "nombre_sala": "string"
+    "ID_sala": "number",
+  }
+]
+
+TE QUEREMOS FELI !!!!!!!!!!
 
 
