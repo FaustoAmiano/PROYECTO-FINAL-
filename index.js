@@ -358,10 +358,12 @@ io.on("connection", socket => {
   })
   socket.on('connectRoom', data=>{
     socket.join(data.nameRoom)
+    // al unirse que mande el nom de la sala y el usuario asi desp lo comparamos con la base de datos
     //Select JSON.parse(jugadores)
     //Push
     //UPDATE Sala JSON.stringify(vector)
     //Emit vector al front y mostrarlo en pantalla
     //crear en base de datos columna jugadores donde le paso el json con el vector de jugadores adentro
+    
   })
 });

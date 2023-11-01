@@ -11,7 +11,7 @@ DROP TABLE IF exists Sala;
 CREATE TABLE IF NOT EXISTS Sala (
     ID_sala int primary key auto_increment,
 	nombre_sala varchar(100),
-    jugadores text,
+    jugadores text
 );
 DROP TABLE IF exists Lista;
 CREATE TABLE IF NOT EXISTS Lista (
