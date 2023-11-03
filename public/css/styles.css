@@ -100,3 +100,8 @@
 .contenedor {
     display: inline-block; /* Esto coloca los elementos en línea uno al lado del otro */
 }
+
+#juegoCSS{
+    padding-left: 20% ;
+    padding-right: 50%;
+}

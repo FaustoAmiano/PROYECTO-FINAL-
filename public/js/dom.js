@@ -432,3 +432,43 @@ async function eliminarCategoria(data) {
     console.error("Error:", error);
   }
 }
+
+function ejemplo(){
+
+  listaEjemplo = ["pis", "caca", "vomito"]
+  console.log(listaEjemplo)
+  for (let i in listaEjemplo){
+    console.log(listaEjemplo[i])
+    let html2 = `
+        <h5 class="card-title"> ${listaEjemplo[i]}</h5>
+        <input type="email" name="email" plaecholder="Escriba" id="usuarioId"/>`
+    document.getElementById("prueba").innerHTML += html2;
+  }
+}
+
+//let palabraalea={}
+
+//let plabraalea = ""
+
+async function palabra_elegida(){
+  
+  try {
+    const response = await fetch("/randomWord", {
+      method: "POST", // or 'POST'
+      headers: {
+        "Content-Type": "application/json",
+      },
+     // body: JSON.stringify(data),
+    });
+    
+    //En result obtengo la respuesta
+    const result = await response.json();
+    console.log("Success:", result);
+
+    palabraalea = result.letter; 
+
+    console.log(palabraalea)
+  } catch (error) {
+    console.error("Error:", error);
+  }
+}
