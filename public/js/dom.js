@@ -440,11 +440,14 @@ function ejemplo(){
   for (let i in listaEjemplo){
     console.log(listaEjemplo[i])
     let html2 = `
+        <br>
         <h5 class="card-title"> ${listaEjemplo[i]}</h5>
-        <input type="email" name="email" plaecholder="Escriba" id="usuarioId"/>`
+        <input  style="width : 1000px; heigth : 1px" plaecholder="Escriba" id="usuarioId" oninput="validarInput(this)"/>`
     document.getElementById("prueba").innerHTML += html2;
   }
 }
+
+
 
 //let palabraalea={}
 
@@ -468,7 +471,19 @@ async function palabra_elegida(){
     palabraalea = result.letter; 
 
     console.log(palabraalea)
+    let html =`<h5 id=letraElegida> Letra: ${palabraalea} </h5>`
+    document.getElementById("letraRandom").innerHTML += html;
+  
   } catch (error) {
     console.error("Error:", error);
+  }
+}
+
+function validarInput(input) {
+  var valor = input.value;
+  var letraInicial = palabraalea; // Cambia esta letra a la que desees
+  if (valor.length > 0 && valor[0] !== letraInicial) {
+    valor = letraInicial + valor.substring(1);
+    input.value = valor;
   }
 }
