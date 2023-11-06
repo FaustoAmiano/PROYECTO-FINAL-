@@ -67,12 +67,13 @@ async function backChats(){
 
 function createRoom(){
   document.getElementById("pedilo").innerHTML += `
+    <h5 class="card-title">Ingresar</h5>
     <div class="mb-3 form-group">
       <input type="email" name="email" placeholder="Nombre Sala" id="salita" required />
       <button class="btn btn-primary" type="button" onclick="newRoom()">Crear</button>
     </div>
     `; 
-}
+   }
 function join(){
   document.getElementById("unirse").innerHTML += `
   <div class="mb-3 form-group">
@@ -81,23 +82,50 @@ function join(){
   </div>
   `; 
 }
-function connectRoom(){
+function traerJugadores(){
+  let nomPlayer=document.getElementById("usuarioId").value
+  data={
+    nmPl:nomPlayer
+  }
+  fetchJugadores(data)
+}
+async function fetchJugadores(data){
+  try {
+    const response = await fetch("/traerJugadores", {
+      method: "POST", // or 'POST'
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(data),
+    });
+    
+    //En result obtengo la respuesta
+    const result = await response.json();
+    console.log("Success:", result);
+    connectRoom(l)
+  } catch (error) {
+    console.error("Error:", error);
+  }
+}
+function connectRoom(l){
   let ol=document.getElementById("salita2").value
-  let name=document.getElementById("usuarioId").value
   let data={
     nameRoom: ol,
-    namePlayer: name
+    namePlayer: l
   }
   socket.emit('connectRoom', data)
 }
 function newRoom(){
-  
+  espera()
   let al=document.getElementById("salita").value
-  let data={
-    nom_sala: al
+  if (al ==""){
+    alert("Le falta completar el nombre de la sala")
+  }else{
+    let data={
+      nom_sala: al
+    }
+    newRoomFetch(data);
   }
-  newRoomFetch(data);
-  joinRoom(al)
 }
 async function newRoomFetch(data){
   try {
@@ -118,38 +146,47 @@ async function newRoomFetch(data){
   }
   else{
     console.log("Sala creada con exito")
+    joinRoom(al);
   }
 } catch (error) {
   console.error("Error:", error);
 }
 }
-async function joinRoom(al){
+async function joinRoomFetch(data){
+  try {
+  const response = await fetch("/newRoom", {
+    method: "POST", // or 'POST'
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(data),
+  });
+  
+  //En result obtengo la respuesta
+  const result = await response.json();
+  console.log("Success:", result);
+  if (result.validar == false) {
+    alert("Ya existe una sala con ese nombre")
+    
+  }
+  else{
+    console.log("Sala creada con exito")
+    joinRoom(al);
+  }
+} catch (error) {
+  console.error("Error:", error);
+}
+}
+function joinRoom(al){
+  sessionStorage.setItem("categories", validaCheckbox());
+  sessionStorage.setItem("rounds", validaRadio())
   data={
     roomName:al,
-    categories:validaCheckbox(),//estoconvertiloenunavariable,ledecisqespereendomydpspscuandoempiezaemit:)
-    rounds: validaRadio()
-  }
+    createRoom:true
+  };
   socket.emit('joinRoom', data);
 }
 
+function espera(result){
 
-function traerJugadores(){
-  fetchJugadores()
-}
-async function fetchJugadores(data){
-  try {
-    const response = await fetch("/fetchJugadores", {
-      method: "PUT", // or 'POST'
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(data),
-    });
-    const result = await response.json();
-    console.log("vector: ", result);
-    
-}
-  catch (error) {
-    console.error("Error:", error);
-  }
 }

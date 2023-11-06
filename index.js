@@ -288,7 +288,9 @@ app.put('/vectores', async function(req, res) {
       res.send({palabras:false})    
   }
 });
-
+app.post('/traerJugadores', async function(req, res){
+  res.send({l:await MySQL.realizarQuery(` SELECT nom_usuario FROM Jugadores WHERE mail like "${nmPl}"`)})
+});
 app.put('/eliminarUsuario', async function(req, res){
 
   let validar = true
@@ -311,10 +313,7 @@ app.put('/eliminarUsuario', async function(req, res){
   }
   
 });
-app.put('/fetchJugadores', async function(req, res){
-  let vectorPlayer=await MySQL.realizarQuery("SELECT jugadores FROM Sala")
-  res.send(vectorPlayer)
-});
+
 app.put('/eliminarPuntaje', async function(req, res){
 
   let validar = true
@@ -355,10 +354,10 @@ app.get('/paginadeespera', function(req, res){
 
 io.on("connection", socket => {
   socket.on("joinRoom", data => {
-    
-    socket.join(data.roomName);
-    console.log("la sala ", data.roomName, " fue creada con exito")
-      
+    if(data.roomName!=""){
+      socket.join(data.roomName);
+      console.log("la sala ", data.roomName, " fue creada con exito") 
+    }
   })
   socket.on('connectRoom', data=>{
     socket.join(data.nameRoom)
