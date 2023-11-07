@@ -177,12 +177,43 @@ async function joinRoomFetch(data){
   console.error("Error:", error);
 }
 }
+function chequearSala(){
+  connectRoom()
+  let nr= document.getElementById("salita2").value
+  data={
+    nomSala: nr
+  }
+  chequearSalaFetch(data)
+}
+async function chequearSalaFetch(data){
+  try {
+  const response = await fetch("/chequearSala", {
+    method: "POST", // or 'POST'
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(data),
+  });
+  
+  //En result obtengo la respuesta
+  const result = await response.json();
+  console.log("Success:", result);
+  if (result.validar == false) {
+    alert("No existe una sala con ese nombre")
+    
+  }
+  else{
+    console.log("Sala encontrada con exito")
+  }
+} catch (error) {
+  console.error("Error:", error);
+}
+}
 function joinRoom(al){
   sessionStorage.setItem("categories", validaCheckbox());
   sessionStorage.setItem("rounds", validaRadio())
   data={
-    roomName:al,
-    createRoom:true
+    roomName:al
   };
   socket.emit('joinRoom', data);
 }

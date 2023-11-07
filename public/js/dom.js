@@ -190,7 +190,7 @@ function validaRadio(){
   }
  }
 
- async function API(){
+async function API(){
   try {
     const response = await fetch("https://dolarapi.com/v1/dolares", {
       method: "GET", 

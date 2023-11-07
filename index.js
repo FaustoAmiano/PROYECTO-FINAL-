@@ -291,6 +291,15 @@ app.put('/vectores', async function(req, res) {
 app.post('/traerJugadores', async function(req, res){
   res.send({l:await MySQL.realizarQuery(` SELECT nom_usuario FROM Jugadores WHERE mail like "${nmPl}"`)})
 });
+app.post('/chequearSalaFetch', async function(req, res){
+  console.log("a", req.body.nomSala)
+  let x=await MySQL.realizarQuery(` SELECT nombre_sala FROM Sala WHERE nombre_sala like "${req.body.nomSala}"`)
+  if(x.length> 0 ){
+    res.send({validar:true})
+  }else{
+    res.send({validar:false})
+  }
+});
 app.put('/eliminarUsuario', async function(req, res){
 
   let validar = true
