@@ -289,9 +289,9 @@ app.put('/vectores', async function(req, res) {
   }
 });
 app.post('/traerJugadores', async function(req, res){
-  res.send({l:await MySQL.realizarQuery(` SELECT nom_usuario FROM Jugadores WHERE mail like "${nmPl}"`)})
+  res.send({jugadores:await MySQL.realizarQuery(` SELECT nom_usuario FROM Jugadores WHERE mail like "${req.bodynmPl}"`)})
 });
-app.post('/chequearSalaFetch', async function(req, res){
+app.post('/chequearSala', async function(req, res){
   console.log("a", req.body.nomSala)
   let x=await MySQL.realizarQuery(` SELECT nombre_sala FROM Sala WHERE nombre_sala like "${req.body.nomSala}"`)
   if(x.length> 0 ){
@@ -379,19 +379,10 @@ io.on("connection", socket => {
     //crear en base de datos columna jugadores donde le paso el json con el vector de jugadores adentro
     
   })
-  socket.on('probar la cosa esa', data=>{
-    unirseSala(data)
-  })
 });
 async function unirseSala(data){
   let vectorSala=await MySQL.realizarQuery(`SELECT nombre_sala FROM Sala WHERE nombre_sala LIKE'${data.nameRoom}'`)
   let vectorJugadores=await MySQL.realizarQuery(`SELECT jugadores FROM Sala WHERE nombre_sala LIKE'${data.nameRoom}'`)
-  console.log("a", vectorSala)
-  console.log("b", vectorJugadores)
   vectorJugadores.push(data.namePlayer)
-  console.log("bb", vectorJugadores)
   await MySQL.realizarQuery(`UPDATE Sala SET jugadores= '${vectorJugadores}' WHERE nombre_sala='${data.nameRoom}'`)
-  console.log("aa", vectorSala)
-  console.log("bbb", vectorJugadores)
-
 };

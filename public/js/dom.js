@@ -40,6 +40,7 @@ async function entrar(data) {
   function login() {
     //Leo los datos del input
     let usuario = document.getElementById("usuarioId").value
+    sessionStorage.setItem("userName",usuario);
     let contraseña = document.getElementById("passwordId").value
   
     //Creo un objeto de forma instantanea

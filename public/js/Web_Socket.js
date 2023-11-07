@@ -78,42 +78,52 @@ function join(){
   document.getElementById("unirse").innerHTML += `
   <div class="mb-3 form-group">
     <input type="email" name="email" placeholder="Nombre Sala" id="salita2" required />
-    <button class="btn btn-primary" type="button" onclick="connectRoom()">Unirse</button>
+    <button class="btn btn-primary" type="button" onclick="chequearSala()">Unirse</button>
   </div>
   `; 
 }
-function traerJugadores(){
-  let nomPlayer=document.getElementById("usuarioId").value
-  data={
-    nmPl:nomPlayer
-  }
-  fetchJugadores(data)
-}
-async function fetchJugadores(data){
+async function chequearSala(){
   try {
-    const response = await fetch("/traerJugadores", {
-      method: "POST", // or 'POST'
+    data={
+      nomSala: document.getElementById("salita2").value
+    }
+    const response = await fetch("/chequearSala", {
+      method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
       body: JSON.stringify(data),
     });
-    
-    //En result obtengo la respuesta
     const result = await response.json();
     console.log("Success:", result);
-    connectRoom(l)
+    if (result.validar == false) {
+      alert("No existe una sala con ese nombre")
+      
+    }
+    else{
+      console.log("Sala encontrada con exito");
+    }
   } catch (error) {
     console.error("Error:", error);
   }
 }
-function connectRoom(l){
-  let ol=document.getElementById("salita2").value
-  let data={
-    nameRoom: ol,
-    namePlayer: l
+async function traerJugadores(){
+  try {
+    data={
+      nmPl:sessionStorage.getItem("userName")
+    }
+    const response = await fetch("/traerJugadores", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(data),
+    });
+    const result = await response.json();
+    console.log("Success:", result);
+  } catch (error) {
+    console.error("Error:", error);
   }
-  socket.emit('connectRoom', data)
 }
 function newRoom(){
   espera()
@@ -177,38 +187,7 @@ async function joinRoomFetch(data){
   console.error("Error:", error);
 }
 }
-function chequearSala(){
-  connectRoom()
-  let nr= document.getElementById("salita2").value
-  data={
-    nomSala: nr
-  }
-  chequearSalaFetch(data)
-}
-async function chequearSalaFetch(data){
-  try {
-  const response = await fetch("/chequearSala", {
-    method: "POST", // or 'POST'
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify(data),
-  });
-  
-  //En result obtengo la respuesta
-  const result = await response.json();
-  console.log("Success:", result);
-  if (result.validar == false) {
-    alert("No existe una sala con ese nombre")
-    
-  }
-  else{
-    console.log("Sala encontrada con exito")
-  }
-} catch (error) {
-  console.error("Error:", error);
-}
-}
+
 function joinRoom(al){
   sessionStorage.setItem("categories", validaCheckbox());
   sessionStorage.setItem("rounds", validaRadio())
