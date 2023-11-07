@@ -353,10 +353,16 @@ app.post('/newRoom', async function(req, res){
 });
   
 io.on("connection", socket => {
+  const req = socket.request;
   socket.on("joinRoom", data => {
     socket.join(data.room)
-    
+    req.session.room = data.room
+    req.session.save()
   })
+  socket.on('parar', data => {
+    console.log(data)
+    io.to(req.session.room).emit('pararTodos', data) 
+  }) ;
 });
 
 app.put('/vectores', async function(req, res) {
@@ -472,3 +478,4 @@ app.post('/randomWord', async function(req, res){
   res.send({letter: letrasAleatoria})
 
 });
+
