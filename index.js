@@ -339,7 +339,7 @@ app.put('/salas', async function(req,res) {
 
 
 })
-
+let vectorRespuestas = []
 
 app.post('/newRoom', async function(req, res){
   console.log(req.body.nom_sala)
@@ -361,7 +361,16 @@ io.on("connection", socket => {
   })
   socket.on("parar", (data) => {
     console.log(data)
-    io.to(req.session.room).emit("pararTodos", data.respuestas) 
+    //io.to(req.session.room).emit("pararTodos", {mensaje: "pararTodos"}) 
+    vectorRespuestas = []
+    io.emit("pararTodos", {mensaje: "pararTodos"}) 
+  }) ;
+  socket.on("cargarRespuestas", (data) => {
+    console.log(data)
+    console.log(req.session.conectado)
+    vectorRespuestas.push({user: req.session.conectado, respuesta:data })
+    io.emit("vectorRespuestas", vectorRespuestas) 
+    //io.to(req.session.room).emit("pararTodos", {}) 
   }) ;
 });
 
