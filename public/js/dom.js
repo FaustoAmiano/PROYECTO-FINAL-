@@ -308,7 +308,6 @@ async function eliminarUsuario(data) {
   catch (error) {
     console.error("Error:", error);
   }
-
 }
 
 function borrarPuntaje(){

@@ -73,7 +73,7 @@ function createRoom(){
       <button class="btn btn-primary" type="button" onclick="newRoom()">Crear</button>
     </div>
     `; 
-   }
+}
 function join(){
   document.getElementById("unirse").innerHTML += `
   <div class="mb-3 form-group">
@@ -82,58 +82,14 @@ function join(){
   </div>
   `; 
 }
-async function chequearSala(){
-  try {
-    data={
-      nomSala: document.getElementById("salita2").value
-    }
-    const response = await fetch("/chequearSala", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(data),
-    });
-    const result = await response.json();
-    console.log("Success:", result);
-    if (result.validar == false) {
-      alert("No existe una sala con ese nombre")
-      
-    }
-    else{
-      console.log("Sala encontrada con exito");
-    }
-  } catch (error) {
-    console.error("Error:", error);
-  }
-}
-async function traerJugadores(){
-  try {
-    data={
-      nmPl:sessionStorage.getItem("userName")
-    }
-    const response = await fetch("/traerJugadores", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(data),
-    });
-    const result = await response.json();
-    console.log("Success:", result);
-  } catch (error) {
-    console.error("Error:", error);
-  }
-}
+//CREAR UNA SALA
 function newRoom(){
-  espera()
-  let al=document.getElementById("salita").value
-  if (al ==""){
+  let data={
+    roomName: document.getElementById("salita").value
+  }
+  if (data.roomName==""){
     alert("Le falta completar el nombre de la sala")
   }else{
-    let data={
-      nom_sala: al
-    }
     newRoomFetch(data);
   }
 }
@@ -145,58 +101,82 @@ async function newRoomFetch(data){
       "Content-Type": "application/json",
     },
     body: JSON.stringify(data),
-  });
+    });
   
-  //En result obtengo la respuesta
-  const result = await response.json();
-  console.log("Success:", result);
-  if (result.validar == false) {
-    alert("Ya existe una sala con ese nombre")
-    
+    //En result obtengo la respuesta
+    const result = await response.json();
+    console.log("Success:", result);
+    if (result.validar == false) {
+      alert("Ya existe una sala con ese nombre");
+    }else{
+      console.log("Sala creada con exito")
+      sessionStorage.setItem("categories", validaCheckbox());
+      sessionStorage.setItem("rounds", validaRadio());
+      joinRoom(data);
+      espera()
+    }
+  } catch (error) {
+    console.error("Error:", error);
   }
-  else{
-    console.log("Sala creada con exito")
-    joinRoom(al);
-  }
-} catch (error) {
-  console.error("Error:", error);
 }
-}
-async function joinRoomFetch(data){
+//REVISAR SI EXISTE UNA SALA
+async function chequearSala(){
   try {
-  const response = await fetch("/newRoom", {
-    method: "POST", // or 'POST'
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify(data),
-  });
-  
-  //En result obtengo la respuesta
-  const result = await response.json();
-  console.log("Success:", result);
-  if (result.validar == false) {
-    alert("Ya existe una sala con ese nombre")
-    
+    data={
+      nomSala: document.getElementById("salita2").value,
+      nmPl:sessionStorage.getItem("userName")
+    };
+    const response = await fetch("/chequearSala", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(data),
+    });
+    const result = await response.json();
+    console.log("Success:", result);
+    if (result.validar == false) {
+      alert("No existe una sala con ese nombre");
+    }
+    else{
+      console.log("Sala encontrada con exito");
+      traerJugadores(data);
+      joinRoom(data);
+    }
+  } catch (error) {
+    console.error("Error:", error);
   }
-  else{
-    console.log("Sala creada con exito")
-    joinRoom(al);
-  }
-} catch (error) {
-  console.error("Error:", error);
 }
-}
-
-function joinRoom(al){
-  sessionStorage.setItem("categories", validaCheckbox());
-  sessionStorage.setItem("rounds", validaRadio())
-  data={
-    roomName:al
+//PEDIR LOS JUGADORES DE UNA SALA
+async function traerJugadores(data){
+  try {
+    const response = await fetch("/traerJugadores", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(data),
+    });
+    const result = await response.json();
+    console.log("Success:", result);
+  } catch (error) {
+    console.error("Error:", error);
   };
+};
+
+//UNIRSE A UNA SALA
+function joinRoom(data){
   socket.emit('joinRoom', data);
 }
 
+//IR A LA PAGINA DE ESPERA
 function espera(result){
-
+  //te manda a la sala de espera
+  //lista de jugadores
+  //boton para que no entren mas jugadores y empezar a jugar
 }
+
+
+/*
+HAY Q VACIAR LOS JUGADORES DE LAS SALAS DE LA BASE DE DATOS:)
+*/

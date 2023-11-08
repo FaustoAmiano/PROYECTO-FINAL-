@@ -264,10 +264,10 @@ app.put('/salas', async function(req,res) {
 
 
 app.post('/newRoom', async function(req, res){
-  console.log(req.body.nom_sala)
-  let x=await MySQL.realizarQuery(` SELECT nombre_sala FROM Sala WHERE nombre_sala like "${req.body.nom_sala}"`)
+  console.log(req.body.roomName)
+  let x=await MySQL.realizarQuery(` SELECT nombre_sala FROM Sala WHERE nombre_sala like "${req.body.roomName}"`)
   if(x.length ==0){
-    await MySQL.realizarQuery(` INSERT INTO Sala(nombre_sala) VALUES ("${req.body.nom_sala}")`)
+    await MySQL.realizarQuery(` INSERT INTO Sala(nombre_sala) VALUES ("${req.body.roomName}")`)
     res.send({validar:true})
   }else{
     res.send({validar:false})
@@ -289,7 +289,7 @@ app.put('/vectores', async function(req, res) {
   }
 });
 app.post('/traerJugadores', async function(req, res){
-  res.send({jugadores:await MySQL.realizarQuery(` SELECT nom_usuario FROM Jugadores WHERE mail like "${req.bodynmPl}"`)})
+  res.send({jugadores:await MySQL.realizarQuery(` SELECT jugadores FROM Sala WHERE nombre_sala like "${req.body.nomSala}"`)})
 });
 app.post('/chequearSala', async function(req, res){
   console.log("a", req.body.nomSala)
@@ -381,8 +381,6 @@ io.on("connection", socket => {
   })
 });
 async function unirseSala(data){
-  let vectorSala=await MySQL.realizarQuery(`SELECT nombre_sala FROM Sala WHERE nombre_sala LIKE'${data.nameRoom}'`)
-  let vectorJugadores=await MySQL.realizarQuery(`SELECT jugadores FROM Sala WHERE nombre_sala LIKE'${data.nameRoom}'`)
-  vectorJugadores.push(data.namePlayer)
-  await MySQL.realizarQuery(`UPDATE Sala SET jugadores= '${vectorJugadores}' WHERE nombre_sala='${data.nameRoom}'`)
+  let vector=await MySQL.realizarQuery(`SELECT jugadores FROM Sala where nom_sala LIKE data.roomName`)
+  
 };
