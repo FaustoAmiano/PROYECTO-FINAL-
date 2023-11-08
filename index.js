@@ -362,9 +362,9 @@ io.on("connection", socket => {
     req.session.room = data.room
     req.session.save()
   })
-  socket.on('parar', data => {
+  socket.on("parar", (data) => {
     console.log(data)
-    io.to(req.session.room).emit('pararTodos', data) 
+    io.to(req.session.room).emit("pararTodos", socket) 
   }) ;
 });
 

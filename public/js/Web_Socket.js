@@ -115,22 +115,23 @@ async function joinRoom(al){
   socket.emit('joinRoom', data);
 }
 
-function basta() {
+function basta(data) {
   data = {
     respuestas: "FALTAN COSAS"
   }
 
-  socket.emit('parar', data);
+  socket.emit("parar", data)
 
+  
 }
 
-socket.on("pararTodos", data => {
-  console.log("Me llego del servidor", data);
-  document.getElementById("prueba").innerHTML += `
-     <div style="padding-right: 120px" class="contenedor">
-        <h4 id="ronda">¡Se ha agotado el tiempo!</h5>
-    </div>
-  `; 
-  
-  
-});
+socket.on("pararTodos", (data) => {
+    console.log(data);
+    document.getElementById("juego").innerHTML = `
+       <div style="padding-right: 120px" class="contenedor">
+          <h4 id="listo">¡Se ha agotado el tiempo!</h4>
+      </div>`
+      ; 
+    
+    
+  });
