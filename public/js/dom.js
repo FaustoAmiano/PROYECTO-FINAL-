@@ -391,3 +391,62 @@ async function eliminarCategoria(data) {
     console.error("Error:", error);
   }
 }
+
+function ejemplo(){
+
+  listaEjemplo = ["pis", "caca", "vomito"]
+  console.log(listaEjemplo)
+  for (let i in listaEjemplo){
+    console.log(listaEjemplo[i])
+    let html2 = `
+        <br>
+        <h5 class="card-title"> ${listaEjemplo[i]}</h5>
+        <input  style="width : 1000px; heigth : 1px" plaecholder="Escriba" id="usuarioId" oninput="validarInput(this)"/>`
+    document.getElementById("prueba").innerHTML += html2;
+  }
+}
+
+
+
+//let palabraalea={}
+
+//let plabraalea = ""
+
+async function palabra_elegida(){
+  
+  try {
+    const response = await fetch("/randomWord", {
+      method: "POST", // or 'POST'
+      headers: {
+        "Content-Type": "application/json",
+      },
+     // body: JSON.stringify(data),
+    });
+    
+    //En result obtengo la respuesta
+    const result = await response.json();
+    console.log("Success:", result);
+
+    palabraalea = result.letter; 
+
+    console.log(palabraalea)
+    let html =`<h5 id=letraElegida> Letra: ${palabraalea} </h5>`
+    document.getElementById("letraRandom").innerHTML += html;
+
+    let html2 = `<h5 id=letraElegida> Letra: 1/3  </h5>`
+    document.getElementById("ronda").innerHTML = html2
+  
+  } catch (error) {
+    console.error("Error:", error);
+  }
+}
+
+function validarInput(input) {
+  var valor = input.value;
+  var letraInicial = palabraalea; // Cambia esta letra a la que desees
+  if (valor.length > 0 && valor[0] !== letraInicial) {
+    valor = letraInicial + valor.substring(1);
+    input.value = valor;
+  }
+}
+

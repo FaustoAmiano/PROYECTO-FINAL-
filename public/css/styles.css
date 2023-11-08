@@ -96,3 +96,31 @@
     text-align: center; /* Centra el contenido horizontalmente */
   }
  
+
+.contenedor {
+    display: inline-block; /* Esto coloca los elementos en línea uno al lado del otro */
+}
+
+
+#juego{
+   
+}
+
+#cardJuego{
+    width: 1050px;
+    margin-left: 300px;
+}
+
+#letraElegida{
+    font-size: xx-large;
+    color: rgb(180, 83, 83);
+}
+
+#stop{
+    background-color: rgb(180, 83, 83);
+    width:150px;
+    height: 75px;
+    margin-left: 1%;
+    font-family: 'Century Gothic';
+    font-size:250%;
+}

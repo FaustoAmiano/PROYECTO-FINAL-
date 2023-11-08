@@ -204,6 +204,13 @@ fetch('https://jsonplaceholder.typicode.com/posts', {
     res.render('register', null); //Renderizo página "home" sin pasar ningún objeto a Handlebars
   });
   
+  app.get('/pruebaEntrar', function(req, res){
+    //Petición GET con URL = "/login"
+    console.log("Soy un pedido GET", req.query); 
+    //En req.query vamos a obtener el objeto con los parámetros enviados desde el frontend por método GET
+    res.render('Juego', null); //Renderizo página "home" sin pasar ningún objeto a Handlebars
+  });
+
   app.get("/volver", (req, res) => {
     // Agrega aquí la lógica para mostrar la página del dashboard
     res.render("login");
@@ -349,10 +356,16 @@ app.post('/newRoom', async function(req, res){
 });
   
 io.on("connection", socket => {
+  const req = socket.request;
   socket.on("joinRoom", data => {
     socket.join(data.room)
-    
+    req.session.room = data.room
+    req.session.save()
   })
+  socket.on('parar', data => {
+    console.log(data)
+    io.to(req.session.room).emit('pararTodos', data) 
+  }) ;
 });
 
 app.put('/vectores', async function(req, res) {
@@ -456,3 +469,14 @@ app.put('/eliminarCategoria', async function(req, res){
   }
   
 });
+
+
+app.post('/randomWord', async function(req, res){
+  console.log("Soy un pedido POST", req.body);
+  let letras = ["A","B", "C", "D", "E", "F", "G", "H", "I", "J", "K","L","M","N","O","Q","P","R","S","T","U","V"]
+  var indiceAleatorio = Math.floor(Math.random() * letras.length)
+  var letrasAleatoria = letras[indiceAleatorio]
+  res.send({letter: letrasAleatoria})
+
+});
+
