@@ -115,11 +115,19 @@ async function joinRoom(al){
   socket.emit('joinRoom', data);
 }
 
-function basta(data) {
-  data = {
-    respuestas: "FALTAN COSAS"
-  }
 
+function basta() {
+  let a=document.getElementsByClassName("x");
+  for(let x in a){
+    a[x].disabled=true
+  }
+  for(i in listaEjemplo){
+    let vectorRta=[document.getElementById(listaEjemplo[i]).value]
+    console.log(vectorRta)
+  }
+  data = {
+    respuestas: vectorRta
+  }
   socket.emit("parar", data)
 
   

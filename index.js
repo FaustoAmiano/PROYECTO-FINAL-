@@ -361,7 +361,7 @@ io.on("connection", socket => {
   })
   socket.on("parar", (data) => {
     console.log(data)
-    io.to(req.session.room).emit("pararTodos", socket) 
+    io.to(req.session.room).emit("pararTodos", data.respuestas) 
   }) ;
 });
 
