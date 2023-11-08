@@ -289,11 +289,11 @@ app.put('/vectores', async function(req, res) {
   }
 });
 app.post('/traerJugadores', async function(req, res){
-  res.send({jugadores:await MySQL.realizarQuery(` SELECT jugadores FROM Sala WHERE nombre_sala like "${req.body.nomSala}"`)})
+  res.send({jugadores:await MySQL.realizarQuery(` SELECT jugadores FROM Sala WHERE nombre_sala like "${req.body.roomName}"`)})
 });
 app.post('/chequearSala', async function(req, res){
-  console.log("a", req.body.nomSala)
-  let x=await MySQL.realizarQuery(` SELECT nombre_sala FROM Sala WHERE nombre_sala like "${req.body.nomSala}"`)
+  console.log("Sala: ", req.body.roomName)
+  let x=await MySQL.realizarQuery(` SELECT nombre_sala FROM Sala WHERE nombre_sala like "${req.body.roomName}"`)
   if(x.length> 0 ){
     res.send({validar:true})
   }else{
@@ -360,17 +360,19 @@ app.get('/volver2', async function(req, res){
 app.get('/paginadeespera', function(req, res){
   res.render('espera', null)
 });
-//{
+
 io.on("connection", socket => {
   socket.on("joinRoom", async (data) => {
+    console.log("gg",data)
     let a = await MySQL.realizarQuery(` SELECT nombre_sala FROM Sala WHERE nombre_sala like "${data.roomName}"`);
     console.log(a)
     if(data.roomName!=""){
-      if(data.createRoom&&a.length){
+      if(data.createRoom&&a.length != 1){
         socket.join(data.roomName);
         console.log("la sala ", data.roomName, " fue creada.");
         await unirseSala(data);
-      }else if(!data.createRoom&&!a.length){
+      }else if(!data.createRoom&&a.length == 1){
+        console.log("kk")
         socket.join(data.roomName);
         socket.emit("returnPlayers",{players:await unirseSala(data)});
         console.log(data.nmPl, "se ha unido a la sala ", data.roomName);
@@ -381,12 +383,13 @@ io.on("connection", socket => {
 
 //mete en la BDD al jugador a la sala
 async function unirseSala(data){
-  let array=JSON.parse(await MySQL.realizarQuery(`SELECT jugadores FROM Sala WHERE nom_sala LIKE ${data.roomName}`));
-  console.log(array)
+  let array=JSON.stringify(await MySQL.realizarQuery(`SELECT jugadores FROM Sala WHERE nombre_sala LIKE "${data.roomName}"`));
+  console.log(array[0].jugadores)
+  console.log("dd ",data.roomName)
   array.push(data.nmPl);
-  await MySQL.realizarQuery(`UPDATE Sala SET jugadores=${array} WHERE nom_sala LIKE ${data.roomName}`);
+  console.log(array)
+  await MySQL.realizarQuery(`UPDATE Sala SET jugadores="${JSON.parse(array)}" WHERE nombre_sala LIKE "${data.roomName}"`);
   return array;
 };
 
-//tira error en algun lado no se q onda
-//}
+

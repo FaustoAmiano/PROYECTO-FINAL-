@@ -85,7 +85,7 @@ function join(){
 //CREAR UNA SALA
 function newRoom(){
   let data={
-    nomSala: document.getElementById("salita").value,
+    roomName: document.getElementById("salita").value,
     nmPl:sessionStorage.getItem("userName"),
     createRoom:true
   };
@@ -125,7 +125,7 @@ async function newRoomFetch(data){
 async function chequearSala(){
   try {
     data={
-      nomSala: document.getElementById("salita2").value,
+      roomName: document.getElementById("salita2").value,
       nmPl:sessionStorage.getItem("userName"),
       createRoom:false
     };
