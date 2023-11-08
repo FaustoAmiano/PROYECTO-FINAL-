@@ -85,8 +85,10 @@ function join(){
 //CREAR UNA SALA
 function newRoom(){
   let data={
-    roomName: document.getElementById("salita").value
-  }
+    nomSala: document.getElementById("salita").value,
+    nmPl:sessionStorage.getItem("userName"),
+    createRoom:true
+  };
   if (data.roomName==""){
     alert("Le falta completar el nombre de la sala")
   }else{
@@ -124,7 +126,8 @@ async function chequearSala(){
   try {
     data={
       nomSala: document.getElementById("salita2").value,
-      nmPl:sessionStorage.getItem("userName")
+      nmPl:sessionStorage.getItem("userName"),
+      createRoom:false
     };
     const response = await fetch("/chequearSala", {
       method: "POST",

@@ -360,27 +360,33 @@ app.get('/volver2', async function(req, res){
 app.get('/paginadeespera', function(req, res){
   res.render('espera', null)
 });
-
+//{
 io.on("connection", socket => {
-  socket.on("joinRoom", data => {
+  socket.on("joinRoom", async (data) => {
+    let a = await MySQL.realizarQuery(` SELECT nombre_sala FROM Sala WHERE nombre_sala like "${data.roomName}"`);
+    console.log(a)
     if(data.roomName!=""){
-      socket.join(data.roomName);
-      console.log("la sala ", data.roomName, " fue creada con exito") 
-    }
-  })
-  socket.on('connectRoom', data=>{
-    socket.join(data.nameRoom)
-    unirseSala(data)
-    // al unirse que mande el nom de la sala y el usuario asi desp lo comparamos con la base de datos
-    //Select JSON.parse(jugadores)
-    //Push
-    //UPDATE Sala JSON.stringify(vector)
-    //Emit vector al front y mostrarlo en pantalla
-    //crear en base de datos columna jugadores donde le paso el json con el vector de jugadores adentro
-    
-  })
+      if(data.createRoom&&a.length){
+        socket.join(data.roomName);
+        console.log("la sala ", data.roomName, " fue creada.");
+        await unirseSala(data);
+      }else if(!data.createRoom&&!a.length){
+        socket.join(data.roomName);
+        socket.emit("returnPlayers",{players:await unirseSala(data)});
+        console.log(data.nmPl, "se ha unido a la sala ", data.roomName);
+      };
+    };
+  });
 });
+
+//mete en la BDD al jugador a la sala
 async function unirseSala(data){
-  let vector=await MySQL.realizarQuery(`SELECT jugadores FROM Sala where nom_sala LIKE data.roomName`)
-  
+  let array=JSON.parse(await MySQL.realizarQuery(`SELECT jugadores FROM Sala WHERE nom_sala LIKE ${data.roomName}`));
+  console.log(array)
+  array.push(data.nmPl);
+  await MySQL.realizarQuery(`UPDATE Sala SET jugadores=${array} WHERE nom_sala LIKE ${data.roomName}`);
+  return array;
 };
+
+//tira error en algun lado no se q onda
+//}
