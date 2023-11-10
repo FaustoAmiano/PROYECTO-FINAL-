@@ -121,14 +121,14 @@ function basta() {
   for(let x in a){
     a[x].disabled=true
   }
-  for(i in listaEjemplo){
+  /*for(i in listaEjemplo){
     let vectorRta=[document.getElementById(listaEjemplo[i]).value]
     console.log(vectorRta)
-  }
-  data = {
+  }*/
+  /*data = {
     respuestas: vectorRta
-  }
-  socket.emit("parar", data)
+  }*/
+  socket.emit("parar", {})
 
 }
 function vote(){
@@ -144,6 +144,11 @@ function vote(){
 }
 socket.on("pararTodos", (data) => {
     console.log(data);
+    let vectorRta = []
+    for(i in listaEjemplo){
+      vectorRta.push(document.getElementById(listaEjemplo[i]).value)
+      console.log(vectorRta)
+    }
     document.getElementById("juego").innerHTML = `
        <div style="padding-right: 120px" class="contenedor">
           <h4 id="listo">¡Se ha agotado el tiempo!</h4>
@@ -155,6 +160,13 @@ socket.on("pararTodos", (data) => {
       </div> 
       </div>`
       ; 
+
+    socket.emit("cargarRespuestas", {vectorRta: vectorRta})
+    
     
     
   });
+
+socket.on("vectorRespuestas", (data) => {
+  console.log("sa", data)
+});
