@@ -383,13 +383,17 @@ io.on("connection", socket => {
 
 //mete en la BDD al jugador a la sala
 async function unirseSala(data){
-  let array=JSON.stringify(await MySQL.realizarQuery(`SELECT jugadores FROM Sala WHERE nombre_sala LIKE "${data.roomName}"`));
-  console.log(array[0].jugadores)
-  console.log("dd ",data.roomName)
-  array.push(data.nmPl);
+  let array=await MySQL.realizarQuery(`SELECT jugadores, ID_sala FROM Sala WHERE nombre_sala LIKE "${data.roomName}"`);
+  console.log("a",array)
+  if(array[0].jugadores==undefined){
+    console.log("pija")
+    await MySQL.realizarQuery(`UPDATE Sala SET jugadores="${data.nmPl}" WHERE ID_sala LIKE "${array[0].ID_sala}"`);
+  }else{
+    array[0].jugadores+=" ",data.nmPl;
+    await MySQL.realizarQuery(`UPDATE Sala SET jugadores="${array[0].jugadores}" WHERE ID_sala LIKE "${array[0].ID_sala}"`);
+  }  
   console.log(array)
-  await MySQL.realizarQuery(`UPDATE Sala SET jugadores="${JSON.parse(array)}" WHERE nombre_sala LIKE "${data.roomName}"`);
-  return array;
+  return array.split(" ");
 };
 
 
