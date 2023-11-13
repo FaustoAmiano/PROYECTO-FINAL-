@@ -345,36 +345,14 @@ app.put('/salas', async function(req,res) {
 let vectorRespuestas = []
 
 app.post('/newRoom', async function(req, res){
-  console.log(req.body.nom_sala)
-  let x=await MySQL.realizarQuery(` SELECT nombre_sala FROM Sala WHERE nombre_sala like "${req.body.nom_sala}"`)
+  console.log(req.body.roomName)
+  let x=await MySQL.realizarQuery(` SELECT nombre_sala FROM Sala WHERE nombre_sala like "${req.body.roomName}"`)
   if(x.length ==0){
-    await MySQL.realizarQuery(` INSERT INTO Sala(nombre_sala) VALUES ("${req.body.nom_sala}")`)
+    await MySQL.realizarQuery(` INSERT INTO Sala(nombre_sala) VALUES ("${req.body.roomName}")`)
     res.send({validar:true})
   }else{
     res.send({validar:false})
   }
-});
-  
-io.on("connection", socket => {
-  const req = socket.request;
-  socket.on("joinRoom", data => {
-    socket.join(data.room)
-    req.session.room = data.room
-    req.session.save()
-  })
-  socket.on("parar", (data) => {
-    console.log(data)
-    //io.to(req.session.room).emit("pararTodos", {mensaje: "pararTodos"}) 
-    vectorRespuestas = []
-    io.emit("pararTodos", {mensaje: "pararTodos"}) 
-  }) ;
-  socket.on("cargarRespuestas", (data) => {
-    console.log(data)
-    console.log(req.session.conectado)
-    vectorRespuestas.push({user: req.session.conectado, respuesta:data })
-    io.emit("vectorRespuestas", vectorRespuestas) 
-    //io.to(req.session.room).emit("pararTodos", {}) 
-  }) ;
 });
 
 app.put('/vectores', async function(req, res) {
@@ -391,7 +369,18 @@ app.put('/vectores', async function(req, res) {
       res.send({palabras:false})    
   }
 });
-
+app.post('/traerJugadores', async function(req, res){
+  res.send({jugadores:await MySQL.realizarQuery(` SELECT jugadores FROM Sala WHERE nombre_sala like "${req.body.roomName}"`)})
+});
+app.post('/chequearSala', async function(req, res){
+  console.log("Sala: ", req.body.roomName)
+  let x=await MySQL.realizarQuery(` SELECT nombre_sala FROM Sala WHERE nombre_sala like "${req.body.roomName}"`)
+  if(x.length> 0 ){
+    res.send({validar:true})
+  }else{
+    res.send({validar:false})
+  }
+});
 app.put('/eliminarUsuario', async function(req, res){
 
   let validar = true
@@ -447,6 +436,64 @@ app.get('/volver2', async function(req, res){
 
 });
 
+
+app.get('/paginadeespera', function(req, res){
+  res.render('espera', null)
+});
+
+io.on("connection", socket => {
+  const req = socket.request;
+  socket.on("parar", (data) => {
+    console.log(data)
+    //io.to(req.session.room).emit("pararTodos", {mensaje: "pararTodos"}) 
+    vectorRespuestas = []
+    io.emit("pararTodos", {mensaje: "pararTodos"}) 
+  }) ;
+  socket.on("cargarRespuestas", (data) => {
+    console.log(data)
+    console.log(req.session.conectado)
+    vectorRespuestas.push({user: req.session.conectado, respuesta:data })
+    io.emit("vectorRespuestas", vectorRespuestas) 
+    //io.to(req.session.room).emit("pararTodos", {}) 
+  }) ;
+  socket.on("joinRoom", async (data) => {
+    console.log("gg",data)
+    let a = await MySQL.realizarQuery(` SELECT nombre_sala FROM Sala WHERE nombre_sala like "${data.roomName}"`);
+    console.log(a)
+    if(data.roomName!=""){
+      if(data.createRoom&&a.length != 1){
+        socket.join(data.roomName);
+        req.session.room = data.room
+        req.session.save()
+        console.log("la sala ", data.roomName, " fue creada.");
+        await unirseSala(data);
+      }else if(!data.createRoom&&a.length == 1){
+        console.log("kk")
+        socket.join(data.roomName);
+        req.session.room = data.room
+        req.session.save()
+        socket.emit("returnPlayers",{players:await unirseSala(data)});
+        console.log(data.nmPl, "se ha unido a la sala ", data.roomName);
+      };
+    };
+  });
+});
+
+//mete en la BDD al jugador a la sala
+async function unirseSala(data){
+  let array=await MySQL.realizarQuery(`SELECT jugadores, ID_sala FROM Sala WHERE nombre_sala LIKE "${data.roomName}"`);
+  console.log("a",array)
+  if(array[0].jugadores==undefined){
+    console.log("pija")
+    await MySQL.realizarQuery(`UPDATE Sala SET jugadores="${data.nmPl}" WHERE ID_sala LIKE "${array[0].ID_sala}"`);
+  }else{
+    array[0].jugadores+=" ",data.nmPl;
+    await MySQL.realizarQuery(`UPDATE Sala SET jugadores="${array[0].jugadores}" WHERE ID_sala LIKE "${array[0].ID_sala}"`);
+  }  
+  console.log(array)
+  return array.split(" ");
+};
+
 app.put('/logout', async function(req, res){
 
   req.session.destroy();
@@ -488,4 +535,5 @@ app.post('/randomWord', async function(req, res){
   res.send({letter: letrasAleatoria})
 
 });
+
 

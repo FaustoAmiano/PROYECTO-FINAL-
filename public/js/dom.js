@@ -40,6 +40,7 @@ async function entrar(data) {
   function login() {
     //Leo los datos del input
     let usuario = document.getElementById("usuarioId").value
+    sessionStorage.setItem("userName",usuario);
     let contraseña = document.getElementById("passwordId").value
   
     //Creo un objeto de forma instantanea
@@ -111,7 +112,6 @@ async function entrar(data) {
     console.error("Error:", error);
   }
  }
-
  function addCategory(){
   let text = document.getElementById("inputCategory").value
   console.log(text)
@@ -143,15 +143,29 @@ async function category(data){
     console.error("Error:", error);
   }
  }
-
-var checkbox = document.getElementById('alo');
-checkbox.addEventListener("change", validaCheckbox(), false);
-function validaCheckbox()
-{
-  var check = checkbox.checked;
-  if(check){
-    alert('checkbox1 esta seleccionado');
+function validaCheckbox(){
+  x=document.getElementsByClassName("btn btn-outline-primary")
+  let a=[];
+  for(let i=0;i<x.length;i++){
+    if(document.getElementById('btnradio'+(i+1))){
+      if(document.getElementById('btnradio'+(i+1)).checked){
+        a.push(x[i].innerHTML);
+      }
+    }
   }
+  return(a)
+}
+function validaRadio(){
+  x=document.getElementsByClassName("btn btn-outline-primary")
+  let a=0;
+  for(let i=0;i<x.length;i++){
+    if(document.getElementById('btnRadio'+(i+1))){
+      if(document.getElementById('btnRadio'+(i+1)).checked){
+        a=x[i+12].innerHTML;
+      }
+    }
+  }
+  return(a)
 }
 
 
@@ -177,7 +191,7 @@ function validaCheckbox()
   }
  }
 
- async function API(){
+async function API(){
   try {
     const response = await fetch("https://dolarapi.com/v1/dolares", {
       method: "GET", 
@@ -294,7 +308,6 @@ async function eliminarUsuario(data) {
   catch (error) {
     console.error("Error:", error);
   }
-
 }
 
 function borrarPuntaje(){
@@ -331,6 +344,7 @@ async function eliminarPuntaje(data) {
   catch (error) {
     console.error("Error:", error);
   }
+
 }
 
 async function salir(){

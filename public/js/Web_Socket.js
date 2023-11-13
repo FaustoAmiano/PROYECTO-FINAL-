@@ -73,15 +73,27 @@ function createRoom(){
       <button class="btn btn-primary" type="button" onclick="newRoom()">Crear</button>
     </div>
     `; 
-   
 }
+function join(){
+  document.getElementById("unirse").innerHTML += `
+  <div class="mb-3 form-group">
+    <input type="email" name="email" placeholder="Nombre Sala" id="salita2" required />
+    <button class="btn btn-primary" type="button" onclick="chequearSala()">Unirse</button>
+  </div>
+  `; 
+}
+//CREAR UNA SALA
 function newRoom(){
-  let al=document.getElementById("salita").value
   let data={
-    nom_sala: al
+    roomName: document.getElementById("salita").value,
+    nmPl:sessionStorage.getItem("userName"),
+    createRoom:true
+  };
+  if (data.roomName==""){
+    alert("Le falta completar el nombre de la sala")
+  }else{
+    newRoomFetch(data);
   }
-  newRoomFetch(data)
-  joinRoom(al)
 }
 async function newRoomFetch(data){
   try {
@@ -91,29 +103,84 @@ async function newRoomFetch(data){
       "Content-Type": "application/json",
     },
     body: JSON.stringify(data),
-  });
+    });
   
-  //En result obtengo la respuesta
-  const result = await response.json();
-  console.log("Success:", result);
-  if (result.validar == false) {
-    alert("Ya existe una sala con ese nombre")
-    
+    //En result obtengo la respuesta
+    const result = await response.json();
+    console.log("Success:", result);
+    if (result.validar == false) {
+      alert("Ya existe una sala con ese nombre");
+    }else{
+      console.log("Sala creada con exito")
+      sessionStorage.setItem("categories", validaCheckbox());
+      sessionStorage.setItem("rounds", validaRadio());
+      joinRoom(data);
+      espera()
+    }
+  } catch (error) {
+    console.error("Error:", error);
   }
-  else{
-    console.log("Sala creada con exito")
-  }
-} catch (error) {
-  console.error("Error:", error);
 }
-}
-async function joinRoom(al){
-  data={
-    roomName:al,
-    categories:x
+//REVISAR SI EXISTE UNA SALA
+async function chequearSala(){
+  try {
+    data={
+      roomName: document.getElementById("salita2").value,
+      nmPl:sessionStorage.getItem("userName"),
+      createRoom:false
+    };
+    const response = await fetch("/chequearSala", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(data),
+    });
+    const result = await response.json();
+    console.log("Success:", result);
+    if (result.validar == false) {
+      alert("No existe una sala con ese nombre");
+    }
+    else{
+      console.log("Sala encontrada con exito");
+      traerJugadores(data);
+      joinRoom(data);
+    }
+  } catch (error) {
+    console.error("Error:", error);
   }
+}
+//PEDIR LOS JUGADORES DE UNA SALA
+async function traerJugadores(data){
+  try {
+    const response = await fetch("/traerJugadores", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(data),
+    });
+    const result = await response.json();
+    console.log("Success:", result);
+  } catch (error) {
+    console.error("Error:", error);
+  };
+};
+
+//UNIRSE A UNA SALA
+function joinRoom(data){
   socket.emit('joinRoom', data);
 }
+
+//IR A LA PAGINA DE ESPERA
+function espera(result){
+  location.href='/paginadeespera'
+}
+
+
+/*
+HAY Q VACIAR LOS JUGADORES DE LAS SALAS DE LA BASE DE DATOS:)
+*/
 
 
 function basta() {
@@ -170,3 +237,4 @@ socket.on("pararTodos", (data) => {
 socket.on("vectorRespuestas", (data) => {
   console.log("sa", data)
 });
+
