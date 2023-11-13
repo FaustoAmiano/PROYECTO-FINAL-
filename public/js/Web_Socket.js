@@ -140,11 +140,11 @@ async function chequearSala(){
     console.log("Success:", result);
     if (result.validar == false) {
       alert("No existe una sala con ese nombre");
-    }
-    else{
+    }else{
       console.log("Sala encontrada con exito");
       traerJugadores(data);
       joinRoom(data);
+      espera()
     }
   } catch (error) {
     console.error("Error:", error);
@@ -162,6 +162,7 @@ async function traerJugadores(data){
     });
     const result = await response.json();
     console.log("Success:", result);
+    sessionStorage.setItem("players", result)
   } catch (error) {
     console.error("Error:", error);
   };
@@ -169,11 +170,12 @@ async function traerJugadores(data){
 
 //UNIRSE A UNA SALA
 function joinRoom(data){
+  console.log("aa")
   socket.emit('joinRoom', data);
 }
 
 //IR A LA PAGINA DE ESPERA
-function espera(result){
+function espera(){
   location.href='/paginadeespera'
 }
 

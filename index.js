@@ -121,96 +121,15 @@ app.get("/", (req, res) => {
     }
   });*/
 
-  
-  app.get('/users', function(req, res) {
-    //req.query.id
-    let users = MySQL.realizarQuery("select * from Jugadores");
-    res.send(users);
-  });
-
-  app.get('/categorias',async function(req, res) {
-    //req.query.id
-    console.log("GET /Categorias")
-
-    let categorias =await MySQL.realizarQuery("select * from Categorias");
-    console.log(categorias)//muestro categorias que tiene una propiedad que esl id y otra que es la descripcion del contenido
-    res.send(categorias);
-  });
-
-  app.get('/salas', function(req, res) {
-    //req.query.id
-    let users = MySQL.realizarQuery("select * from Sala");
-    res.send(users);
-  });
-  
-  app.get('/users/rooms', function(req, res) {
-    //req.query.roomId
-    let users = MySQL.realizarQuery("select * from Jugadores");
-    res.send(users);
-  });
-  
-  app.post('/users', function(req, res) {
-    //req.body.user, req.body.pass, req.body.name
-    let users = MySQL.realizarQuery("insert into Jugadores");
-   
-    let usuariosCreados = {
-      body: JSON.stringify( 
-        {
-          "mail": "cirorosental@pioix.edu.ar",
-          "nombre": "ciro",
-        },
-        {
-          "mail": "famiano@pioix.edu.ar",
-          "nombre": "famiano",
-        },
-        {
-          "mail": "nbasile@pioix.edu.ar",
-          "nombre": "nbasile",
-        },
-        ) ,
-      }
-      console.log(usuariosCreados)
-      res.send({inserted: true});
-    });
-    
-    
-  // datos mandados con la solicutud POST
-/*let _datos = {
-  titulo: "foo",
-  principal: "bar", 
-  Id:1
-}
-
-fetch('https://jsonplaceholder.typicode.com/posts', {
-  method: "POST",
-  body: JSON.stringify(_datos),
-  headers: {"Content-type": "application/json; charset=UTF-8"}
-})
-.then(response => response.json()) 
-.then(json => console.log(json));
-.catch(err => console.log(err));*/
-
-  app.put('/users', function(req, res) {
-    //req.body.user, req.body.pass, req.body.name
-    let users = MySQL.realizarQuery("insert into Jugadores");
-    res.send({inserted: true});
-  });
 
 
   app.get('/registrarse', function(req, res){
+    //Petición GET con URL = "/login"
     console.log("Soy un pedido GET", req.query); 
+    //En req.query vamos a obtener el objeto con los parámetros enviados desde el frontend por método GET
     res.render('register', null); //Renderizo página "home" sin pasar ningún objeto a Handlebars
   });
   
-  app.get('/pruebaEntrar', function(req, res){
-    console.log("Soy un pedido GET", req.query); 
-    res.render('Juego', null); //Renderizo página "home" sin pasar ningún objeto a Handlebars
-  });
-
-  app.get('/pruebaEntrar2', function(req, res){
-    console.log("Soy un pedido GET", req.query); 
-    res.render('final', null); //Renderizo página "home" sin pasar ningún objeto a Handlebars
-  });
   app.get("/volver", (req, res) => {
     // Agrega aquí la lógica para mostrar la página del dashboard
     res.render("login");
@@ -342,7 +261,7 @@ app.put('/salas', async function(req,res) {
 
 
 })
-let vectorRespuestas = []
+
 
 app.post('/newRoom', async function(req, res){
   console.log(req.body.roomName)
@@ -421,6 +340,8 @@ app.put('/eliminarPuntaje', async function(req, res){
           let usuario = await MySQL.realizarQuery(`SELECT * FROM Jugadores WHERE mail = "${req.body.pregunta}"`)// traer el puntajer del usuario logeado
           console.log(usuario)
           res.send({validar: true})    
+          
+          
       }
   }
   if (entre == false) {
@@ -432,30 +353,15 @@ app.put('/eliminarPuntaje', async function(req, res){
 app.get('/volver2', async function(req, res){
   console.log("Soy un pedido POST", req.query);
   res.render('Admin', null); 
-
-
 });
-
 
 app.get('/paginadeespera', function(req, res){
   res.render('espera', null)
 });
 
+
+
 io.on("connection", socket => {
-  const req = socket.request;
-  socket.on("parar", (data) => {
-    console.log(data)
-    //io.to(req.session.room).emit("pararTodos", {mensaje: "pararTodos"}) 
-    vectorRespuestas = []
-    io.emit("pararTodos", {mensaje: "pararTodos"}) 
-  }) ;
-  socket.on("cargarRespuestas", (data) => {
-    console.log(data)
-    console.log(req.session.conectado)
-    vectorRespuestas.push({user: req.session.conectado, respuesta:data })
-    io.emit("vectorRespuestas", vectorRespuestas) 
-    //io.to(req.session.room).emit("pararTodos", {}) 
-  }) ;
   socket.on("joinRoom", async (data) => {
     console.log("gg",data)
     let a = await MySQL.realizarQuery(` SELECT nombre_sala FROM Sala WHERE nombre_sala like "${data.roomName}"`);
@@ -463,15 +369,11 @@ io.on("connection", socket => {
     if(data.roomName!=""){
       if(data.createRoom&&a.length != 1){
         socket.join(data.roomName);
-        req.session.room = data.room
-        req.session.save()
         console.log("la sala ", data.roomName, " fue creada.");
         await unirseSala(data);
       }else if(!data.createRoom&&a.length == 1){
         console.log("kk")
         socket.join(data.roomName);
-        req.session.room = data.room
-        req.session.save()
         socket.emit("returnPlayers",{players:await unirseSala(data)});
         console.log(data.nmPl, "se ha unido a la sala ", data.roomName);
       };
@@ -491,49 +393,7 @@ async function unirseSala(data){
     await MySQL.realizarQuery(`UPDATE Sala SET jugadores="${array[0].jugadores}" WHERE ID_sala LIKE "${array[0].ID_sala}"`);
   }  
   console.log(array)
-  return array.split(" ");
+  return array;
 };
-
-app.put('/logout', async function(req, res){
-
-  req.session.destroy();
-
-  res.send({validar:true})
-  
-  
-});
-
-app.put('/eliminarCategoria', async function(req, res){
-
-  let validar = true
-  console.log("Soy un pedido PUT", req.body); 
-  let categorias= await MySQL.realizarQuery("SELECT * FROM Categorias")
-  let entre = false
-  console.log(req.body.borrar)
-  for (let i in categorias){
-      if (categorias[i].contenido == req.body.borrar){
-          entre = true
-          respuesta = await MySQL.realizarQuery(`DELETE FROM Categorias WHERE contenido = "${req.body.borrar}";`)
-
-          res.send({validar: true})    
-          
-          
-      }
-  }
-  if (entre == false) {
-      res.send({validar:false})    
-  }
-  
-});
-
-
-app.post('/randomWord', async function(req, res){
-  console.log("Soy un pedido POST", req.body);
-  let letras = ["A","B", "C", "D", "E", "F", "G", "H", "I", "J", "K","L","M","N","O","Q","P","R","S","T","U","V"]
-  var indiceAleatorio = Math.floor(Math.random() * letras.length)
-  var letrasAleatoria = letras[indiceAleatorio]
-  res.send({letter: letrasAleatoria})
-
-});
 
 
