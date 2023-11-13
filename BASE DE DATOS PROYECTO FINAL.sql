@@ -25,7 +25,7 @@ CREATE TABLE Categorias (
     contenido varchar(100)
 );
 INSERT INTO Jugadores (mail, nom_usuario, esadmin, puntaje, ID_sala)
-Values ( "famiano@gmail.com", "famiano", true, 0, -1);
+Values ( "famiano@pioix.edu.ar", "famiano", true, 0, -1);
 INSERT INTO Jugadores (mail, nom_usuario, esadmin, puntaje, ID_sala)
 Values ( "cirorosenthal@pioix.edu.ar", "ciro",false, 0, -1);
 INSERT INTO Jugadores (mail, nom_usuario, esadmin, puntaje, ID_sala)

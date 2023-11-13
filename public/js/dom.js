@@ -401,11 +401,10 @@ function ejemplo(){
     let html2 = `
         <br>
         <h5 class="card-title"> ${listaEjemplo[i]}</h5>
-        <input  style="width : 1000px; heigth : 1px" plaecholder="Escriba" id="usuarioId" oninput="validarInput(this)"/>`
+        <input class="x" style="width : 1000px; heigth : 1px" plaecholder="Escriba" id="${listaEjemplo[i]}" oninput="validarInput(this)"/>`
     document.getElementById("prueba").innerHTML += html2;
   }
 }
-
 
 
 //let palabraalea={}
