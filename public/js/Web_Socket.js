@@ -174,9 +174,7 @@ function joinRoom(data){
 
 //IR A LA PAGINA DE ESPERA
 function espera(result){
-  //te manda a la sala de espera
-  //lista de jugadores
-  //boton para que no entren mas jugadores y empezar a jugar
+  location.href='/paginadeespera'
 }
 
 
