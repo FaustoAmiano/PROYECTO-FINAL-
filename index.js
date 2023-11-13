@@ -452,7 +452,8 @@ io.on("connection", socket => {
   socket.on("cargarRespuestas", (data) => {
     console.log(data)
     console.log(req.session.conectado)
-    vectorRespuestas.push({user: req.session.conectado, respuesta:data })
+    jugador = req.session.conectado
+    vectorRespuestas.push({user: jugador, respuesta:data })
     io.emit("vectorRespuestas", vectorRespuestas) 
     //io.to(req.session.room).emit("pararTodos", {}) 
   }) ;

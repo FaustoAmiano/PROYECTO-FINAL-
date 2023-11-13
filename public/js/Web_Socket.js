@@ -216,7 +216,7 @@ socket.on("pararTodos", (data) => {
       vectorRta.push(document.getElementById(listaEjemplo[i]).value)
       console.log(vectorRta)
     }
-    document.getElementById("juego").innerHTML = `
+    /*document.getElementById("juego").innerHTML = `
        <div style="padding-right: 120px" class="contenedor">
           <h4 id="listo">¡Se ha agotado el tiempo!</h4>
           <div class="cd-switch">
@@ -225,7 +225,7 @@ socket.on("pararTodos", (data) => {
           <input type="radio" class="btn-check" name="options-outlined" id="danger-outlined" autocomplete="off" onclick="vote()">
           <label class="btn btn-outline-danger" for="danger-outlined">Bad</label>
       </div> 
-      </div>`
+      </div>`*/
       ; 
 
     socket.emit("cargarRespuestas", {vectorRta: vectorRta})
@@ -236,5 +236,18 @@ socket.on("pararTodos", (data) => {
 
 socket.on("vectorRespuestas", (data) => {
   console.log("sa", data)
+  console.log(jugador)
+  for (let i in data){
+    let html = `
+    <div style="padding-right: 120px" class="contenedor">
+       <h4 id="listo">¡Se ha agotado el tiempo!</h4>`
+    html +=`
+       <h4 id="jugadores">${jugador}</h4>`
+    html += 
+    `
+       <h4 id="categoriesVote">${data[i]}</h4>`
+
+   document.getElementById("juego").innerHTML = html
+  }
 });
 

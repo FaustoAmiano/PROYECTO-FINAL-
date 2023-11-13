@@ -408,10 +408,10 @@ async function eliminarCategoria(data) {
 
 function ejemplo(){
 
-  listaEjemplo = ["pis", "caca", "vomito"]
-  console.log(listaEjemplo)
+  listaEjemplo = sessionStorage.categories.split(",")
+  console.log("mario", listaEjemplo)
   for (let i in listaEjemplo){
-    console.log(listaEjemplo[i])
+    console.log("dada", listaEjemplo[i])
     let html2 = `
         <br>
         <h5 class="card-title"> ${listaEjemplo[i]}</h5>
@@ -446,7 +446,7 @@ async function palabra_elegida(){
     let html =`<h5 id=letraElegida> Letra: ${palabraalea} </h5>`
     document.getElementById("letraRandom").innerHTML += html;
 
-    let html2 = `<h5 id=letraElegida> Letra: 1/3  </h5>`
+    let html2 = `<h5 id=letraElegida> Letra: 1/${sessionStorage.rounds}  </h5>`
     document.getElementById("ronda").innerHTML = html2
   
   } catch (error) {
@@ -462,4 +462,3 @@ function validarInput(input) {
     input.value = valor;
   }
 }
-
