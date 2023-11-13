@@ -29,6 +29,22 @@
 
 }
 
+@font-face {
+    font-family: 'super Milk';
+    src: url('/FONTS/Super Milk.ttf');
+    font-weight: normal;
+    font-style: normal;
+}
+
+#nombre{
+
+    font-family: 'super Milk';
+    color:red;
+    font-size: 80px;
+    float:center;
+
+}
+
 #dolar{
     font-family: 'ds-terminalnormal';
     background-color: #FEF7F5;
@@ -57,6 +73,12 @@
 
 }
 
+#elegirpalabra {
+    text-align: justify;
+    display: block;
+    padding: 14px 32px;
+}
+
 #botonEliminarPuntaje {
     margin-top: 10px;
     background-color: #808080; 
@@ -70,6 +92,7 @@
     border-color: #1a1a1a;
     color:#1a1a1a;
 }
+
 #Cargando {
     width: .01em;
     height: .01em;
@@ -91,3 +114,40 @@
               transform:translate(-50%,-50%) rotate(-360deg);
       }
 }
+
+
+#logout{
+    float: left;
+    width:60px;
+    margin-left: 1%;
+}
+
+.header-content {
+    text-align: center; /* Centra el contenido horizontalmente */
+  }
+ 
+
+.contenedor {
+    display: inline-block; /* Esto coloca los elementos en línea uno al lado del otro */
+}
+
+
+#cardJuego{
+    width: 1050px;
+    margin-left: 300px;
+}
+
+#letraElegida{
+    font-size: xx-large;
+    color: rgb(180, 83, 83);
+}
+
+#stop{
+    background-color: rgb(180, 83, 83);
+    width:150px;
+    height: 75px;
+    margin-left: 1%;
+    font-family: 'Century Gothic';
+    font-size:250%;
+}
+

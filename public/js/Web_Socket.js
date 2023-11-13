@@ -181,3 +181,60 @@ function espera(result){
 /*
 HAY Q VACIAR LOS JUGADORES DE LAS SALAS DE LA BASE DE DATOS:)
 */
+
+
+function basta() {
+  let a=document.getElementsByClassName("x");
+  for(let x in a){
+    a[x].disabled=true
+  }
+  /*for(i in listaEjemplo){
+    let vectorRta=[document.getElementById(listaEjemplo[i]).value]
+    console.log(vectorRta)
+  }*/
+  /*data = {
+    respuestas: vectorRta
+  }*/
+  socket.emit("parar", {})
+
+}
+function vote(){
+  let counter=0
+  if(document.getElementById("success-outlined").checked==true){
+    counter = counter+ 100
+    console.log(counter)
+  }else if(document.getElementById("danger-outlined").checked==true){
+    counter = counter-50
+    console.log(counter)
+  }
+
+}
+socket.on("pararTodos", (data) => {
+    console.log(data);
+    let vectorRta = []
+    for(i in listaEjemplo){
+      vectorRta.push(document.getElementById(listaEjemplo[i]).value)
+      console.log(vectorRta)
+    }
+    document.getElementById("juego").innerHTML = `
+       <div style="padding-right: 120px" class="contenedor">
+          <h4 id="listo">¡Se ha agotado el tiempo!</h4>
+          <div class="cd-switch">
+          <input type="radio" class="btn-check" name="options-outlined" id="success-outlined" autocomplete="off" onclick="vote()">
+          <label class="btn btn-outline-success" for="success-outlined">Good</label>
+          <input type="radio" class="btn-check" name="options-outlined" id="danger-outlined" autocomplete="off" onclick="vote()">
+          <label class="btn btn-outline-danger" for="danger-outlined">Bad</label>
+      </div> 
+      </div>`
+      ; 
+
+    socket.emit("cargarRespuestas", {vectorRta: vectorRta})
+    
+    
+    
+  });
+
+socket.on("vectorRespuestas", (data) => {
+  console.log("sa", data)
+});
+

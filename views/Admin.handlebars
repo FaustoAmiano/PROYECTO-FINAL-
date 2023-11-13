@@ -1,4 +1,7 @@
-<center><header id="adminHeader"><h1>Administrador</h1></header></center>
+<div class="mb-3 form-check" div="admin">
+    <button class="btn btn-primary" id="logOut2" type="button" onclick="salir()">Salir</button>
+    <header><center><h1 id="nombre">Administrador</h1></center></header>
+</div>
 <body id="fondo" name="fondo">
     <div class="row">
         <div class="col-sm-6 mb-3 mb-sm-0">
@@ -7,13 +10,13 @@
                 <div id="seleccionarCategoria" method="POST">
                     <h3>Borrar Categorias</h3>
                         <div id="seleccion">
-                            <select name="select" id="elegirCategoria">
+                            <select name="select" id="elegirCategoria2">
                                 <option value="value1" selected> Categorias </option>
                                 <option value="value2"> </option>
                             </select>
                         </div>
                     <div>
-                        <input type="submit" class="btn btn-primary" id = "botonEliminar" value="Eliminar">
+                        <input type="submit" class="btn btn-primary" id = "botonEliminar" value="Eliminar" onclick="borrarCategoria()">
                     </div>
                             
                     <br>
