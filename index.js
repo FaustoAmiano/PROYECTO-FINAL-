@@ -441,8 +441,10 @@ io.on("connection", socket => {
     console.log(data)
     console.log(req.session.conectado)
     jugador = req.session.conectado
-    vectorRespuestas.push({user: jugador, respuesta:data })
-    io.emit("vectorRespuestas", vectorRespuestas) 
+    vectorRespuestas.push({respuesta:data})
+    console.log("rtas3", vectorRespuestas[0].respuesta)
+    vectorFinal = vectorRespuestas[0].respuesta
+    io.emit("vectorRespuestas", vectorFinal, jugador) 
     //io.to(req.session.room).emit("pararTodos", {}) 
   }) ;
   socket.on("joinRoom", async (data) => {

@@ -234,20 +234,28 @@ socket.on("pararTodos", (data) => {
     
   });
 
-socket.on("vectorRespuestas", (data) => {
-  console.log("sa", data)
+socket.on("vectorRespuestas", (vectorFinal, jugador) => {
+  console.log("sa", vectorFinal)
   console.log(jugador)
-  for (let i in data){
-    let html = `
-    <div style="padding-right: 120px" class="contenedor">
-       <h4 id="listo">¡Se ha agotado el tiempo!</h4>`
+  categoriesBasta = sessionStorage.categories.split(",")
+  console.log(categoriesBasta)
+  let html = `
+      <div style="padding-right: 120px" class="contenedor">
+          <h4 id="listo">¡Se ha agotado el tiempo!</h4>`
+  for (let i in categoriesBasta){
     html +=`
-       <h4 id="jugadores">${jugador}</h4>`
-    html += 
-    `
-       <h4 id="categoriesVote">${data[i]}</h4>`
+      <h4 id="categoriasFinal">${categoriesBasta[i]}</h4>
+      `
+    for (let i in vectorFinal){
+      html +=`
+            <h4 id="jugadores">${jugador}</h4>
+          `        
+      html += `
+        <h4 id="categoriesVote">${vectorFinal[i]}</h4>`      
 
-   document.getElementById("juego").innerHTML = html
+    }
+    document.getElementById("juego").innerHTML = html
   }
+  
 });
 
