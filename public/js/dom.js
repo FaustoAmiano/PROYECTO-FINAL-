@@ -107,6 +107,7 @@ async function entrar(data) {
     console.log("Success Categorias:", result);
     let categorias = result.categorias
     console.log(categorias)
+    validaCheckbox(categorias)
     //falta el inner HTML con las categorias que existen y el tipo de boton para poder seleccionarlas (estilo true/false)
   } catch (error) {
     console.error("Error:", error);
@@ -143,7 +144,7 @@ async function category(data){
     console.error("Error:", error);
   }
  }
-function validaCheckbox(){
+function validaCheckbox(categorias){
   x=document.getElementsByClassName("btn btn-outline-primary")
   let a=[];
   for(let i=0;i<x.length;i++){
@@ -153,6 +154,7 @@ function validaCheckbox(){
       }
     }
   }
+  console.log(a)
   return(a)
 }
 function validaRadio(){
