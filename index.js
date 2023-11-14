@@ -363,16 +363,13 @@ app.get('/paginadeespera', function(req, res){
 
 io.on("connection", socket => {
   socket.on("joinRoom", async (data) => {
-    console.log("gg",data)
     let a = await MySQL.realizarQuery(` SELECT nombre_sala FROM Sala WHERE nombre_sala like "${data.roomName}"`);
-    console.log(a)
     if(data.roomName!=""){
       if(data.createRoom&&a.length != 1){
         socket.join(data.roomName);
         console.log("la sala ", data.roomName, " fue creada.");
         await unirseSala(data);
       }else if(!data.createRoom&&a.length == 1){
-        console.log("kk")
         socket.join(data.roomName);
         socket.emit("returnPlayers",{players:await unirseSala(data)});
         console.log(data.nmPl, "se ha unido a la sala ", data.roomName);

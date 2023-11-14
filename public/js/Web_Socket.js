@@ -142,14 +142,16 @@ async function chequearSala(){
       alert("No existe una sala con ese nombre");
     }else{
       console.log("Sala encontrada con exito");
-      traerJugadores(data);
+      await traerJugadores(data);
       joinRoom(data);
       espera()
+
     }
   } catch (error) {
     console.error("Error:", error);
   }
 }
+
 //PEDIR LOS JUGADORES DE UNA SALA
 async function traerJugadores(data){
   try {
@@ -162,7 +164,7 @@ async function traerJugadores(data){
     });
     const result = await response.json();
     console.log("Success:", result);
-    sessionStorage.setItem("players", result)
+    sessionStorage.setItem("players", result.jugadores[0].jugadores)
   } catch (error) {
     console.error("Error:", error);
   };
@@ -170,13 +172,30 @@ async function traerJugadores(data){
 
 //UNIRSE A UNA SALA
 function joinRoom(data){
-  console.log("aa")
   socket.emit('joinRoom', data);
 }
 
 //IR A LA PAGINA DE ESPERA
 function espera(){
   location.href='/paginadeespera'
+  console.log("hika")
+  let vectorJugadores=sessionStorage.players.split(",")
+  console.log("hello ciro", vectorJugadores)
+  for(let i in vectorJugadores){
+    document.getElementById("esperaUsersList").innerHTML+=`
+    <div class="card" id="esperaUsersList" style="width: 28rem; float:center; display:block" >
+    <div class="card-body">
+      <center>
+        <table>
+          <tr>
+            <th>${vectorJugadores[i]}</th>
+          </tr>
+        </table>
+      </center>
+    </div>
+  </div>
+    `;
+  }
 }
 
 
