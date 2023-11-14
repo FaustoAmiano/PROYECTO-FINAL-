@@ -107,7 +107,7 @@ async function entrar(data) {
     console.log("Success Categorias:", result);
     let categorias = result.categorias
     console.log(categorias)
-    validaCheckbox(categorias)
+    
     //falta el inner HTML con las categorias que existen y el tipo de boton para poder seleccionarlas (estilo true/false)
   } catch (error) {
     console.error("Error:", error);
@@ -115,36 +115,25 @@ async function entrar(data) {
  }
  function addCategory(){
   let text = document.getElementById("inputCategory").value
+  document.getElementById("jajqa").innerHTML = `
+    ${document.getElementById("jajqa").innerHTML}
+    <label class="btn btn-outline-primary" for="btnradio9">${text}</label>
+  `
+  
   console.log(text)
-  data = {
-    txt: text
-  }
-  category(data)
 }
-async function category(data){
-  try {
-    const response = await fetch("/category", {
-      method: "PUT", // or 'POST'
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(data),
-    });
-    
-    //En result obtengo la respuesta
-    const result = await response.json();
-    console.log("Success Categorias:", result);
-    if(result.validar==true){
-      alert("Se agregó correctamente")
-    }else{
-      alert("Hubo un problema al agregar la categoria")
-    }
-    //falta el inner HTML con las categorias que existen y el tipo de boton para poder seleccionarlas (estilo true/false)
-  } catch (error) {
-    console.error("Error:", error);
-  }
+ function mostrar(){
+  let text=document.getElementById("inputCategory").value
+  console.log(text)
+  let html =`
+    <div class="btn-group" role="group" aria-label="Basic radio toggle button group">
+      <input type="checkbox" class="btn-check" name="btnradio" id="btnradio${text}" autocomplete="off" >
+      <label class="btn btn-outline-primary" for="btnradio9">${text}</label>
+      </div>
+    `
+  document.getElementsByClassName("card1").innerHTML=html
  }
-function validaCheckbox(categorias){
+function validaCheckbox( ){
   x=document.getElementsByClassName("btn btn-outline-primary")
   let a=[];
   for(let i=0;i<x.length;i++){
