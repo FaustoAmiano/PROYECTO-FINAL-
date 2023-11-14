@@ -115,6 +115,7 @@ async function newRoomFetch(data){
       sessionStorage.setItem("categories", validaCheckbox());
       sessionStorage.setItem("rounds", validaRadio());
       joinRoom(data);
+      location.href='/paginadeespera'
       espera()
     }
   } catch (error) {
@@ -144,6 +145,7 @@ async function chequearSala(){
       console.log("Sala encontrada con exito");
       await traerJugadores(data);
       joinRoom(data);
+      location.href='/paginadeespera'
       espera()
 
     }
@@ -177,7 +179,6 @@ function joinRoom(data){
 
 //IR A LA PAGINA DE ESPERA
 function espera(){
-  location.href='/paginadeespera'
   console.log("hika")
   let vectorJugadores=sessionStorage.players.split(",")
   console.log("hello ciro", vectorJugadores)
@@ -196,6 +197,7 @@ function espera(){
   </div>
     `;
   }
+  
 }
 
 
