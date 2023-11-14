@@ -448,7 +448,7 @@ async function palabra_elegida(){
     let html =`<h5 id=letraElegida> Letra: ${palabraalea} </h5>`
     document.getElementById("letraRandom").innerHTML += html;
 
-    let html2 = `<h5 id=letraElegida> Letra: 1/${sessionStorage.rounds}  </h5>`
+    let html2 = `<h5 id=letraElegida> Ronda: ${sessionStorage.rounds}  </h5>`
     document.getElementById("ronda").innerHTML = html2
   
   } catch (error) {
