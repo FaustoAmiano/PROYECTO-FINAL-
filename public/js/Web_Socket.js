@@ -214,7 +214,7 @@ socket.on("pararTodos", (data) => {
     let vectorRta = []
     for(i in listaEjemplo){
       vectorRta.push(document.getElementById(listaEjemplo[i]).value)
-      console.log(vectorRta)
+      console.log("daa", vectorRta)
     }
 
     categoriesBasta = sessionStorage.categories.split(",")
@@ -256,11 +256,13 @@ socket.on("vectorRespuestas", (data, jugador) => {
     console.log("1", categoriesBasta[0])
     console.log("2", categoriesBasta[0][0])
     console.log("3", categoriesBasta)
+    let Rta=data.vectorRta.split(",")
+    for (let i in Rta){
       for (let x in categoriesBasta){
         let html =`
                 <h4 id="jugadores">${jugador}</h4>
               `
           html += `
-            <h4 id="${categoriesBasta[x]}">${data.vectorRta[i]}</h4>`
+            <h4 id="${categoriesBasta[x]}">${Rta[i]}</h4>`
             document.getElementById("respuestasJugadores").innerHTML = html
-      }});
+      }}});

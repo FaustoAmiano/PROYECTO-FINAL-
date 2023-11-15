@@ -107,10 +107,11 @@ async function entrar(data) {
     console.log("Success Categorias:", result);
     let categorias = result.categorias
     console.log(categorias[0].contenido)
+    
     for (let i in categorias){
       let html = ``
-      html += `<input  type="checkbox" class="btn-check" name="btnradio" id="btnradio1" autocomplete="off" >
-      <label class="btn btn-outline-primary" for="btnradio1">${categorias[i].contenido}</label>`
+      html += `<input  type="checkbox" class="btn-check" name="btnradio" id="btnradio${i}" autocomplete="off" >
+      <label class="btn btn-outline-primary" for="btnradio${i}">${categorias[i].contenido}</label>`
  
       document.getElementById("categoriasTraidas").innerHTML += html
     }
@@ -143,9 +144,10 @@ async function sumarCategoria(data){
     console.log("Success nuevo:", result);
     console.log(result.nombre)
     if (result.validar == true){
-      html = `<input type="checkbox" class="btn-check" name="btnradio" id="btnradio12" autocomplete="off" >
+      html = `<input type="checkbox" class="btn-check" name="btnradio" id="btnradioNueva" autocomplete="off" >
       <label class="btn btn-outline-primary" for="btnradio12">${result.nombre}</label>`
       document.getElementById("categoriasNuevas").innerHTML += html
+      location.href = '/recargar'
     }
     else{
       alert("categoria ya existente")
@@ -173,8 +175,8 @@ function validaCheckbox( ){
   x=document.getElementsByClassName("btn btn-outline-primary")
   let a=[];
   for(let i=0;i<x.length;i++){
-    if(document.getElementById('btnradio'+(i+1))){
-      if(document.getElementById('btnradio'+(i+1)).checked){
+    if(document.getElementById('btnradio'+(i))){
+      if(document.getElementById('btnradio'+(i)).checked){
         a.push(x[i].innerHTML);
       }
     }
@@ -183,12 +185,12 @@ function validaCheckbox( ){
   return(a)
 }
 function validaRadio(){
-  x=document.getElementsByClassName("btn btn-outline-primary")
+  x=document.getElementsByName("fausto")
   let a=0;
   for(let i=0;i<x.length;i++){
-    if(document.getElementById('btnRadio'+(i+1))){
-      if(document.getElementById('btnRadio'+(i+1)).checked){
-        a=x[i+12].innerHTML;
+    if(document.getElementById('round'+(i+1))){
+      if(document.getElementById('round'+(i+1)).checked){
+        a=x[i].innerHTML;
       }
     }
   }
@@ -473,7 +475,7 @@ async function palabra_elegida(){
     let html =`<h5 id=letraElegida> Letra: ${palabraalea} </h5>`
     document.getElementById("letraRandom").innerHTML += html;
 
-    let html2 = `<h5 id=letraElegida> Ronda: ${sessionStorage.rounds}  </h5>`
+    let html2 = `<h5 id=letraElegida> Rondas: ${sessionStorage.rounds}  </h5>`
     document.getElementById("ronda").innerHTML = html2
   
   } catch (error) {
