@@ -129,7 +129,15 @@ app.get("/", (req, res) => {
     //En req.query vamos a obtener el objeto con los parámetros enviados desde el frontend por método GET
     res.render('register', null); //Renderizo página "home" sin pasar ningún objeto a Handlebars
   });
-  
+  app.get('/pruebaEntrar', function(req, res){
+    console.log("Soy un pedido GET", req.query); 
+    res.render('Juego', null); //Renderizo página "home" sin pasar ningún objeto a Handlebars
+  });
+
+  app.get('/pruebaEntrar2', function(req, res){
+    console.log("Soy un pedido GET", req.query); 
+    res.render('final', null); //Renderizo página "home" sin pasar ningún objeto a Handlebars
+  });
   app.get("/volver", (req, res) => {
     // Agrega aquí la lógica para mostrar la página del dashboard
     res.render("login", null);
