@@ -248,6 +248,12 @@ socket.on("pararTodos", (data) => {
   });
 
 function funcioncita(data) {
+  
+}
+
+socket.on("vectorRespuestas", (data) => {
+  console.log(data)
+
   if(data.respuestas.length >= data.jugadores.length) {
     let divsRtas = document.getElementsByClassName("respuestasJugadores");
     for(let i = 0; i < divsRtas.length; i++) {
@@ -258,23 +264,4 @@ function funcioncita(data) {
       divsRtas[i].innerHTML = rtas;
     }
   }
-}
-
-socket.on("vectorRespuestas", (data) => {
-  console.log(data)
-
-  
-  categoriesBasta = sessionStorage.categories.split(",")
-    console.log("1", categoriesBasta[0])
-    console.log("2", categoriesBasta[0][0])
-    console.log("3", categoriesBasta)
-    let Rta=data.vectorRta.split(",")
-    for (let i in Rta){
-      for (let x in categoriesBasta){
-        let html =`
-                <h4 id="jugadores">${jugador}</h4>
-              `
-          html += `
-            <h4 id="${categoriesBasta[x]}">${Rta[i]}</h4>`
-            document.getElementById("respuestasJugadores").innerHTML = html
-      }}});
+      });
