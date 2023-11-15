@@ -286,3 +286,7 @@ socket.on("vectorRespuestas", (data) => {
     }
   }
       });
+
+socket.on("returnPlayers", (data)=>{
+  console.log("players",data);
+})
