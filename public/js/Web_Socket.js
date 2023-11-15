@@ -161,7 +161,7 @@ async function traerJugadores(data){
       body: JSON.stringify(data),
     });
     const result = await response.json();
-    console.log("Success:", result);
+    console.log("Success: traer players", result);
   } catch (error) {
     console.error("Error:", error);
   };
@@ -225,7 +225,7 @@ socket.on("pararTodos", (data) => {
     for (let i in categoriesBasta){
       html +=`
         <h4 id="${categoriesBasta[i]}">${categoriesBasta[i]}</h4>
-        <div id="respuestasJugadores"> </div>
+        <div id="respuestasJugadores" class="respuestasJugadores"> </div>
         `
     document.getElementById("juego").innerHTML = html
     }
@@ -247,9 +247,21 @@ socket.on("pararTodos", (data) => {
     
   });
 
-socket.on("vectorRespuestas", (data, jugador) => {
-  console.log(data.vectorRta)
-  console.log(jugador)
+function funcioncita(data) {
+  if(data.respuestas.length >= data.jugadores.length) {
+    let divsRtas = document.getElementsByClassName("respuestasJugadores");
+    for(let i = 0; i < divsRtas.length; i++) {
+      let rtas = "";
+      for(let player = 0; player < data.respuestas.length; player++) {
+        rtas += `${data.respuestas[player].jugador}: ${data.respuestas[player].respuestas[i]}`;
+      }
+      divsRtas[i].innerHTML = rtas;
+    }
+  }
+}
+
+socket.on("vectorRespuestas", (data) => {
+  console.log(data)
 
   
   categoriesBasta = sessionStorage.categories.split(",")

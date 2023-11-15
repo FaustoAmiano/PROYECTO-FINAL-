@@ -445,11 +445,12 @@ io.on("connection", socket => {
     console.log(data)
     console.log(req.session.conectado)
     jugador = req.session.conectado
-    vectorRespuestas.push({respuesta:data})
+    vectorRespuestas.push({respuestas: data.vectorRta, jugador: jugador})
     console.log("ayuda",{respuesta:data})
     console.log("rtas3", vectorRespuestas[0].respuesta)
     vectorFinal = [vectorRespuestas[0].respuesta]
-    io.emit("vectorRespuestas", data, jugador) 
+    console.log("evento cargarRespuestas", vectorRespuestas,jugador);
+    io.emit("vectorRespuestas", {respuestas: vectorRespuestas, jugadores: []}); 
     io.to(req.session.room).emit("pararTodos", {}) 
   }) ;
   socket.on("joinRoom", async (data) => {
