@@ -115,6 +115,7 @@ async function newRoomFetch(data){
       sessionStorage.setItem("categories", validaCheckbox());
       sessionStorage.setItem("rounds", validaRadio());
       joinRoom(data);
+      location.href='/paginadeespera'
       espera()
     }
   } catch (error) {
@@ -140,16 +141,18 @@ async function chequearSala(){
     console.log("Success:", result);
     if (result.validar == false) {
       alert("No existe una sala con ese nombre");
-    }
-    else{
+    }else{
       console.log("Sala encontrada con exito");
-      traerJugadores(data);
+      await traerJugadores(data);
       joinRoom(data);
+      location.href='/paginadeespera'
+      espera()
     }
   } catch (error) {
     console.error("Error:", error);
   }
 }
+
 //PEDIR LOS JUGADORES DE UNA SALA
 async function traerJugadores(data){
   try {
@@ -173,8 +176,26 @@ function joinRoom(data){
 }
 
 //IR A LA PAGINA DE ESPERA
-function espera(result){
-  location.href='/paginadeespera'
+function espera(){
+  console.log("hika")
+  let vectorJugadores=sessionStorage.players.split(",")
+  console.log("hello ciro", vectorJugadores)
+  for(let i in vectorJugadores){
+    document.getElementById("esperaUsersList").innerHTML+=`
+    <div class="card" id="esperaUsersList" style="width: 28rem; float:center; display:block" >
+    <div class="card-body">
+      <center>
+        <table>
+          <tr>
+            <th>${vectorJugadores[i]}</th>
+          </tr>
+        </table>
+      </center>
+    </div>
+  </div>
+    `;
+  }
+  
 }
 
 
