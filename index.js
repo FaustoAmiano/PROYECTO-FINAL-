@@ -373,6 +373,7 @@ io.on("connection", socket => {
         socket.join(data.roomName);
         socket.emit("returnPlayers",{players:await unirseSala(data)});
         console.log(data.nmPl, "se ha unido a la sala ", data.roomName);
+        await unirseSala(data);
       };
     };
   });
@@ -381,15 +382,12 @@ io.on("connection", socket => {
 //mete en la BDD al jugador a la sala
 async function unirseSala(data){
   let array=await MySQL.realizarQuery(`SELECT jugadores, ID_sala FROM Sala WHERE nombre_sala LIKE "${data.roomName}"`);
-  console.log("a",array)
   if(array[0].jugadores==undefined){
-    console.log("pija")
     await MySQL.realizarQuery(`UPDATE Sala SET jugadores="${data.nmPl}" WHERE ID_sala LIKE "${array[0].ID_sala}"`);
-  }else{
-    array[0].jugadores+=" ",data.nmPl;
+  }else if(!(array[0].jugadores.includes(data.nmPl))){
+    array[0].jugadores+=",".concat(data.nmPl);
     await MySQL.realizarQuery(`UPDATE Sala SET jugadores="${array[0].jugadores}" WHERE ID_sala LIKE "${array[0].ID_sala}"`);
   }  
-  console.log(array)
   return array;
 };
 

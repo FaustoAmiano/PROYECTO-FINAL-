@@ -147,7 +147,6 @@ async function chequearSala(){
       joinRoom(data);
       location.href='/paginadeespera'
       espera()
-
     }
   } catch (error) {
     console.error("Error:", error);
