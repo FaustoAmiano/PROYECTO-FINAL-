@@ -289,3 +289,4 @@ function votar(){
   })
   console.log("4hola", contadorMal)
 }
+
