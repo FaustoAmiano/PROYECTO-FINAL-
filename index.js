@@ -411,8 +411,7 @@ async function unirseSala(data){
     await MySQL.realizarQuery(`UPDATE Sala SET jugadores="${Salaarray[0].jugadores}" WHERE ID_sala LIKE "${Salaarray[0].ID_sala}"`);
   }  
   console.log(Salaarray)
-  final= Salaarray.split(" ")
-  return final;
+  return Salaarray;
 };
 
 app.put('/logout', async function(req, res){

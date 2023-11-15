@@ -219,17 +219,7 @@ function basta() {
   socket.emit("parar", {})
 
 }
-function vote(){
-  let counter=0
-  if(document.getElementById("success-outlined").checked==true){
-    counter = counter+ 100
-    console.log(counter)
-  }else if(document.getElementById("danger-outlined").checked==true){
-    counter = counter-50
-    console.log(counter)
-  }
 
-}
 socket.on("pararTodos", (data) => {
     console.log(data);
     let vectorRta = []
@@ -247,20 +237,11 @@ socket.on("pararTodos", (data) => {
       html +=`
         <h4 id="${categoriesBasta[i]}">${categoriesBasta[i]}</h4>
         <div id="respuestasJugadores" class="respuestasJugadores"> </div>
+        
+        
         `
     document.getElementById("juego").innerHTML = html
-    }
-    /*document.getElementById("juego").innerHTML = `
-       <div style="padding-right: 120px" class="contenedor">
-          <h4 id="listo">¡Se ha agotado el tiempo!</h4>
-          <div class="cd-switch">
-          <input type="radio" class="btn-check" name="options-outlined" id="success-outlined" autocomplete="off" onclick="vote()">
-          <label class="btn btn-outline-success" for="success-outlined">Good</label>
-          <input type="radio" class="btn-check" name="options-outlined" id="danger-outlined" autocomplete="off" onclick="vote()">
-          <label class="btn btn-outline-danger" for="danger-outlined">Bad</label>
-      </div> 
-      </div>`*/
-      ; 
+    } 
 
     socket.emit("cargarRespuestas", {vectorRta: vectorRta})
     
@@ -280,9 +261,31 @@ socket.on("vectorRespuestas", (data) => {
     for(let i = 0; i < divsRtas.length; i++) {
       let rtas = "";
       for(let player = 0; player < data.respuestas.length; player++) {
-        rtas += `${data.respuestas[player].jugador}: ${data.respuestas[player].respuestas[i]}`;
+        rtas += `${data.respuestas[player].jugador}: ${data.respuestas[player].respuestas[i]}
+        <div style="padding-right: 120px" class="contenedor">
+          <div class="cd-switch">
+          <button class="btn btn-primary" id="success-outlined" type="button">Bien</button>
+          <button class="btn btn-primary" id="danger-outlined" type="button">Mal</button>
+      </div> 
+      </div>`;
       }
       divsRtas[i].innerHTML = rtas;
     }
   }
       });
+  
+function votar(){
+  let bien = document.getElementById("success-outlined")
+  let mal = document.getElementById("danger-outlined")
+  let contadorBien=0
+  bien.addEventListener('click', ()=>{
+    contadorBien+=100
+    console.log(contadorBien)
+  })
+  let contadorMal=0
+  mal.addEventListener('click', ()=>{
+    contadorMal-=100
+    console.log(contadorMal)
+  })
+  console.log("4hola", contadorMal)
+}
