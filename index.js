@@ -132,7 +132,11 @@ app.get("/", (req, res) => {
   
   app.get("/volver", (req, res) => {
     // Agrega aquí la lógica para mostrar la página del dashboard
-    res.render("login");
+    res.render("login", null);
+  });
+  app.get("/recargar", (req, res) => {
+    // Agrega aquí la lógica para mostrar la página del dashboard
+    res.render("Salas", null);
   });
 
   app.put('/login', async function(req, res) {
@@ -234,19 +238,7 @@ app.put('/traerCategorias', async function(req, res){
   res.send({categorias: vector})
 
 });
-app.put('/category', async function(req, res){
-  let text=req.body.txt
-  console.log(text) 
-  await MySQL.realizarQuery(` INSERT INTO Categorias(contenido) VALUES ("${text}")`)
-  //await MySQL.realizarQuery(` Select (ID_categoria) From Categorias Where contenido = "${text}" `)
-  //await MySQL.realizarQuery(` INSERT INTO Lista (ID_sala, ID_categoria) VALUES =  `)
-  let resp = await MySQL.realizarQuery(` SELECT * FROM Categorias WHERE contenido="${text}"`)
-  if(resp.length > 0){
-    res.send({validar:true})
-  }else{
-    res.send({validar:false})
-  }
-});
+
 
 app.put('/salas', async function(req,res) {
 
@@ -362,6 +354,26 @@ app.get('/paginadeespera', function(req, res){
 
 
 io.on("connection", socket => {
+
+  const req = socket.request;
+  socket.on("parar", (data) => {
+    console.log(data)
+    //io.to(req.session.room).emit("pararTodos", {mensaje: "pararTodos"}) 
+    vectorRespuestas = []
+    io.emit("pararTodos", {mensaje: "pararTodos"}) 
+  }) ;
+  socket.on("cargarRespuestas", (data) => {
+    console.log(data)
+    console.log(req.session.conectado)
+    jugador = req.session.conectado
+    vectorRespuestas.push({respuestas: data.vectorRta, jugador: jugador})
+    console.log("ayuda",{respuesta:data})
+    console.log("rtas3", vectorRespuestas[0].respuesta)
+    vectorFinal = [vectorRespuestas[0].respuesta]
+    console.log("evento cargarRespuestas", vectorRespuestas,jugador);
+    io.emit("vectorRespuestas", {respuestas: vectorRespuestas, jugadores: []}); 
+    io.to(req.session.room).emit("pararTodos", {}) 
+  }) ;
   socket.on("joinRoom", async (data) => {
     let a = await MySQL.realizarQuery(` SELECT nombre_sala FROM Sala WHERE nombre_sala like "${data.roomName}"`);
     if(data.roomName!=""){
@@ -381,14 +393,69 @@ io.on("connection", socket => {
 
 //mete en la BDD al jugador a la sala
 async function unirseSala(data){
-  let array=await MySQL.realizarQuery(`SELECT jugadores, ID_sala FROM Sala WHERE nombre_sala LIKE "${data.roomName}"`);
-  if(array[0].jugadores==undefined){
-    await MySQL.realizarQuery(`UPDATE Sala SET jugadores="${data.nmPl}" WHERE ID_sala LIKE "${array[0].ID_sala}"`);
-  }else if(!(array[0].jugadores.includes(data.nmPl))){
-    array[0].jugadores+=",".concat(data.nmPl);
-    await MySQL.realizarQuery(`UPDATE Sala SET jugadores="${array[0].jugadores}" WHERE ID_sala LIKE "${array[0].ID_sala}"`);
+  let Salaarray=await MySQL.realizarQuery(`SELECT jugadores, ID_sala FROM Sala WHERE nombre_sala LIKE "${data.roomName}"`);
+  console.log("a",Salaarray)
+  if(Salaarray[0].jugadores==undefined){
+    console.log("pija")
+    await MySQL.realizarQuery(`UPDATE Sala SET jugadores="${data.nmPl}" WHERE ID_sala LIKE "${Salaarray[0].ID_sala}"`);
+  }else{
+    Salaarray[0].jugadores+=" ",data.nmPl;
+    await MySQL.realizarQuery(`UPDATE Sala SET jugadores="${Salaarray[0].jugadores}" WHERE ID_sala LIKE "${Salaarray[0].ID_sala}"`);
   }  
-  return array;
+  console.log(Salaarray)
+  final= Salaarray.split(" ")
+  return final;
 };
 
+app.put('/logout', async function(req, res){
+
+  req.session.destroy();
+
+  res.send({validar:true})
+  
+  
+});
+
+app.put('/eliminarCategoria', async function(req, res){
+
+  let validar = true
+  console.log("Soy un pedido PUT", req.body); 
+  let categorias= await MySQL.realizarQuery("SELECT * FROM Categorias")
+  let entre = false
+  console.log(req.body.borrar)
+  for (let i in categorias){
+      if (categorias[i].contenido == req.body.borrar){
+          entre = true
+          respuesta = await MySQL.realizarQuery(`DELETE FROM Categorias WHERE contenido = "${req.body.borrar}";`)
+
+          res.send({validar: true})    
+          
+          
+      }
+  }
+  if (entre == false) {
+      res.send({validar:false})    
+  }
+  
+});
+
+
+app.post('/randomWord', async function(req, res){
+  console.log("Soy un pedido POST", req.body);
+  let letras = ["A","B", "C", "D", "E", "F", "G", "H", "I", "J", "K","L","M","N","O","Q","P","R","S","T","U","V"]
+  var indiceAleatorio = Math.floor(Math.random() * letras.length)
+  var letrasAleatoria = letras[indiceAleatorio]
+  res.send({letter: letrasAleatoria})
+
+});
+
+app.put("/sumarCategoria", async function(req, res){
+  let x=await MySQL.realizarQuery(` SELECT * FROM Categorias WHERE contenido like "${req.body.nuevaCategoria}"`)
+  if(x.length ==0){
+    await MySQL.realizarQuery(` INSERT INTO Categorias(contenido) VALUES ("${req.body.nuevaCategoria}")`)
+    res.send({validar:true, nombre:req.body.nuevaCategoria})
+  }else{
+    res.send({validar:false})
+  } 
+});
 

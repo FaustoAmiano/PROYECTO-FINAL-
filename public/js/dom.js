@@ -106,7 +106,15 @@ async function entrar(data) {
     const result = await response.json();
     console.log("Success Categorias:", result);
     let categorias = result.categorias
-    console.log(categorias)
+    console.log(categorias[0].contenido)
+    
+    for (let i in categorias){
+      let html = ``
+      html += `<input  type="checkbox" class="btn-check" name="btnradio" id="btnradio${i}" autocomplete="off" >
+      <label class="btn btn-outline-primary" for="btnradio${i}">${categorias[i].contenido}</label>`
+ 
+      document.getElementById("categoriasTraidas").innerHTML += html
+    }
     //falta el inner HTML con las categorias que existen y el tipo de boton para poder seleccionarlas (estilo true/false)
   } catch (error) {
     console.error("Error:", error);
@@ -115,14 +123,15 @@ async function entrar(data) {
  function addCategory(){
   let text = document.getElementById("inputCategory").value
   console.log(text)
-  data = {
-    txt: text
+  let data ={
+    nuevaCategoria: text
   }
-  category(data)
+  sumarCategoria(data)
 }
-async function category(data){
+
+async function sumarCategoria(data){
   try {
-    const response = await fetch("/category", {
+    const response = await fetch("/sumarCategoria", {
       method: "PUT", // or 'POST'
       headers: {
         "Content-Type": "application/json",
@@ -132,36 +141,56 @@ async function category(data){
     
     //En result obtengo la respuesta
     const result = await response.json();
-    console.log("Success Categorias:", result);
-    if(result.validar==true){
-      alert("Se agregó correctamente")
-    }else{
-      alert("Hubo un problema al agregar la categoria")
+    console.log("Success nuevo:", result);
+    console.log(result.nombre)
+    if (result.validar == true){
+      html = `<input type="checkbox" class="btn-check" name="btnradio" id="btnradioNueva" autocomplete="off" >
+      <label class="btn btn-outline-primary" for="btnradio12">${result.nombre}</label>`
+      document.getElementById("categoriasNuevas").innerHTML += html
+      location.href = '/recargar'
     }
-    //falta el inner HTML con las categorias que existen y el tipo de boton para poder seleccionarlas (estilo true/false)
-  } catch (error) {
+    else{
+      alert("categoria ya existente")
+    }
+  }
+  catch (error) {
     console.error("Error:", error);
   }
  }
-function validaCheckbox(){
+
+ function mostrar(){
+  let text=document.getElementById("inputCategory").value
+  console.log(text)
+  let html =`
+    <div class="btn-group" role="group" aria-label="Basic radio toggle button group">
+      <input type="checkbox" class="btn-check" name="btnradio" id="btnradio${text}" autocomplete="off" >
+      <label class="btn btn-outline-primary" for="btnradio9">${text}</label>
+      </div>
+    `
+  document.getElementsByClassName("card1").innerHTML=html
+ }
+
+
+function validaCheckbox( ){
   x=document.getElementsByClassName("btn btn-outline-primary")
   let a=[];
   for(let i=0;i<x.length;i++){
-    if(document.getElementById('btnradio'+(i+1))){
-      if(document.getElementById('btnradio'+(i+1)).checked){
+    if(document.getElementById('btnradio'+(i))){
+      if(document.getElementById('btnradio'+(i)).checked){
         a.push(x[i].innerHTML);
       }
     }
   }
+  console.log(a)
   return(a)
 }
 function validaRadio(){
-  x=document.getElementsByClassName("btn btn-outline-primary")
+  x=document.getElementsByName("fausto")
   let a=0;
   for(let i=0;i<x.length;i++){
-    if(document.getElementById('btnRadio'+(i+1))){
-      if(document.getElementById('btnRadio'+(i+1)).checked){
-        a=x[i+12].innerHTML;
+    if(document.getElementById('round'+(i+1))){
+      if(document.getElementById('round'+(i+1)).checked){
+        a=x[i].innerHTML;
       }
     }
   }
@@ -408,10 +437,10 @@ async function eliminarCategoria(data) {
 
 function ejemplo(){
 
-  listaEjemplo = ["pis", "caca", "vomito"]
-  console.log(listaEjemplo)
+  listaEjemplo = sessionStorage.categories.split(",")
+  console.log("mario", listaEjemplo)
   for (let i in listaEjemplo){
-    console.log(listaEjemplo[i])
+    console.log("dada", listaEjemplo[i])
     let html2 = `
         <br>
         <h5 class="card-title"> ${listaEjemplo[i]}</h5>
@@ -446,7 +475,7 @@ async function palabra_elegida(){
     let html =`<h5 id=letraElegida> Letra: ${palabraalea} </h5>`
     document.getElementById("letraRandom").innerHTML += html;
 
-    let html2 = `<h5 id=letraElegida> Letra: 1/3  </h5>`
+    let html2 = `<h5 id=letraElegida> Rondas: ${sessionStorage.rounds}  </h5>`
     document.getElementById("ronda").innerHTML = html2
   
   } catch (error) {
@@ -462,4 +491,3 @@ function validarInput(input) {
     input.value = valor;
   }
 }
-

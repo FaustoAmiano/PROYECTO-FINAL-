@@ -164,8 +164,7 @@ async function traerJugadores(data){
       body: JSON.stringify(data),
     });
     const result = await response.json();
-    console.log("Success:", result);
-    sessionStorage.setItem("players", result.jugadores[0].jugadores)
+    console.log("Success: traer players", result);
   } catch (error) {
     console.error("Error:", error);
   };
@@ -236,9 +235,22 @@ socket.on("pararTodos", (data) => {
     let vectorRta = []
     for(i in listaEjemplo){
       vectorRta.push(document.getElementById(listaEjemplo[i]).value)
-      console.log(vectorRta)
+      console.log("daa", vectorRta)
     }
-    document.getElementById("juego").innerHTML = `
+
+    categoriesBasta = sessionStorage.categories.split(",")
+    console.log(categoriesBasta)
+    let html = `
+        <div style="padding-right: 120px" class="contenedor">
+            <h4 id="listo">¡Se ha agotado el tiempo!</h4>`
+    for (let i in categoriesBasta){
+      html +=`
+        <h4 id="${categoriesBasta[i]}">${categoriesBasta[i]}</h4>
+        <div id="respuestasJugadores" class="respuestasJugadores"> </div>
+        `
+    document.getElementById("juego").innerHTML = html
+    }
+    /*document.getElementById("juego").innerHTML = `
        <div style="padding-right: 120px" class="contenedor">
           <h4 id="listo">¡Se ha agotado el tiempo!</h4>
           <div class="cd-switch">
@@ -247,7 +259,7 @@ socket.on("pararTodos", (data) => {
           <input type="radio" class="btn-check" name="options-outlined" id="danger-outlined" autocomplete="off" onclick="vote()">
           <label class="btn btn-outline-danger" for="danger-outlined">Bad</label>
       </div> 
-      </div>`
+      </div>`*/
       ; 
 
     socket.emit("cargarRespuestas", {vectorRta: vectorRta})
@@ -256,7 +268,21 @@ socket.on("pararTodos", (data) => {
     
   });
 
-socket.on("vectorRespuestas", (data) => {
-  console.log("sa", data)
-});
+function funcioncita(data) {
+  
+}
 
+socket.on("vectorRespuestas", (data) => {
+  console.log(data)
+
+  if(data.respuestas.length >= data.jugadores.length) {
+    let divsRtas = document.getElementsByClassName("respuestasJugadores");
+    for(let i = 0; i < divsRtas.length; i++) {
+      let rtas = "";
+      for(let player = 0; player < data.respuestas.length; player++) {
+        rtas += `${data.respuestas[player].jugador}: ${data.respuestas[player].respuestas[i]}`;
+      }
+      divsRtas[i].innerHTML = rtas;
+    }
+  }
+      });
