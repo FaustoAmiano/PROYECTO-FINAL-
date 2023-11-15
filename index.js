@@ -213,7 +213,11 @@ fetch('https://jsonplaceholder.typicode.com/posts', {
   });
   app.get("/volver", (req, res) => {
     // Agrega aquí la lógica para mostrar la página del dashboard
-    res.render("login");
+    res.render("login", null);
+  });
+  app.get("/recargar", (req, res) => {
+    // Agrega aquí la lógica para mostrar la página del dashboard
+    res.render("Salas", null);
   });
 
   app.put('/login', async function(req, res) {
@@ -441,10 +445,11 @@ io.on("connection", socket => {
     console.log(data)
     console.log(req.session.conectado)
     jugador = req.session.conectado
-    vectorRespuestas.push({respuesta:data})
+    /*vectorRespuestas.push({respuesta:data})
+    console.log("ayuda",{respuesta:data})
     console.log("rtas3", vectorRespuestas[0].respuesta)
-    vectorFinal = vectorRespuestas[0].respuesta
-    io.emit("vectorRespuestas", vectorFinal, jugador) 
+    vectorFinal = [vectorRespuestas[0].respuesta]*/
+    io.emit("vectorRespuestas", data, jugador) 
     //io.to(req.session.room).emit("pararTodos", {}) 
   }) ;
   socket.on("joinRoom", async (data) => {
@@ -472,17 +477,18 @@ io.on("connection", socket => {
 
 //mete en la BDD al jugador a la sala
 async function unirseSala(data){
-  let array=await MySQL.realizarQuery(`SELECT jugadores, ID_sala FROM Sala WHERE nombre_sala LIKE "${data.roomName}"`);
-  console.log("a",array)
-  if(array[0].jugadores==undefined){
+  let Salaarray=await MySQL.realizarQuery(`SELECT jugadores, ID_sala FROM Sala WHERE nombre_sala LIKE "${data.roomName}"`);
+  console.log("a",Salaarray)
+  if(Salaarray[0].jugadores==undefined){
     console.log("pija")
-    await MySQL.realizarQuery(`UPDATE Sala SET jugadores="${data.nmPl}" WHERE ID_sala LIKE "${array[0].ID_sala}"`);
+    await MySQL.realizarQuery(`UPDATE Sala SET jugadores="${data.nmPl}" WHERE ID_sala LIKE "${Salaarray[0].ID_sala}"`);
   }else{
-    array[0].jugadores+=" ",data.nmPl;
-    await MySQL.realizarQuery(`UPDATE Sala SET jugadores="${array[0].jugadores}" WHERE ID_sala LIKE "${array[0].ID_sala}"`);
+    Salaarray[0].jugadores+=" ",data.nmPl;
+    await MySQL.realizarQuery(`UPDATE Sala SET jugadores="${Salaarray[0].jugadores}" WHERE ID_sala LIKE "${Salaarray[0].ID_sala}"`);
   }  
-  console.log(array)
-  return array.split(" ");
+  console.log(Salaarray)
+  final= Salaarray.split(" ")
+  return final;
 };
 
 app.put('/logout', async function(req, res){
@@ -527,4 +533,12 @@ app.post('/randomWord', async function(req, res){
 
 });
 
-
+app.put("/sumarCategoria", async function(req, res){
+  let x=await MySQL.realizarQuery(` SELECT * FROM Categorias WHERE contenido like "${req.body.nuevaCategoria}"`)
+  if(x.length ==0){
+    await MySQL.realizarQuery(` INSERT INTO Categorias(contenido) VALUES ("${req.body.nuevaCategoria}")`)
+    res.send({validar:true, nombre:req.body.nuevaCategoria})
+  }else{
+    res.send({validar:false})
+  } 
+});

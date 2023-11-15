@@ -106,8 +106,14 @@ async function entrar(data) {
     const result = await response.json();
     console.log("Success Categorias:", result);
     let categorias = result.categorias
-    console.log(categorias)
-    
+    console.log(categorias[0].contenido)
+    for (let i in categorias){
+      let html = ``
+      html += `<input  type="checkbox" class="btn-check" name="btnradio" id="btnradio1" autocomplete="off" >
+      <label class="btn btn-outline-primary" for="btnradio1">${categorias[i].contenido}</label>`
+ 
+      document.getElementById("categoriasTraidas").innerHTML += html
+    }
     //falta el inner HTML con las categorias que existen y el tipo de boton para poder seleccionarlas (estilo true/false)
   } catch (error) {
     console.error("Error:", error);
@@ -115,13 +121,41 @@ async function entrar(data) {
  }
  function addCategory(){
   let text = document.getElementById("inputCategory").value
-  document.getElementById("jajqa").innerHTML = `
-    ${document.getElementById("jajqa").innerHTML}
-    <label class="btn btn-outline-primary" for="btnradio9">${text}</label>
-  `
-  
   console.log(text)
+  let data ={
+    nuevaCategoria: text
+  }
+  sumarCategoria(data)
 }
+
+async function sumarCategoria(data){
+  try {
+    const response = await fetch("/sumarCategoria", {
+      method: "PUT", // or 'POST'
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(data),
+    });
+    
+    //En result obtengo la respuesta
+    const result = await response.json();
+    console.log("Success nuevo:", result);
+    console.log(result.nombre)
+    if (result.validar == true){
+      html = `<input type="checkbox" class="btn-check" name="btnradio" id="btnradio12" autocomplete="off" >
+      <label class="btn btn-outline-primary" for="btnradio12">${result.nombre}</label>`
+      document.getElementById("categoriasNuevas").innerHTML += html
+    }
+    else{
+      alert("categoria ya existente")
+    }
+  }
+  catch (error) {
+    console.error("Error:", error);
+  }
+ }
+
  function mostrar(){
   let text=document.getElementById("inputCategory").value
   console.log(text)
@@ -133,6 +167,8 @@ async function entrar(data) {
     `
   document.getElementsByClassName("card1").innerHTML=html
  }
+
+
 function validaCheckbox( ){
   x=document.getElementsByClassName("btn btn-outline-primary")
   let a=[];
