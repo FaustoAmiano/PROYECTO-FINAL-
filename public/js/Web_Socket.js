@@ -83,6 +83,7 @@ function join(){
   `; 
 }
 //CREAR UNA SALA
+
 function newRoom(){
   let data={
     roomName: document.getElementById("salita").value,
@@ -123,6 +124,7 @@ async function newRoomFetch(data){
   }
 }
 //REVISAR SI EXISTE UNA SALA
+
 async function chequearSala(){
   try {
     data={
@@ -172,6 +174,7 @@ async function traerJugadores(data){
 
 //UNIRSE A UNA SALA
 function joinRoom(data){
+  console.log("algo así", data)
   socket.emit('joinRoom', data);
 }
 
@@ -195,8 +198,10 @@ function espera(){
   </div>
     `;
   }
+
   
 }
+
 
 
 /*
@@ -205,31 +210,21 @@ HAY Q VACIAR LOS JUGADORES DE LAS SALAS DE LA BASE DE DATOS:)
 
 
 function basta() {
+    
+  socket.emit("parar", {})
+
+}
+
+socket.on("pararIntermedio",() => {
   let a=document.getElementsByClassName("x");
   for(let x in a){
     a[x].disabled=true
   }
-  /*for(i in listaEjemplo){
-    let vectorRta=[document.getElementById(listaEjemplo[i]).value]
-    console.log(vectorRta)
-  }*/
-  /*data = {
-    respuestas: vectorRta
-  }*/
-  socket.emit("parar", {})
 
-}
-function vote(){
-  let counter=0
-  if(document.getElementById("success-outlined").checked==true){
-    counter = counter+ 100
-    console.log(counter)
-  }else if(document.getElementById("danger-outlined").checked==true){
-    counter = counter-50
-    console.log(counter)
-  }
+  socket.emit("pararTodos")
+});
 
-}
+
 socket.on("pararTodos", (data) => {
     console.log(data);
     let vectorRta = []
@@ -237,7 +232,8 @@ socket.on("pararTodos", (data) => {
       vectorRta.push(document.getElementById(listaEjemplo[i]).value)
       console.log("daa", vectorRta)
     }
-
+    sessionStorage.setItem("testJSON", myJSON);
+    
     categoriesBasta = sessionStorage.categories.split(",")
     console.log(categoriesBasta)
     let html = `
@@ -246,31 +242,13 @@ socket.on("pararTodos", (data) => {
     for (let i in categoriesBasta){
       html +=`
         <h4 id="${categoriesBasta[i]}">${categoriesBasta[i]}</h4>
-        <div id="respuestasJugadores" class="respuestasJugadores"> </div>
+        <div id="respuestasJugadores" class="respuestasJugadores"> </div>        
         `
     document.getElementById("juego").innerHTML = html
-    }
-    /*document.getElementById("juego").innerHTML = `
-       <div style="padding-right: 120px" class="contenedor">
-          <h4 id="listo">¡Se ha agotado el tiempo!</h4>
-          <div class="cd-switch">
-          <input type="radio" class="btn-check" name="options-outlined" id="success-outlined" autocomplete="off" onclick="vote()">
-          <label class="btn btn-outline-success" for="success-outlined">Good</label>
-          <input type="radio" class="btn-check" name="options-outlined" id="danger-outlined" autocomplete="off" onclick="vote()">
-          <label class="btn btn-outline-danger" for="danger-outlined">Bad</label>
-      </div> 
-      </div>`*/
-      ; 
+    } 
 
-    socket.emit("cargarRespuestas", {vectorRta: vectorRta})
-    
-    
-    
+    socket.emit("cargarRespuestas", {vectorRta: vectorRta})    
   });
-
-function funcioncita(data) {
-  
-}
 
 socket.on("vectorRespuestas", (data) => {
   console.log(data)
@@ -280,13 +258,60 @@ socket.on("vectorRespuestas", (data) => {
     for(let i = 0; i < divsRtas.length; i++) {
       let rtas = "";
       for(let player = 0; player < data.respuestas.length; player++) {
-        rtas += `${data.respuestas[player].jugador}: ${data.respuestas[player].respuestas[i]}`;
+        rtas += `${data.respuestas[player].jugador}: ${data.respuestas[player].respuestas[i]}
+        <div style="padding-right: 120px" class="contenedor">
+          <div class="cd-switch">
+          <button class="btn btn-primary" id="success-outlined" type="button">Bien</button>
+          <button class="btn btn-primary" id="danger-outlined" type="button">Mal</button>
+      </div> 
+      </div>`;
       }
       divsRtas[i].innerHTML = rtas;
     }
   }
       });
 
+
 socket.on("returnPlayers", (data)=>{
   console.log("players",data);
+}
+  
+function votar(){
+  let bien = document.getElementById("success-outlined")
+  let mal = document.getElementById("danger-outlined")
+  let contadorBien=0
+  bien.addEventListener('click', ()=>{
+    contadorBien+=100
+    console.log(contadorBien)
+  })
+  let contadorMal=0
+  mal.addEventListener('click', ()=>{
+    contadorMal-=100
+    console.log(contadorMal)
+  })
+  console.log("4hola", contadorMal)
+}
+
+function entrarJuego(){
+  data = {
+    cat: sessionStorage.categories,
+    ronda: sessionStorage.rounds,
+    letra: sessionStorage.letra
+  }
+  console.log(data)
+  socket.emit("empezar", data)
+}
+socket.on("empezarTodos", (data) =>{
+  console.log("esto es data", data.a)
+  const myJSON = JSON.stringify(data);
+  sessionStorage.setItem("testJSON", myJSON);
+  irAlJuego()
 })
+function irAlJuego(){
+
+  location.href = '/pruebaEntrar'
+}
+
+
+
+

@@ -239,8 +239,6 @@ async function API(){
     dolarSolidario = result[4]
     dolarMayorista = result[5]
 
-    console.log(dolarOFicial.venta)
-    console.log(dolarBlue.venta)
 
     let html =  ` <marquee id= dolar> Valor actual del dolar: oficial: $${dolarOFicial.venta} - Blue: $${dolarBlue.venta}- Contado con Liqui: $${dolarLiqui.venta} - Solidario: $${dolarSolidario.venta} - Mayorista: $${dolarMayorista.venta}</marquee>`
     document.getElementById("header").innerHTML = html
@@ -435,25 +433,6 @@ async function eliminarCategoria(data) {
   }
 }
 
-function ejemplo(){
-
-  listaEjemplo = sessionStorage.categories.split(",")
-  console.log("mario", listaEjemplo)
-  for (let i in listaEjemplo){
-    console.log("dada", listaEjemplo[i])
-    let html2 = `
-        <br>
-        <h5 class="card-title"> ${listaEjemplo[i]}</h5>
-        <input class="x" style="width : 1000px; heigth : 1px" plaecholder="Escriba" id="${listaEjemplo[i]}" oninput="validarInput(this)"/>`
-    document.getElementById("prueba").innerHTML += html2;
-  }
-}
-
-
-//let palabraalea={}
-
-//let plabraalea = ""
-
 async function palabra_elegida(){
   
   try {
@@ -472,20 +451,53 @@ async function palabra_elegida(){
     palabraalea = result.letter; 
 
     console.log(palabraalea)
-    let html =`<h5 id=letraElegida> Letra: ${palabraalea} </h5>`
-    document.getElementById("letraRandom").innerHTML += html;
 
-    let html2 = `<h5 id=letraElegida> Rondas: ${sessionStorage.rounds}  </h5>`
-    document.getElementById("ronda").innerHTML = html2
-  
+    sessionStorage.setItem("letra", palabraalea);
+
+    
   } catch (error) {
     console.error("Error:", error);
   }
 }
 
+function ejemplo(dataArray){
+  console.log(dataArray[0].cat)
+  console.log(dataArray[0].ronda)
+  console.log(dataArray[0].letra)
+  listaEjemplo = dataArray[0].cat.split(",")
+  console.log("mario", listaEjemplo)
+  let html =`<h5 id=letraElegida> Letra: ${dataArray[0].letra} </h5>`
+    document.getElementById("letraRandom").innerHTML += html;
+
+    let html2 = `<h5 id=letraElegida> Rondas: ${dataArray[0].ronda}  </h5>`
+    document.getElementById("ronda").innerHTML = html2
+  for (let i in listaEjemplo){
+    console.log("dada", listaEjemplo[i])
+    let html2 = `
+        <br>
+        <h5 class="card-title"> ${listaEjemplo[i]}</h5>
+        <input class="x" style="width : 1000px; heigth : 1px" plaecholder="Escriba" id="${listaEjemplo[i]}" oninput="validarInput(this)"/>`
+    document.getElementById("prueba").innerHTML += html2;
+  }
+}
+
+
+
+palabra = ""
+function mostrarJSON(){
+  console.log(sessionStorage.testJSON)
+  let data = JSON.parse(sessionStorage.getItem("testJSON"));
+  const dataArray = Object.values(data)
+  console.log("que es esto", data)
+  console.log("que es esto 2 ", dataArray)
+  palabra = dataArray[0].letra
+  ejemplo(dataArray)
+}
+
 function validarInput(input) {
   var valor = input.value;
-  var letraInicial = palabraalea; // Cambia esta letra a la que desees
+  
+  var letraInicial = palabra; // Cambia esta letra a la que desees
   if (valor.length > 0 && valor[0] !== letraInicial) {
     valor = letraInicial + valor.substring(1);
     input.value = valor;
