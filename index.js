@@ -414,17 +414,16 @@ io.on("connection", socket => {
     if(data.roomName!=""){
       console.log("gik", a.length)
       console.log("sa", data.createRoom)
-      if(data.createRoom==true&&a.length != 1){
+      if(data.createRoom==true&&(a[0].nombre_sala).length==0){
         console.log("poak")
         socket.join(data.roomName);
         console.log("la sala ", data.roomName, " fue creada.");
         await unirseSala(data);
-      }else if(data.createRoom==false&&a.length == 1){
+      }else if(data.createRoom==false&&(a[0].nombre_sala).length == 1){
         console.log("poak")
         socket.join(data.roomName);
         socket.emit("returnPlayers",{players:await unirseSala(data)});
         console.log(data.nmPl, "se ha unido a la sala ", data.roomName);
-        await unirseSala(data);
       };
     };
   });
@@ -438,16 +437,15 @@ io.on("connection", socket => {
 
 //mete en la BDD al jugador a la sala
 async function unirseSala(data){
-  let Salaarray=await MySQL.realizarQuery(`SELECT jugadores, ID_sala FROM Sala WHERE nombre_sala LIKE "${data.roomName}"`);
-  console.log("a",Salaarray)
-  console.log("sala", Salaarray[0].jugadores)
-  if(Salaarray[0].jugadores==undefined){
+  let Salaarray=await MySQL.realizarQuery(`SELECT jugadores, ID_sala FROM Sala WHERE nombre_sala LIKE "${data.roomName}"`)
+  console.log("sala", Salaarray[0])
+  if(Salaarray[0].jugadores==undefined||Salaarray[0].jugadores==null){
     console.log("pija")
     await MySQL.realizarQuery(`UPDATE Sala SET jugadores="${data.nmPl}" WHERE ID_sala LIKE "${Salaarray[0].ID_sala}"`);
   }else{
     console.log("maja")
-    Salaarray[0].jugadores.push(data.nmPl);
     console.log("aaa", Salaarray[0].jugadores)
+    Salaarray[0].jugadores=Salaarray[0].jugadores.concat(",", data.nmPl)
     await MySQL.realizarQuery(`UPDATE Sala SET jugadores="${Salaarray[0].jugadores}" WHERE ID_sala LIKE "${Salaarray[0].ID_sala}"`);
   }  
   console.log(Salaarray)
