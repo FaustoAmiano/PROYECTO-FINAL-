@@ -274,7 +274,7 @@ socket.on("vectorRespuestas", (data) => {
 
 socket.on("returnPlayers", (data)=>{
   console.log("players",data);
-}
+});
   
 function votar(){
   let bien = document.getElementById("success-outlined")
