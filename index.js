@@ -402,7 +402,6 @@ async function unirseSala(data){
   }else{
     await MySQL.realizarQuery(`UPDATE Sala SET jugadores="${data.nmPl}" WHERE ID_sala LIKE "${Salaarray[0].ID_sala}"`)
   }
-  
   console.log(Salaarray)
   return Salaarray;
 };
