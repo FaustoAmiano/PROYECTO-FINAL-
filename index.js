@@ -262,12 +262,21 @@ app.put('/salas', async function(req,res) {
 
 })
 
-
+vectorGlobalUsuarios = []
 app.post('/newRoom', async function(req, res){
   console.log(req.body.roomName)
+  console.log(req.body.nmPl)
+  if (vectorGlobalUsuarios.includes(req.body.nmPl) ){
+    console.log("usuario ya cargado")
+  }else{
+    vectorGlobalUsuarios.push(req.body.nmPl)
+  }
+  req.session.room = req.body.roomName
+  console.log("req.session:", req.session.room)
+  console.log(vectorGlobalUsuarios)
   let x=await MySQL.realizarQuery(` SELECT nombre_sala FROM Sala WHERE nombre_sala like "${req.body.roomName}"`)
   if(x.length ==0){
-    await MySQL.realizarQuery(` INSERT INTO Sala(nombre_sala) VALUES ("${req.body.roomName}")`)
+    await MySQL.realizarQuery(` INSERT INTO Sala(nombre_sala, jugadores) VALUES ("${req.body.roomName}","${req.body.nmPl}")`)
     res.send({validar:true})
   }else{
     res.send({validar:false})
@@ -293,6 +302,12 @@ app.post('/traerJugadores', async function(req, res){
 });
 app.post('/chequearSala', async function(req, res){
   console.log("Sala: ", req.body.roomName)
+  if (vectorGlobalUsuarios.includes(req.body.nmPl) ){
+    console.log("usuario ya cargado")
+  }else{
+    vectorGlobalUsuarios.push(req.body.nmPl)
+  }
+  console.log(vectorGlobalUsuarios)
   let x=await MySQL.realizarQuery(` SELECT nombre_sala FROM Sala WHERE nombre_sala like "${req.body.roomName}"`)
   if(x.length> 0 ){
     res.send({validar:true})
@@ -368,8 +383,16 @@ io.on("connection", socket => {
     console.log(data)
     //io.to(req.session.room).emit("pararTodos", {mensaje: "pararTodos"}) 
     vectorRespuestas = []
+    io.emit("pararIntermedio", {mensaje: "pararIntermedio"}) 
+  }) ;
+  
+  socket.on("pararTodos", (data) => {
+    console.log(data)
+    //io.to(req.session.room).emit("pararTodos", {mensaje: "pararTodos"}) 
+    vectorRespuestas = []
     io.emit("pararTodos", {mensaje: "pararTodos"}) 
   }) ;
+
   socket.on("cargarRespuestas", (data) => {
     console.log(data)
     console.log(req.session.conectado)
@@ -379,17 +402,22 @@ io.on("connection", socket => {
     console.log("rtas3", vectorRespuestas[0].respuesta)
     vectorFinal = [vectorRespuestas[0].respuesta]
     console.log("evento cargarRespuestas", vectorRespuestas,jugador);
-    io.emit("vectorRespuestas", {respuestas: vectorRespuestas, jugadores: []}); 
+    io.emit("vectorRespuestas", {respuestas: vectorRespuestas, jugadores: vectorGlobalUsuarios}); 
+    console.log(req.session.room)
     io.to(req.session.room).emit("pararTodos", {}) 
   }) ;
+
   socket.on("joinRoom", async (data) => {
+    console.log("joinRoom", data.roomName)
     let a = await MySQL.realizarQuery(` SELECT nombre_sala FROM Sala WHERE nombre_sala like "${data.roomName}"`);
+    
     if(data.roomName!=""){
+      
       if(data.createRoom&&a.length != 1){
         socket.join(data.roomName);
         console.log("la sala ", data.roomName, " fue creada.");
         await unirseSala(data);
-      }else if(!data.createRoom&&a.length == 1){
+      }else if(data.createRoom&&a.length == 1){
         socket.join(data.roomName);
         socket.emit("returnPlayers",{players:await unirseSala(data)});
         console.log(data.nmPl, "se ha unido a la sala ", data.roomName);
@@ -397,6 +425,12 @@ io.on("connection", socket => {
       };
     };
   });
+  socket.on("empezar",(data) => {
+    console.log("hola")
+    console.log(req.session.room)
+    txt = "esta en la sala ",req.session.room
+    io.emit("empezarTodos", {data})    
+  })
 });
 
 //mete en la BDD al jugador a la sala
@@ -452,6 +486,7 @@ app.post('/randomWord', async function(req, res){
   let letras = ["A","B", "C", "D", "E", "F", "G", "H", "I", "J", "K","L","M","N","O","Q","P","R","S","T","U","V"]
   var indiceAleatorio = Math.floor(Math.random() * letras.length)
   var letrasAleatoria = letras[indiceAleatorio]
+  console.log(letrasAleatoria)
   res.send({letter: letrasAleatoria})
 
 });

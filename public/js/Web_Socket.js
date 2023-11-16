@@ -83,6 +83,7 @@ function join(){
   `; 
 }
 //CREAR UNA SALA
+
 function newRoom(){
   let data={
     roomName: document.getElementById("salita").value,
@@ -123,6 +124,7 @@ async function newRoomFetch(data){
   }
 }
 //REVISAR SI EXISTE UNA SALA
+
 async function chequearSala(){
   try {
     data={
@@ -172,6 +174,7 @@ async function traerJugadores(data){
 
 //UNIRSE A UNA SALA
 function joinRoom(data){
+  console.log("algo así", data)
   socket.emit('joinRoom', data);
 }
 
@@ -195,8 +198,10 @@ function espera(){
   </div>
     `;
   }
+
   
 }
+
 
 
 /*
@@ -205,20 +210,18 @@ HAY Q VACIAR LOS JUGADORES DE LAS SALAS DE LA BASE DE DATOS:)
 
 
 function basta() {
+    
+  socket.emit("parar", {})
+
+}
+
+socket.on("pararIntermedio",() => {
   let a=document.getElementsByClassName("x");
   for(let x in a){
     a[x].disabled=true
   }
-  /*for(i in listaEjemplo){
-    let vectorRta=[document.getElementById(listaEjemplo[i]).value]
-    console.log(vectorRta)
-  }*/
-  /*data = {
-    respuestas: vectorRta
-  }*/
-  socket.emit("parar", {})
-
-}
+  socket.emit("pararTodos")
+});
 
 socket.on("pararTodos", (data) => {
     console.log(data);
@@ -236,9 +239,7 @@ socket.on("pararTodos", (data) => {
     for (let i in categoriesBasta){
       html +=`
         <h4 id="${categoriesBasta[i]}">${categoriesBasta[i]}</h4>
-        <div id="respuestasJugadores" class="respuestasJugadores"> </div>
-        
-        
+        <div id="respuestasJugadores" class="respuestasJugadores"> </div>        
         `
     document.getElementById("juego").innerHTML = html
     } 
@@ -248,10 +249,6 @@ socket.on("pararTodos", (data) => {
     
     
   });
-
-function funcioncita(data) {
-  
-}
 
 socket.on("vectorRespuestas", (data) => {
   console.log(data)
@@ -289,4 +286,26 @@ function votar(){
   })
   console.log("4hola", contadorMal)
 }
+
+function entrarJuego(){
+  data = {
+    cat: sessionStorage.categories,
+    ronda: sessionStorage.rounds,
+    letra: sessionStorage.letra
+  }
+  console.log(data)
+  socket.emit("empezar", data)
+}
+socket.on("empezarTodos", (data) =>{
+  console.log("esto es data", data.a)
+  const myJSON = JSON.stringify(data);
+  sessionStorage.setItem("testJSON", myJSON);
+  irAlJuego()
+})
+function irAlJuego(){
+
+  location.href = '/pruebaEntrar'
+}
+
+
 
