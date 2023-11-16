@@ -410,17 +410,17 @@ io.on("connection", socket => {
   socket.on("joinRoom", async (data) => {
     console.log("joinRoom", data.roomName)
     let a = await MySQL.realizarQuery(` SELECT nombre_sala FROM Sala WHERE nombre_sala like "${data.roomName}"`);
-    console.log(a)
+    console.log("kkii",a.length)
     if(data.roomName!=""){
       console.log("gik", a.length)
-      console.log("sa", data.createRoom)
-      if(data.createRoom==true&&(a[0].nombre_sala).length==0){
+      console.log("sa", data)
+      if(data.createRoom&&a[0].length!=1){
         console.log("poak")
         socket.join(data.roomName);
         console.log("la sala ", data.roomName, " fue creada.");
-        await unirseSala(data);
-      }else if(data.createRoom==false&&(a[0].nombre_sala).length == 1){
-        console.log("poak")
+        socket.emit("returnPlayers",{players:await unirseSala(data)});
+      }else if(!data.createRoom&&a[0].length == 1){
+        console.log("poak2")
         socket.join(data.roomName);
         socket.emit("returnPlayers",{players:await unirseSala(data)});
         console.log(data.nmPl, "se ha unido a la sala ", data.roomName);
@@ -437,20 +437,19 @@ io.on("connection", socket => {
 
 //mete en la BDD al jugador a la sala
 async function unirseSala(data){
-  let Salaarray=await MySQL.realizarQuery(`SELECT jugadores, ID_sala FROM Sala WHERE nombre_sala LIKE "${data.roomName}"`)
-  console.log("sala", Salaarray[0])
-  if(Salaarray[0].jugadores==undefined||Salaarray[0].jugadores==null){
-    console.log("pija")
-    await MySQL.realizarQuery(`UPDATE Sala SET jugadores="${data.nmPl}" WHERE ID_sala LIKE "${Salaarray[0].ID_sala}"`);
+  let Salaarray=await MySQL.realizarQuery(`SELECT jugadores, ID_sala FROM Sala WHERE nombre_sala LIKE "${data.roomName}"`);
+  console.log("a",Salaarray)
+  if(Salaarray[0].jugadores!=undefined||Salaarray[0].jugadores!=null){
+    Salaarray[0].jugadores=Salaarray[0].jugadores.concat(",",data.nmPl);
+    await MySQL.realizarQuery(`UPDATE Sala SET jugadores="${Salaarray[0].jugadores}" WHERE ID_sala LIKE "${Salaarray[0].ID_sala}"`)
   }else{
-    console.log("maja")
-    console.log("aaa", Salaarray[0].jugadores)
-    Salaarray[0].jugadores=Salaarray[0].jugadores.concat(",", data.nmPl)
-    await MySQL.realizarQuery(`UPDATE Sala SET jugadores="${Salaarray[0].jugadores}" WHERE ID_sala LIKE "${Salaarray[0].ID_sala}"`);
-  }  
+    await MySQL.realizarQuery(`UPDATE Sala SET jugadores="${data.nmPl}" WHERE ID_sala LIKE "${Salaarray[0].ID_sala}"`)
+  }
+  
   console.log(Salaarray)
   return Salaarray;
 };
+
 
 app.put('/logout', async function(req, res){
 
