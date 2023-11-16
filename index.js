@@ -281,7 +281,7 @@ app.post('/newRoom', async function(req, res){
   }else{
     res.send({validar:false})
   }
-});
+}); 
 
 app.put('/vectores', async function(req, res) {
   //Petición PUT con URL = "/login"
@@ -410,17 +410,16 @@ io.on("connection", socket => {
   socket.on("joinRoom", async (data) => {
     console.log("joinRoom", data.roomName)
     let a = await MySQL.realizarQuery(` SELECT nombre_sala FROM Sala WHERE nombre_sala like "${data.roomName}"`);
-    console.log("kkii",a.length)
+
+    console.log("aca", a)
     if(data.roomName!=""){
-      console.log("gik", a.length)
-      console.log("sa", data)
-      if(data.createRoom&&a[0].length!=1){
-        console.log("poak")
+      if(data.createRoom&&a[0].nombre_sala.length != 1){
+        console.log("crearsala")
         socket.join(data.roomName);
         console.log("la sala ", data.roomName, " fue creada.");
         socket.emit("returnPlayers",{players:await unirseSala(data)});
-      }else if(!data.createRoom&&a[0].length == 1){
-        console.log("poak2")
+      }else if(!data.createRoom&&a.length == 1){
+
         socket.join(data.roomName);
         socket.emit("returnPlayers",{players:await unirseSala(data)});
         console.log(data.nmPl, "se ha unido a la sala ", data.roomName);
@@ -445,7 +444,7 @@ async function unirseSala(data){
   }else{
     await MySQL.realizarQuery(`UPDATE Sala SET jugadores="${data.nmPl}" WHERE ID_sala LIKE "${Salaarray[0].ID_sala}"`)
   }
-  
+
   console.log(Salaarray)
   return Salaarray;
 };
@@ -504,3 +503,7 @@ app.put("/sumarCategoria", async function(req, res){
   } 
 });
 
+app.get('/pruebaEntrar', function(req, res){
+  console.log("oy un pediod GET", req.query);
+  res.render('final', null);
+})
