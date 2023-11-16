@@ -220,8 +220,10 @@ socket.on("pararIntermedio",() => {
   for(let x in a){
     a[x].disabled=true
   }
+
   socket.emit("pararTodos")
 });
+
 
 socket.on("pararTodos", (data) => {
     console.log(data);
@@ -230,7 +232,8 @@ socket.on("pararTodos", (data) => {
       vectorRta.push(document.getElementById(listaEjemplo[i]).value)
       console.log("daa", vectorRta)
     }
-
+    sessionStorage.setItem("testJSON", myJSON);
+    
     categoriesBasta = sessionStorage.categories.split(",")
     console.log(categoriesBasta)
     let html = `
@@ -244,10 +247,7 @@ socket.on("pararTodos", (data) => {
     document.getElementById("juego").innerHTML = html
     } 
 
-    socket.emit("cargarRespuestas", {vectorRta: vectorRta})
-    
-    
-    
+    socket.emit("cargarRespuestas", {vectorRta: vectorRta})    
   });
 
 socket.on("vectorRespuestas", (data) => {

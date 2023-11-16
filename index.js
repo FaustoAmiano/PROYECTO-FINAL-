@@ -410,14 +410,17 @@ io.on("connection", socket => {
   socket.on("joinRoom", async (data) => {
     console.log("joinRoom", data.roomName)
     let a = await MySQL.realizarQuery(` SELECT nombre_sala FROM Sala WHERE nombre_sala like "${data.roomName}"`);
-    
+    console.log(a)
     if(data.roomName!=""){
-      
-      if(data.createRoom&&a.length != 1){
+      console.log("gik", a.length)
+      console.log("sa", data.createRoom)
+      if(data.createRoom==true&&a.length != 1){
+        console.log("poak")
         socket.join(data.roomName);
         console.log("la sala ", data.roomName, " fue creada.");
         await unirseSala(data);
-      }else if(data.createRoom&&a.length == 1){
+      }else if(data.createRoom==false&&a.length == 1){
+        console.log("poak")
         socket.join(data.roomName);
         socket.emit("returnPlayers",{players:await unirseSala(data)});
         console.log(data.nmPl, "se ha unido a la sala ", data.roomName);
@@ -437,11 +440,14 @@ io.on("connection", socket => {
 async function unirseSala(data){
   let Salaarray=await MySQL.realizarQuery(`SELECT jugadores, ID_sala FROM Sala WHERE nombre_sala LIKE "${data.roomName}"`);
   console.log("a",Salaarray)
+  console.log("sala", Salaarray[0].jugadores)
   if(Salaarray[0].jugadores==undefined){
     console.log("pija")
     await MySQL.realizarQuery(`UPDATE Sala SET jugadores="${data.nmPl}" WHERE ID_sala LIKE "${Salaarray[0].ID_sala}"`);
   }else{
-    Salaarray[0].jugadores+=" ",data.nmPl;
+    console.log("maja")
+    Salaarray[0].jugadores.push(data.nmPl);
+    console.log("aaa", Salaarray[0].jugadores)
     await MySQL.realizarQuery(`UPDATE Sala SET jugadores="${Salaarray[0].jugadores}" WHERE ID_sala LIKE "${Salaarray[0].ID_sala}"`);
   }  
   console.log(Salaarray)
