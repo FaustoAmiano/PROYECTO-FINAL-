@@ -232,9 +232,8 @@ socket.on("pararTodos", (data) => {
       vectorRta.push(document.getElementById(listaEjemplo[i]).value)
       console.log("daa", vectorRta)
     }
-    sessionStorage.setItem("testJSON", myJSON);
     
-    categoriesBasta = sessionStorage.categories.split(",")
+    categoriesBasta = sessionStorage.categoriasFinal.split(",")
     console.log(categoriesBasta)
     let html = `
         <div style="padding-right: 120px" class="contenedor">
@@ -242,7 +241,7 @@ socket.on("pararTodos", (data) => {
     for (let i in categoriesBasta){
       html +=`
         <h4 id="${categoriesBasta[i]}">${categoriesBasta[i]}</h4>
-        <div id="respuestasJugadores" class="respuestasJugadores"> </div>        
+        <div id="respuestasJugadores" class="respuestasJugadores"> </div>
         `
     document.getElementById("juego").innerHTML = html
     } 
@@ -251,7 +250,7 @@ socket.on("pararTodos", (data) => {
   });
 
 socket.on("vectorRespuestas", (data) => {
-  console.log(data)
+  console.log("adios", data)
 
   if(data.respuestas.length >= data.jugadores.length) {
     let divsRtas = document.getElementsByClassName("respuestasJugadores");
@@ -264,7 +263,8 @@ socket.on("vectorRespuestas", (data) => {
           <button class="btn btn-primary" id="success-outlined" type="button">Bien</button>
           <button class="btn btn-primary" id="danger-outlined" type="button">Mal</button>
       </div> 
-      </div>`;
+      </div>
+      <br>`;
       }
       divsRtas[i].innerHTML = rtas;
     }
@@ -274,7 +274,7 @@ socket.on("vectorRespuestas", (data) => {
 
 socket.on("returnPlayers", (data)=>{
   console.log("players",data);
-}
+})
   
 function votar(){
   let bien = document.getElementById("success-outlined")

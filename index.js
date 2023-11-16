@@ -276,7 +276,7 @@ app.post('/newRoom', async function(req, res){
   console.log(vectorGlobalUsuarios)
   let x=await MySQL.realizarQuery(` SELECT nombre_sala FROM Sala WHERE nombre_sala like "${req.body.roomName}"`)
   if(x.length ==0){
-    await MySQL.realizarQuery(` INSERT INTO Sala(nombre_sala, jugadores) VALUES ("${req.body.roomName}","${req.body.nmPl}")`)
+    await MySQL.realizarQuery(` INSERT INTO Sala(nombre_sala) VALUES ("${req.body.roomName}")`)
     res.send({validar:true})
   }else{
     res.send({validar:false})
@@ -382,19 +382,18 @@ io.on("connection", socket => {
   socket.on("parar", (data) => {
     console.log(data)
     //io.to(req.session.room).emit("pararTodos", {mensaje: "pararTodos"}) 
-    vectorRespuestas = []
     io.emit("pararIntermedio", {mensaje: "pararIntermedio"}) 
   }) ;
   
   socket.on("pararTodos", (data) => {
     console.log(data)
     //io.to(req.session.room).emit("pararTodos", {mensaje: "pararTodos"}) 
-    vectorRespuestas = []
-    io.emit("pararTodos", {mensaje: "pararTodos"}) 
+    io.emit("pararTodos", {mensaje: "pararTodoss"}) 
   }) ;
 
   socket.on("cargarRespuestas", (data) => {
-    console.log(data)
+    let vectorRespuestas = []
+    console.log("hola", data)
     console.log(req.session.conectado)
     jugador = req.session.conectado
     vectorRespuestas.push({respuestas: data.vectorRta, jugador: jugador})

@@ -492,6 +492,8 @@ function mostrarJSON(){
   console.log("que es esto 2 ", dataArray)
   palabra = dataArray[0].letra
   ejemplo(dataArray)
+  console.log("faustinio", dataArray)
+  sessionStorage.setItem("categoriasFinal", dataArray[0].cat)
 }
 
 function validarInput(input) {
