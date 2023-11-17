@@ -482,7 +482,6 @@ function ejemplo(dataArray){
 
 palabra = ""
 function mostrarJSON(){
-  console.log(sessionStorage.testJSON)
   let data = JSON.parse(sessionStorage.getItem("testJSON"));
   const dataArray = Object.values(data)
   palabra = dataArray[0].letra
@@ -499,8 +498,6 @@ function validarInput(input) {
     valor = letraInicial + valor.substring(1);
     input.value = valor;
   }
-<<<<<<< Updated upstream
-=======
 }
 
 function traerUsuarios(){
@@ -537,13 +534,30 @@ async function tablaUsuarios(dataArray){
     </tr>`;
     document.getElementById("numero"). innerHTML += filaHtml
   }
-  
-} catch (error) {
-  console.error("Error:", error);
-}
+  } catch (error) {
+    console.error("Error:", error);
+  }
 }
 
 function nextRound(){
+  rondasContador = rondasContador + 1
   palabra_elegida()
->>>>>>> Stashed changes
+  nextRoundFetch()
+}
+
+async function nextRoundFetch(){
+  try{
+    data=sessionStorage.userName
+    const response = await fetch("/DelfiTeQuiero", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(data),
+  });
+  const result = await response.json();
+
+  }catch(error){
+    console.log("Error: ", error)
+  }
 }

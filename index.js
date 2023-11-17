@@ -130,7 +130,8 @@ app.get("/", (req, res) => {
     res.render('register', null); //Renderizo página "home" sin pasar ningún objeto a Handlebars
   });
   app.get('/pruebaEntrar', function(req, res){
-    console.log("Soy un pedido GET", req.query); 
+    console.log("Soy un pedido GET", req.query);
+
     res.render('Juego', null); //Renderizo página "home" sin pasar ningún objeto a Handlebars
   });
 
@@ -272,6 +273,7 @@ app.post('/newRoom', async function(req, res){
     vectorGlobalUsuarios.push(req.body.nmPl)
   }
   req.session.room = req.body.roomName
+  req.session.save()
   console.log("req.session:", req.session.room)
   console.log(vectorGlobalUsuarios)
   let x=await MySQL.realizarQuery(` SELECT nombre_sala FROM Sala WHERE nombre_sala like "${req.body.roomName}"`)
@@ -401,6 +403,7 @@ io.on("connection", socket => {
       vectorRespuestas.push({respuestas: data.vectorRta, jugador: jugador})
       console.log("este vector mando", vectorRespuestas)
       io.emit("vectorRespuestas", {respuestas: vectorRespuestas, jugadores: vectorGlobalUsuarios});
+      vectorRespuestas = []
     }
   });
 
@@ -443,13 +446,13 @@ io.on("connection", socket => {
     console.log("hola")
     console.log(req.session.room)
     txt = "esta en la sala ",req.session.room
-    io.emit("empezarTodos", {data})    
+    io.emit("empezarTodos", {data})
+    //io.to(req.session.room).emit("empezarTodos", {data})    
   })
 
-  socket.on("terminar", (data) =>{
+  socket.on("mandarFinal", () =>{
     console.log("entre al fin")
-    data.push(vectorGlobalUsuarios)
-    io.emit()
+    io.emit("terminar", {users: vectorGlobalUsuarios})
   })
 });
 
@@ -511,6 +514,11 @@ app.post('/randomWord', async function(req, res){
   res.send({letter: letrasAleatoria})
 
 });
+app.post('/DelfiTeQuiero', async function(req, res){
+  a=(MySQL.realizarQuery(`SELECT ID_sala, ronda from Sala where jugadores like "%${req.body}% order by ID_sala DESC limit 1"`))[0];
+  MySQL.realizarQuery(`UPDATE Sala set ronda=${a.ronda}where Id_sala like ${a.ID_sala}`);
+  res.send({a:a})
+})
 
 app.put("/sumarCategoria", async function(req, res){
   let x=await MySQL.realizarQuery(` SELECT * FROM Categorias WHERE contenido like "${req.body.nuevaCategoria}"`)
@@ -522,7 +530,7 @@ app.put("/sumarCategoria", async function(req, res){
   } 
 });
 
-app.get('/pruebaEntrar', function(req, res){
+app.get('/final', function(req, res){
   console.log("soy un pediod GET", req.query);
   res.render('final', null);
 })
@@ -531,3 +539,15 @@ app.get('/terminar', function(req, res){
   console.log("soy un pediod GET", req.query);
   res.render('final', null);
 })
+
+app.put('/traerUsuarios', async function(req, res){
+  console.log(req.body)
+  const dataArray = req.body
+  for (let i in dataArray){
+    let vector = await MySQL.realizarQuery(` SELECT * FROM Jugadores WHERE mail like "${dataArray[i]}"  `)
+    console.log(vector)
+    res.send({jugadores: vector})
+  }
+  
+
+});

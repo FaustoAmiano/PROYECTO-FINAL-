@@ -147,6 +147,7 @@ async function chequearSala(){
       console.log("Sala encontrada con exito");
       await traerJugadores(data);
       joinRoom(data);
+      sessionStorage.sala=data.roomName
       location.href='/paginadeespera'
       espera()
     }
@@ -255,8 +256,10 @@ socket.on("vectorRespuestas", (data) => {
     let divsRtas = document.getElementsByClassName("respuestasJugadores");
     console.log(divsRtas.length)
     for(let i = 0; i < divsRtas.length; i++) {
+      console.log("ingresa")
       let rtas = "";
       for(let player = 0; player < data.respuestas.length; player++) {
+        console.log("adzz")
         rtas += `${data.respuestas[player].jugador}: ${data.respuestas[player].respuestas[i]}
         <div style="padding-right: 120px" class="contenedor">
           <div class="cd-switch">
@@ -268,6 +271,7 @@ socket.on("vectorRespuestas", (data) => {
       }
       divsRtas[i].innerHTML = rtas;
     }
+
     let html = `<div class="mb-3 form-check" div="admin" id="siguiente">
       <center><button class="btn btn-primary" id="avanzar" type="button" onclick="final()">Siguiente Ronda</button></center>
       </div> `
@@ -288,30 +292,10 @@ socket.on("vectorRespuestas", (data) => {
 
 socket.on("returnPlayers", (data)=>{
   console.log("players",data);
-<<<<<<< Updated upstream
-})
-  
-function votar(){
-  let bien = document.getElementById("success-outlined")
-  let mal = document.getElementById("danger-outlined")
-  let contadorBien=0
-  bien.addEventListener('click', ()=>{
-    contadorBien+=100
-    console.log(contadorBien)
-  })
-  let contadorMal=0
-  mal.addEventListener('click', ()=>{
-    contadorMal-=100
-    console.log(contadorMal)
-  })
-  console.log("4hola", contadorMal)
-}
-=======
 
 })
 
 
->>>>>>> Stashed changes
 
 function entrarJuego(){
   data = {
@@ -332,16 +316,6 @@ function irAlJuego(){
   location.href = '/pruebaEntrar'
 }
 
-
-
-//location.href = '/terminar'
-
-
-<<<<<<< Updated upstream
-
-=======
-}
-
 function final(){
   socket.emit("mandarFinal", {})
 }
@@ -355,4 +329,3 @@ socket.on("terminar", (data) => {
   sessionStorage.setItem("testJSON2", myJson2);
   location.href = '/terminar'
 })
->>>>>>> Stashed changes
