@@ -151,3 +151,22 @@
     font-size:250%;
 }
 
+#success-outlined{
+    font-size: large;
+    background-color: green;
+    
+}
+
+#danger-outlined{
+    font-size: large;
+    background-color: rgb(228, 16, 16);
+}
+
+#votoBien{
+    src: url(https://upload.wikimedia.org/wikipedia/commons/thumb/5/5f/Red_X.svg/2048px-Red_X.svg.png);
+}
+
+#votoMal{
+    height:"50px"; 
+    width:"50px";
+}
