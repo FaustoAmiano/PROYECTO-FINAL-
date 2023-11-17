@@ -482,7 +482,6 @@ function ejemplo(dataArray){
 
 palabra = ""
 function mostrarJSON(){
-  console.log(sessionStorage.testJSON)
   let data = JSON.parse(sessionStorage.getItem("testJSON"));
   const dataArray = Object.values(data)
   palabra = dataArray[0].letra
@@ -499,8 +498,7 @@ function validarInput(input) {
     valor = letraInicial + valor.substring(1);
     input.value = valor;
   }
-<<<<<<< Updated upstream
-=======
+
 }
 
 function traerUsuarios(){
@@ -545,5 +543,6 @@ async function tablaUsuarios(dataArray){
 
 function nextRound(){
   palabra_elegida()
->>>>>>> Stashed changes
+
 }
+

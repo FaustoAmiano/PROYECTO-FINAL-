@@ -272,6 +272,7 @@ app.post('/newRoom', async function(req, res){
     vectorGlobalUsuarios.push(req.body.nmPl)
   }
   req.session.room = req.body.roomName
+  req.session.save()
   console.log("req.session:", req.session.room)
   console.log(vectorGlobalUsuarios)
   let x=await MySQL.realizarQuery(` SELECT nombre_sala FROM Sala WHERE nombre_sala like "${req.body.roomName}"`)
@@ -401,6 +402,7 @@ io.on("connection", socket => {
       vectorRespuestas.push({respuestas: data.vectorRta, jugador: jugador})
       console.log("este vector mando", vectorRespuestas)
       io.emit("vectorRespuestas", {respuestas: vectorRespuestas, jugadores: vectorGlobalUsuarios});
+      vectorRespuestas = []
     }
   });
 
@@ -443,13 +445,13 @@ io.on("connection", socket => {
     console.log("hola")
     console.log(req.session.room)
     txt = "esta en la sala ",req.session.room
-    io.emit("empezarTodos", {data})    
+    io.emit("empezarTodos", {data})
+    //io.to(req.session.room).emit("empezarTodos", {data})    
   })
 
-  socket.on("terminar", (data) =>{
+  socket.on("mandarFinal", () =>{
     console.log("entre al fin")
-    data.push(vectorGlobalUsuarios)
-    io.emit()
+    io.emit("terminar", {users: vectorGlobalUsuarios})
   })
 });
 
@@ -531,3 +533,15 @@ app.get('/terminar', function(req, res){
   console.log("soy un pediod GET", req.query);
   res.render('final', null);
 })
+
+app.put('/traerUsuarios', async function(req, res){
+  console.log(req.body)
+  const dataArray = req.body
+  for (let i in dataArray){
+    let vector = await MySQL.realizarQuery(` SELECT * FROM Jugadores WHERE mail like "${dataArray[i]}"  `)
+    console.log(vector)
+    res.send({jugadores: vector})
+  }
+  
+
+});
