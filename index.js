@@ -218,7 +218,7 @@ app.post('/nuevoUsuario', async function(req, res)
     
     try {
       await authService.registerUser(auth, { email, password });
-      await MySQL.realizarQuery (`INSERT INTO Jugadores VALUES("${email}", "${user}", ${false},${0},${-1})`)
+      await MySQL.realizarQuery (`INSERT INTO Jugadores VALUES("${email}", "${user}", ${false},${0})`)
 
       res.send({validar:true});
     } 
