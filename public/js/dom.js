@@ -447,13 +447,7 @@ async function palabra_elegida(){
     //En result obtengo la respuesta
     const result = await response.json();
     console.log("Success:", result);
-
-    palabraalea = result.letter; 
-
-    console.log(palabraalea)
-
-    sessionStorage.setItem("letra", palabraalea);
-
+    sessionStorage.letra=result.letter;
     
   } catch (error) {
     console.error("Error:", error);
@@ -505,4 +499,51 @@ function validarInput(input) {
     valor = letraInicial + valor.substring(1);
     input.value = valor;
   }
+<<<<<<< Updated upstream
+=======
+}
+
+function traerUsuarios(){
+  let data = JSON.parse(sessionStorage.getItem("testJSON2"));
+  const dataArray = Object.values(data)
+  console.log("users:", dataArray)
+  sessionStorage.setItem("usuariosFinal", dataArray)
+  console.log("storage", sessionStorage.getItem("usuariosFinal"))
+  console.log("a ver", dataArray[0])
+  tablaUsuarios(dataArray)
+}
+
+
+async function tablaUsuarios(dataArray){
+  try {
+  const response = await fetch("/traerUsuarios", {
+    method: "PUT",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(dataArray),
+  });
+  
+  //En result obtengo la respuesta
+  const result = await response.json();
+  console.log("Success:", result);
+  usuarios = result.jugadores
+  for (let i in usuarios){
+    let filaHtml = `
+    <tr>
+      <th scope="row">${[i] + 1}</th>
+      <td>${usuarios[i].mail}</td>
+      <td>${usuarios[i].puntaje}</td>
+    </tr>`;
+    document.getElementById("numero"). innerHTML += filaHtml
+  }
+  
+} catch (error) {
+  console.error("Error:", error);
+}
+}
+
+function nextRound(){
+  palabra_elegida()
+>>>>>>> Stashed changes
 }

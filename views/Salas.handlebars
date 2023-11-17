@@ -7,63 +7,57 @@
 <br>
 <body id="fondo" name="fondo">
   <center>
-      <div class="card" id="cardLogin" style="width: 28rem; float:center; display:block" >
-        <div class="card-body">
-          <h5 class="card-title">Crear una Sala</h5>
-          <div id="pedilo" class="mb-3 form-group">
-            <button class="btn btn-primary" type="button" onclick="createRoom()">Crear</button>
-          </div>
-          <h5 class="card-title">Unirse a una Sala</h5>
-          <div id="unirse" class="mb-3 form-group">
-            <button class="btn btn-primary" type="button" onclick="join()">Unirse</button>
-          </div>
+    <div class="card" id="cardLogin" style="width: 28rem; float:center; display:block" >
+      <div class="card-body">
+        <h5 class="card-title">Crear una Sala</h5>
+        <div id="pedilo" class="mb-3 form-group">
+          <button class="btn btn-primary" type="button" onclick="createRoom()">Crear</button>
+        </div>
+        <h5 class="card-title">Unirse a una Sala</h5>
+        <div id="unirse" class="mb-3 form-group">
+          <button class="btn btn-primary" type="button" onclick="join()">Unirse</button>
         </div>
       </div>
-    </center> 
-
-<center>
+    </div>
+  </center> 
+  <center>
     <div class="card" id="categoriesButtons" style="width: 28rem; float:center; display:block" >
-        <div class="card-body">
-          <h5 class="card-title">Categorias:</h5>
-          
-          <div class="btn-group" role="group" aria-label="Basic radio toggle button group">
+      <div class="card-body">
+        <h5 class="card-title">Categorias:</h5>
+        <div class="btn-group" role="group" aria-label="Basic radio toggle button group">
           <div id="categoriasTraidas"></div>
           <div id="categoriasNuevas"></div>      
-          
-          </div>
-          
+        </div> 
+      </div>
+      <div>
+        <h6>Sumar una categoría</h6>
+        <input type="input" name="addCategories" placeholder="Ingrese una categoría" id = "inputCategory" />
+        <button class="btn btn-primary" type="button" onclick="addCategory()">Agregar</button>
+      </div>  
+      <div>
+        <h6>Cantidad de rondas</h6>
+        <div id="">
+          <input type="radio" class="btn-check" name="btnradio" id="round1" autocomplete="off" >
+          <label class="btn btn-outline-primary" name="fausto"for="round1">1</label>
+          <input type="radio" class="btn-check" name="btnradio" id="round2" autocomplete="off" >
+          <label class="btn btn-outline-primary" name="fausto" for="round2">2</label>
+          <input type="radio" class="btn-check" name="btnradio" id="round3" autocomplete="off" >
+          <label class="btn btn-outline-primary" name="fausto" for="round3">3</label>
+          <input type="radio" class="btn-check" name="btnradio" id="round4" autocomplete="off" >
+          <label class="btn btn-outline-primary" name="fausto" for="round4">4</label>
+          <input type="radio" class="btn-check" name="btnradio" id="round5" autocomplete="off" >
+          <label class="btn btn-outline-primary" name="fausto" for="round5">5</label>
         </div>
-        
-        <div>
-            <h6>Sumar una categoría</h6>
-            <input type="input" name="addCategories" placeholder="Ingrese una categoría" id = "inputCategory" />
-            <button class="btn btn-primary" type="button" onclick="addCategory()">Agregar</button>
-        </div>  
-        <div>
-          <h6>Cantidad de rondas</h6>
-          <div id="">
-           <input type="radio" class="btn-check" name="btnradio" id="round1" autocomplete="off" >
-           <label class="btn btn-outline-primary" name="fausto"for="round1">1</label>
-           <input type="radio" class="btn-check" name="btnradio" id="round2" autocomplete="off" >
-           <label class="btn btn-outline-primary" name="fausto" for="round2">2</label>
-           <input type="radio" class="btn-check" name="btnradio" id="round3" autocomplete="off" >
-           <label class="btn btn-outline-primary" name="fausto" for="round3">3</label>
-           <input type="radio" class="btn-check" name="btnradio" id="round4" autocomplete="off" >
-           <label class="btn btn-outline-primary" name="fausto" for="round4">4</label>
-           <input type="radio" class="btn-check" name="btnradio" id="round5" autocomplete="off" >
-           <label class="btn btn-outline-primary" name="fausto" for="round5">5</label>
-          </div>
-        </div>
+      </div>
     </div>
-    
-    </center>
-    <div class="container-md" id="contenedorCategorias">
-    </div>
+  </center>
+  <div class="container-md" id="contenedorCategorias">
+  </div>
 </body>
-
 <script>
   traerCategorias()
   traerSalas()
   API()
+  sessionStorage.setItem("sala", "")
 </script>
 
