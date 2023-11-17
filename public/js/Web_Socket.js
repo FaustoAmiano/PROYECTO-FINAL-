@@ -220,7 +220,6 @@ socket.on("pararIntermedio",() => {
   for(let x in a){
     a[x].disabled=true
   }
-
   socket.emit("pararTodos")
 });
 
@@ -230,7 +229,6 @@ socket.on("pararTodos", (data) => {
     let vectorRta = []
     for(i in listaEjemplo){
       vectorRta.push(document.getElementById(listaEjemplo[i]).value)
-      console.log("daa", vectorRta)
     }
     
     categoriesBasta = sessionStorage.categoriasFinal.split(",")
@@ -245,18 +243,23 @@ socket.on("pararTodos", (data) => {
         `
     document.getElementById("juego").innerHTML = html
     } 
-
     socket.emit("cargarRespuestas", {vectorRta: vectorRta})    
   });
 
 socket.on("vectorRespuestas", (data) => {
   console.log("adios", data)
+  console.log(data.respuestas.length)
+  console.log(data.jugadores.length)
+  console.log("jiji", data.respuestas[0].jugador)
 
   if(data.respuestas.length >= data.jugadores.length) {
     let divsRtas = document.getElementsByClassName("respuestasJugadores");
+    console.log(divsRtas.length)
     for(let i = 0; i < divsRtas.length; i++) {
+      console.log("ingresa")
       let rtas = "";
       for(let player = 0; player < data.respuestas.length; player++) {
+        console.log("adzz")
         rtas += `${data.respuestas[player].jugador}: ${data.respuestas[player].respuestas[i]}
         <div style="padding-right: 120px" class="contenedor">
           <div class="cd-switch">
@@ -268,14 +271,21 @@ socket.on("vectorRespuestas", (data) => {
       }
       divsRtas[i].innerHTML = rtas;
     }
+    let html = `<div class="mb-3 form-check" div="admin" id="siguiente">
+      <center><button class="btn btn-primary" id="avanzar" type="button" onclick="final()">Siguiente Ronda</button></center>
+      </div> `
+      document.getElementById("basta").innerHTML = html;
+
   }
       });
 
 
 socket.on("returnPlayers", (data)=>{
   console.log("players",data);
-})
-  
+
+}
+,
+
 function votar(){
   let bien = document.getElementById("success-outlined")
   let mal = document.getElementById("danger-outlined")
@@ -291,7 +301,7 @@ function votar(){
   })
   console.log("4hola", contadorMal)
 }
-
+,
 function entrarJuego(){
   data = {
     cat: sessionStorage.categories,
@@ -300,18 +310,27 @@ function entrarJuego(){
   }
   console.log(data)
   socket.emit("empezar", data)
-}
+},
 socket.on("empezarTodos", (data) =>{
   console.log("esto es data", data.a)
   const myJSON = JSON.stringify(data);
   sessionStorage.setItem("testJSON", myJSON);
   irAlJuego()
-})
+}),
 function irAlJuego(){
-
   location.href = '/pruebaEntrar'
-}
 
+},
+function final(){
+  socket.emit("mandarFinal", {})
+},
 
-
-
+socket.on("terminar", (data) => {
+  console.log(data.users)
+  data = {
+    users: data.users
+  }
+  const myJson2 = JSON.stringify(data)
+  sessionStorage.setItem("testJSON2", myJson2);
+  location.href = '/terminar'
+}))
