@@ -488,7 +488,6 @@ function ejemplo(dataArray){
 
 palabra = ""
 function mostrarJSON(){
-  console.log(sessionStorage.testJSON)
   let data = JSON.parse(sessionStorage.getItem("testJSON"));
   const dataArray = Object.values(data)
   palabra = dataArray[0].letra
@@ -505,4 +504,44 @@ function validarInput(input) {
     valor = letraInicial + valor.substring(1);
     input.value = valor;
   }
+}
+
+function traerUsuarios(){
+  let data = JSON.parse(sessionStorage.getItem("testJSON2"));
+  const dataArray = Object.values(data)
+  console.log("users:", dataArray)
+  sessionStorage.setItem("usuariosFinal", dataArray)
+  console.log("storage", sessionStorage.getItem("usuariosFinal"))
+  console.log("a ver", dataArray[0])
+  tablaUsuarios(dataArray)
+}
+
+
+async function tablaUsuarios(dataArray){
+  try {
+  const response = await fetch("/traerUsuarios", {
+    method: "PUT",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(dataArray),
+  });
+  
+  //En result obtengo la respuesta
+  const result = await response.json();
+  console.log("Success:", result);
+  usuarios = result.jugadores
+  for (let i in usuarios){
+    let filaHtml = `
+    <tr>
+      <th scope="row">${[i] + 1}</th>
+      <td>${usuarios[i].mail}</td>
+      <td>${usuarios[i].puntaje}</td>
+    </tr>`;
+    document.getElementById("numero"). innerHTML += filaHtml
+  }
+  
+} catch (error) {
+  console.error("Error:", error);
+}
 }
