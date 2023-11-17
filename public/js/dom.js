@@ -498,6 +498,7 @@ function validarInput(input) {
     valor = letraInicial + valor.substring(1);
     input.value = valor;
   }
+
 }
 
 function traerUsuarios(){
@@ -561,3 +562,4 @@ async function nextRoundFetch(){
     console.log("Error: ", error)
   }
 }
+

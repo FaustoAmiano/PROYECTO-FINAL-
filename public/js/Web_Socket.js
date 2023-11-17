@@ -253,6 +253,7 @@ socket.on("vectorRespuestas", (data) => {
   console.log("adios", data)
   console.log("jiji", data.respuestas[0].jugador)
   if(data.respuestas.length >= data.jugadores.length) {
+
     let divsRtas = document.getElementsByClassName("respuestasJugadores");
     console.log(divsRtas.length)
     for(let i = 0; i < divsRtas.length; i++) {
@@ -292,10 +293,7 @@ socket.on("vectorRespuestas", (data) => {
 
 socket.on("returnPlayers", (data)=>{
   console.log("players",data);
-
 })
-
-
 
 function entrarJuego(){
   data = {
@@ -315,6 +313,20 @@ socket.on("empezarTodos", (data) =>{
 function irAlJuego(){
   location.href = '/pruebaEntrar'
 }
+
+
+function final(){
+  socket.emit("mandarFinal", {})
+}
+socket.on("terminar", (data) => {
+  console.log(data.users)
+  data = {
+    users: data.users
+  }
+  const myJson2 = JSON.stringify(data)
+  sessionStorage.setItem("testJSON2", myJson2);
+  location.href = '/terminar'
+})
 
 function final(){
   socket.emit("mandarFinal", {})
