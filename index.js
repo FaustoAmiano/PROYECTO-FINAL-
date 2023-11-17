@@ -488,7 +488,7 @@ return Salaarray;
 
 
 app.put('/logout', async function(req, res){
-
+let m =await MySQL.realizarQuery(`UPDATE Jugadores SET puntaje=${0} WHERE mail LIKE "${req.session.conectado}"`)
 req.session.destroy();
 
 res.send({validar:true})
@@ -553,11 +553,14 @@ app.put('/traerUsuarios', async function(req, res){
 console.log(req.body)
 const dataArray = req.body
 let vector = [];
-for (let i in dataArray){
+let query = "SELECT * FROM Jugadores WHERE ";
+for (let i in dataArray[0]){
   console.log(dataArray[0])
-  vector.push(await MySQL.realizarQuery(` SELECT * FROM Jugadores WHERE mail like "${dataArray[i]}"  `));
-  console.log("explo", vector)
-}
-res.send(vector) 
+  if(i != 0)
+    query += " OR";
+  query += ` mail like "${dataArray[0][i]}"`;
+};
+console.log("query", query)
+res.send(await MySQL.realizarQuery(query)); 
 
 });

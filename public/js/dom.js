@@ -532,15 +532,16 @@ const result = await response.json();
 console.log("Success:", result);
 console.log("jug", result)
 let usuarios = result
+document.getElementById("numero").innerHTML = "";
 for (let i in usuarios){
   
   let filaHtml = `
   <tr>
     <th scope="row">${[i] + 1}</th>
-    <td>${usuarios[i][0].nom_usuario}</td>
-    <td>${usuarios[i][0].puntaje}</td>
+    <td>${usuarios[i].nom_usuario}</td>
+    <td>${usuarios[i].puntaje}</td>
   </tr>`;
-  document.getElementById("numero"). innerHTML += filaHtml
+  document.getElementById("numero").innerHTML += filaHtml
 }
 
 } catch (error) {

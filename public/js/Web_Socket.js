@@ -270,7 +270,7 @@ socket.on("vectorRespuestas", (data) => {
       divsRtas[i].innerHTML = rtas;
     }
     let html = `<div class="mb-3 form-check" div="admin" id="siguiente">
-      <center><button class="btn btn-primary" id="avanzar" type="button" onclick="final()">Siguiente Ronda</button></center>
+      <center><button class="btn btn-primary" id="avanzar" type="button" onclick="final()">Terminar</button></center>
       </div> `
       document.getElementById("basta").innerHTML = html;
 
