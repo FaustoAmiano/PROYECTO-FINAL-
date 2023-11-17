@@ -151,3 +151,12 @@
     font-size:250%;
 }
 
+#avanzar{
+    background-color: rgb(180, 83, 83);
+    width: 250px;
+    height: 75px;
+    margin-left: 1%;
+    font-family: 'Century Gothic';
+    font-size: 175%;
+
+}

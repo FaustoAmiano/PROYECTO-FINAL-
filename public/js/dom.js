@@ -459,17 +459,20 @@ async function palabra_elegida(){
     console.error("Error:", error);
   }
 }
-
+rondasContador = 0
 function ejemplo(dataArray){
   console.log(dataArray[0].cat)
   console.log(dataArray[0].ronda)
   console.log(dataArray[0].letra)
+  rondasContador = rondasContador + 1
+  console.log(rondasContador) 
+
   listaEjemplo = dataArray[0].cat.split(",")
   console.log("mario", listaEjemplo)
   let html =`<h5 id=letraElegida> Letra: ${dataArray[0].letra} </h5>`
     document.getElementById("letraRandom").innerHTML += html;
 
-    let html2 = `<h5 id=letraElegida> Rondas: ${dataArray[0].ronda}  </h5>`
+    let html2 = `<h5 id=letraElegida> Rondas: ${rondasContador}/${dataArray[0].ronda}  </h5>`
     document.getElementById("ronda").innerHTML = html2
   for (let i in listaEjemplo){
     console.log("dada", listaEjemplo[i])
@@ -488,8 +491,6 @@ function mostrarJSON(){
   console.log(sessionStorage.testJSON)
   let data = JSON.parse(sessionStorage.getItem("testJSON"));
   const dataArray = Object.values(data)
-  console.log("que es esto", data)
-  console.log("que es esto 2 ", dataArray)
   palabra = dataArray[0].letra
   ejemplo(dataArray)
   console.log("faustinio", dataArray)

@@ -374,7 +374,7 @@ app.get('/paginadeespera', function(req, res){
   res.render('espera', null)
 });
 
-
+let vectorRespuestas = []
 
 io.on("connection", socket => {
 
@@ -392,6 +392,19 @@ io.on("connection", socket => {
   }) ;
 
   socket.on("cargarRespuestas", (data) => {
+    if (data.vectorRta[0] == null || data.vectorRta[0] == ""){
+      console.log("falla el vector")
+    }
+    else{
+      
+      jugador = req.session.conectado
+      vectorRespuestas.push({respuestas: data.vectorRta, jugador: jugador})
+      console.log("este vector mando", vectorRespuestas)
+      io.emit("vectorRespuestas", {respuestas: vectorRespuestas, jugadores: vectorGlobalUsuarios});
+    }
+  });
+
+  /*socket.on("cargarRespuestas", (data) => {
     let vectorRespuestas = []
     console.log("hola", data)
     console.log(req.session.conectado)
@@ -404,7 +417,7 @@ io.on("connection", socket => {
     io.emit("vectorRespuestas", {respuestas: vectorRespuestas, jugadores: vectorGlobalUsuarios}); 
     console.log(req.session.room)
     io.to(req.session.room).emit("pararTodos", {}) 
-  }) ;
+  }) ;*/
 
   socket.on("joinRoom", async (data) => {
     console.log("joinRoom", data.roomName)
@@ -425,11 +438,18 @@ io.on("connection", socket => {
       };
     };
   });
+
   socket.on("empezar",(data) => {
     console.log("hola")
     console.log(req.session.room)
     txt = "esta en la sala ",req.session.room
     io.emit("empezarTodos", {data})    
+  })
+
+  socket.on("terminar", (data) =>{
+    console.log("entre al fin")
+    data.push(vectorGlobalUsuarios)
+    io.emit()
   })
 });
 
@@ -503,6 +523,11 @@ app.put("/sumarCategoria", async function(req, res){
 });
 
 app.get('/pruebaEntrar', function(req, res){
-  console.log("oy un pediod GET", req.query);
+  console.log("soy un pediod GET", req.query);
+  res.render('final', null);
+})
+
+app.get('/terminar', function(req, res){
+  console.log("soy un pediod GET", req.query);
   res.render('final', null);
 })
