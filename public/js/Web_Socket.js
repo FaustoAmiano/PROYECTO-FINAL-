@@ -225,34 +225,34 @@ socket.on("pararIntermedio",() => {
 
 
 socket.on("pararTodos", (data) => {
-    console.log(data);
-    let vectorRta = []
-    for(i in listaEjemplo){
-      vectorRta.push(document.getElementById(listaEjemplo[i]).value)
-    }
-    
-    categoriesBasta = sessionStorage.categoriasFinal.split(",")
-    console.log(categoriesBasta)
-    let html = `
-        <div style="padding-right: 120px" class="contenedor">
-            <h4 id="listo">¡Se ha agotado el tiempo!</h4>`
-    for (let i in categoriesBasta){
-      html +=`
-        <h4 id="${categoriesBasta[i]}">${categoriesBasta[i]}</h4>
-        <div id="respuestasJugadores" class="respuestasJugadores"> </div>
-        `
-    document.getElementById("juego").innerHTML = html
-    } 
-    socket.emit("cargarRespuestas", {vectorRta: vectorRta})    
-  });
-
+  console.log(data);
+  let vectorRta = []
+  for(i in listaEjemplo){
+    vectorRta.push(document.getElementById(listaEjemplo[i]).value)
+  }    
+  categoriesBasta = sessionStorage.categoriasFinal.split(",")
+  console.log(categoriesBasta)
+  let html = `
+      <div style="padding-right: 120px" class="contenedor">
+          <h4 id="listo">¡Se ha agotado el tiempo!</h4>`
+  for (let i in categoriesBasta){
+    html +=`
+      <h4 id="${categoriesBasta[i]}">${categoriesBasta[i]}</h4>
+      <div id="respuestasJugadores" class="respuestasJugadores"> </div>
+      `
+  document.getElementById("juego").innerHTML = html
+  } 
+  socket.emit("cargarRespuestas", {vectorRta: vectorRta})    
+});
+let contadorBien=0;
+let contadorMal=0;
 socket.on("vectorRespuestas", (data) => {
+  contadorBien=0;
+  contadorMal=0;
   console.log("adios", data)
-  console.log(data.respuestas.length)
-  console.log(data.jugadores.length)
   console.log("jiji", data.respuestas[0].jugador)
+  if(data.respuestas.length >= data.jugadores.length) {
 
-  if(data.respuestas.length <= data.jugadores.length) {
     let divsRtas = document.getElementsByClassName("respuestasJugadores");
     console.log(divsRtas.length)
     for(let i = 0; i < divsRtas.length; i++) {
@@ -275,28 +275,22 @@ socket.on("vectorRespuestas", (data) => {
       document.getElementById("basta").innerHTML = html;
 
   }
-      });
+  //Votar
+  document.getElementById("success-outlined").addEventListener('click', ()=>{
+    contadorBien+=1
+    console.log(contadorBien)
+  })
+  document.getElementById("danger-outlined").addEventListener('click', ()=>{
+    contadorMal-=1
+    console.log(contadorMal)
+  })
+});
 
 
 socket.on("returnPlayers", (data)=>{
   console.log("players",data);
 })
-  
-function votar(){
-  let bien = document.getElementById("success-outlined")
-  let mal = document.getElementById("danger-outlined")
-  let contadorBien=0
-  bien.addEventListener('click', ()=>{
-    contadorBien+=100
-    console.log(contadorBien)
-  })
-  let contadorMal=0
-  mal.addEventListener('click', ()=>{
-    contadorMal-=100
-    console.log(contadorMal)
-  })
-  console.log("4hola", contadorMal)
-}
+
 
 function entrarJuego(){
   data = {
@@ -334,4 +328,20 @@ socket.on("terminar", (data) => {
 //location.href = '/terminar'
 
 
+
+}
+
+function final(){
+  socket.emit("mandarFinal", {})
+}
+
+socket.on("terminar", (data) => {
+  console.log(data.users)
+  data = {
+    users: data.users
+  }
+  const myJson2 = JSON.stringify(data)
+  sessionStorage.setItem("testJSON2", myJson2);
+  location.href = '/terminar'
+})
 
