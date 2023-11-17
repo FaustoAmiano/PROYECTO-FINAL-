@@ -299,7 +299,9 @@ app.put('/vectores', async function(req, res) {
   }
 });
 app.post('/traerJugadores', async function(req, res){
-  res.send({jugadores:await MySQL.realizarQuery(` SELECT jugadores FROM Sala WHERE nombre_sala like "${req.body.roomName}"`)})
+  let vectoresUser = await MySQL.realizarQuery(` SELECT * FROM Sala WHERE nombre_sala like "${req.body.roomName}"`)
+  console.log(vectoresUser)
+  res.send({jugadores:vectoresUser})
 });
 app.post('/chequearSala', async function(req, res){
   console.log("Sala: ", req.body.roomName)
@@ -383,13 +385,14 @@ io.on("connection", socket => {
   socket.on("parar", (data) => {
     console.log(data)
     //io.to(req.session.room).emit("pararTodos", {mensaje: "pararTodos"}) 
+    vectorRespuestas = []
     io.emit("pararIntermedio", {mensaje: "pararIntermedio"}) 
   }) ;
   
   socket.on("pararTodos", (data) => {
     console.log(data)
     //io.to(req.session.room).emit("pararTodos", {mensaje: "pararTodos"}) 
-    io.emit("pararTodos", {mensaje: "pararTodoss"}) 
+    io.emit("pararTodos", {mensaje: "pararTodoss"})   
   }) ;
 
   socket.on("cargarRespuestas", (data) => {
@@ -402,9 +405,22 @@ io.on("connection", socket => {
       vectorRespuestas.push({respuestas: data.vectorRta, jugador: jugador})
       console.log("este vector mando", vectorRespuestas)
       io.emit("vectorRespuestas", {respuestas: vectorRespuestas, jugadores: vectorGlobalUsuarios});
-      vectorRespuestas = []
+      //vectorRespuestas = []
     }
+  socket.on("okResponse", async(player) =>{
+    console.log("o", player)
+    let ol= await MySQL.realizarQuery(`SELECT puntaje FROM Jugadores WHERE mail="${player.player}";`)
+    console.log(ol)
+    let play = await MySQL.realizarQuery(`UPDATE Jugadores SET puntaje = ${ol[0].puntaje+100} WHERE mail="${player.player}";`)
+  })
+  socket.on("badResponse", async(player) =>{
+    console.log("o", player)
+    let al= await MySQL.realizarQuery(`SELECT puntaje FROM Jugadores WHERE mail="${player.player}";`)
+    console.log(al)
+    let plays = await MySQL.realizarQuery(`UPDATE Jugadores SET puntaje = ${al[0].puntaje-100} WHERE mail="${player.player}";`)
+  }) 
   });
+
 
   /*socket.on("cargarRespuestas", (data) => {
     let vectorRespuestas = []
@@ -491,7 +507,6 @@ app.put('/eliminarCategoria', async function(req, res){
       if (categorias[i].contenido == req.body.borrar){
           entre = true
           respuesta = await MySQL.realizarQuery(`DELETE FROM Categorias WHERE contenido = "${req.body.borrar}";`)
-
           res.send({validar: true})    
           
           
@@ -537,11 +552,12 @@ app.get('/terminar', function(req, res){
 app.put('/traerUsuarios', async function(req, res){
   console.log(req.body)
   const dataArray = req.body
+  let vector = [];
   for (let i in dataArray){
-    let vector = await MySQL.realizarQuery(` SELECT * FROM Jugadores WHERE mail like "${dataArray[i]}"  `)
-    console.log(vector)
-    res.send({jugadores: vector})
+    console.log(dataArray[0])
+    vector.push(await MySQL.realizarQuery(` SELECT * FROM Jugadores WHERE mail like "${dataArray[i]}"  `));
+    console.log("explo", vector)
   }
-  
+  res.send(vector) 
 
 });

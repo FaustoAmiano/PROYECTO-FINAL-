@@ -530,13 +530,15 @@ async function tablaUsuarios(dataArray){
   //En result obtengo la respuesta
   const result = await response.json();
   console.log("Success:", result);
-  usuarios = result.jugadores
+  console.log("jug", result)
+  let usuarios = result
   for (let i in usuarios){
+    
     let filaHtml = `
     <tr>
       <th scope="row">${[i] + 1}</th>
-      <td>${usuarios[i].mail}</td>
-      <td>${usuarios[i].puntaje}</td>
+      <td>${usuarios[i][0].nom_usuario}</td>
+      <td>${usuarios[i][0].puntaje}</td>
     </tr>`;
     document.getElementById("numero"). innerHTML += filaHtml
   }

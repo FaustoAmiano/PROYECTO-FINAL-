@@ -249,20 +249,20 @@ socket.on("pararTodos", (data) => {
 socket.on("vectorRespuestas", (data) => {
   console.log("adios", data)
   console.log(data.respuestas.length)
-  console.log(data.jugadores.length)
+  console.log("m", data.jugadores.length)
   console.log("jiji", data.respuestas[0].jugador)
 
   if(data.respuestas.length <= data.jugadores.length) {
     let divsRtas = document.getElementsByClassName("respuestasJugadores");
-    console.log(divsRtas.length)
+    console.log("sope", divsRtas.length)
     for(let i = 0; i < divsRtas.length; i++) {
       let rtas = "";
       for(let player = 0; player < data.respuestas.length; player++) {
         rtas += `${data.respuestas[player].jugador}: ${data.respuestas[player].respuestas[i]}
         <div style="padding-right: 120px" class="contenedor">
-          <div class="cd-switch">
-          <button class="btn btn-primary" id="success-outlined" type="button">Bien</button>
-          <button class="btn btn-primary" id="danger-outlined" type="button">Mal</button>
+          <div class="cd-switch" name="${data.respuestas[player].jugador}">
+          <button class="btn btn-primary" id="success-outlined" type="button" onclick="okResponse(this)">Bien</button>
+          <button class="btn btn-primary" id="danger-outlined" type="button" onclick="badResponse(this)">Mal</button>
       </div> 
       </div>
       <br>`;
@@ -281,6 +281,21 @@ socket.on("vectorRespuestas", (data) => {
 socket.on("returnPlayers", (data)=>{
   console.log("players",data);
 })
+
+function okResponse(btn) {
+  console.log("conra", )
+  let div = btn.parentNode;
+  console.log("okResponse", btn, div, {player: div.getAttribute("name")});
+  socket.emit("okResponse", {player: div.getAttribute("name")});
+  div.innerHTML = "BIEN";
+}
+
+function badResponse(btn) {
+  let div = btn.parentNode;
+  console.log("badResponse", btn, div, {player: div.getAttribute("name")});
+  socket.emit("badResponse", {player: div.getAttribute("name")});
+  div.innerHTML = "MAL";
+}
   
 function votar(){
   let bien = document.getElementById("success-outlined")
@@ -321,7 +336,7 @@ function final(){
   socket.emit("mandarFinal", {})
 }
 socket.on("terminar", (data) => {
-  console.log(data.users)
+  console.log("das", data.users)
   data = {
     users: data.users
   }
