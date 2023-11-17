@@ -320,11 +320,10 @@ socket.on("empezarTodos", (data) =>{
 function irAlJuego(){
   location.href = '/pruebaEntrar'
 
-}
-
+},
 function final(){
   socket.emit("mandarFinal", {})
-}
+},
 
 socket.on("terminar", (data) => {
   console.log(data.users)
@@ -334,10 +333,4 @@ socket.on("terminar", (data) => {
   const myJson2 = JSON.stringify(data)
   sessionStorage.setItem("testJSON2", myJson2);
   location.href = '/terminar'
-})
-
-
-
-
-
-
+}))
