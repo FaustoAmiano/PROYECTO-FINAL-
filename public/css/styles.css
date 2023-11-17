@@ -160,3 +160,11 @@
     font-size: 175%;
 
 }
+#sucess-outlined{
+    font-size: large;
+    background-color: green;
+}
+#danger-outlined{
+    font-size: large;
+    background-color: rgb(180, 83, 83);
+}

@@ -1,5 +1,5 @@
 const IP = "ws://localhost:3000";
-const socket = io(IP);
+const socket = io();
 let room;
 
 socket.on("connect", () => {
