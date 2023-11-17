@@ -282,8 +282,10 @@ socket.on("vectorRespuestas", (data) => {
 
 socket.on("returnPlayers", (data)=>{
   console.log("players",data);
-})
-  
+
+}
+,
+
 function votar(){
   let bien = document.getElementById("success-outlined")
   let mal = document.getElementById("danger-outlined")
@@ -299,7 +301,7 @@ function votar(){
   })
   console.log("4hola", contadorMal)
 }
-
+,
 function entrarJuego(){
   data = {
     cat: sessionStorage.categories,
@@ -308,15 +310,16 @@ function entrarJuego(){
   }
   console.log(data)
   socket.emit("empezar", data)
-}
+},
 socket.on("empezarTodos", (data) =>{
   console.log("esto es data", data.a)
   const myJSON = JSON.stringify(data);
   sessionStorage.setItem("testJSON", myJSON);
   irAlJuego()
-})
+}),
 function irAlJuego(){
   location.href = '/pruebaEntrar'
+
 }
 
 function final(){
@@ -332,6 +335,7 @@ socket.on("terminar", (data) => {
   sessionStorage.setItem("testJSON2", myJson2);
   location.href = '/terminar'
 })
+
 
 
 
