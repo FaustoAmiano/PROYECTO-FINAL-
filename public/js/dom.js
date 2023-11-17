@@ -479,7 +479,7 @@ function ejemplo(dataArray){
     let html2 = `
         <br>
         <h5 class="card-title"> ${listaEjemplo[i]}</h5>
-        <input class="x" style="width : 1000px; heigth : 1px" plaecholder="Escriba" id="${listaEjemplo[i]}" oninput="validarInput(this)"/>`
+        <input class="x" style="width : 1000px; heigth : 1px" placeholder="Escriba" id="${listaEjemplo[i]}" oninput="validarInput(this)"/>`
     document.getElementById("prueba").innerHTML += html2;
   }
 }
@@ -506,7 +506,28 @@ function validarInput(input) {
   }
 }
 
-function traerUsuarios(){
+function validaVotoBien() {
+  document.getElementById("success-outlined").innerHTML = ` 
+  <div style="padding-right: 120px" class="contenedor">
+    <div id=votoBien class="cd-switch">
+      <img src="https://images.vexels.com/media/users/3/157932/isolated/preview/951a617272553f49e75548e212ed947f-icono-de-marca-de-verificacion-curvada.png" />
+    </div> 
+  </div>
+  <br>`;
+  document.getElementById("danger-outlined").innerHTML = ` `;
+  }
+
+function validaVotoMal() {
+  document.getElementById("danger-outlined").innerHTML = ` 
+  <div style="padding-right: 120px" class="contenedor">
+    <div id=votoMal class="cd-switch">
+      <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/5f/Red_X.svg/2048px-Red_X.svg.png" />
+    </div> 
+  </div>
+  <br>`;
+  document.getElementById("sucess-outlined").innerHTML = ` `;
+}
+  function traerUsuarios(){
   let data = JSON.parse(sessionStorage.getItem("testJSON2"));
   const dataArray = Object.values(data)
   console.log("users:", dataArray)

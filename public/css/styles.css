@@ -101,18 +101,18 @@
     z-index: -1;
     left: 50%;
     top: 50%;
-      border:2em solid #aaa;
-      Border-bottom-color:white;
+    border:2em solid #aaa;
+    Border-bottom-color:white;
     transform: translate(-50%,-50%) rotate(0deg);
     border-radius: 100%;
-            animation: cargando 1.5s infinite linear;
-      -webkit-animation: cargando 1.5s infinite linear;
-      box-shadow:0 0 0 1em #aaa;
-          }
-          @keyframes cargando {
-            from {
-              transform:translate(-50%,-50%) rotate(-360deg);
-      }
+    animation: cargando 1.5s infinite linear;
+    -webkit-animation: cargando 1.5s infinite linear;
+    box-shadow:0 0 0 1em #aaa;
+    }
+    @keyframes cargando {
+    from {
+    transform:translate(-50%,-50%) rotate(-360deg);
+    }
 }
 
 
@@ -124,8 +124,7 @@
 
 .header-content {
     text-align: center; /* Centra el contenido horizontalmente */
-  }
- 
+} 
 
 .contenedor {
     display: inline-block; /* Esto coloca los elementos en línea uno al lado del otro */
@@ -149,6 +148,27 @@
     margin-left: 1%;
     font-family: 'Century Gothic';
     font-size:250%;
+}
+
+#success-outlined{
+    font-size: large;
+    background-color: green;
+    
+}
+
+#danger-outlined{
+    font-size: large;
+    background-color: rgb(228, 16, 16);
+}
+
+#votoBien{
+    height:50px; 
+    width:50px;
+}
+
+#votoMal{
+    height:50px; 
+    width:50px;
 }
 
 #avanzar{
