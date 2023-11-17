@@ -218,7 +218,7 @@ app.post('/nuevoUsuario', async function(req, res)
       
       try {
         await authService.registerUser(auth, { email, password });
-        await MySQL.realizarQuery (`INSERT INTO Jugadores VALUES("${email}", "${user}", ${false},${0},${-1})`)
+        await MySQL.realizarQuery (`INSERT INTO Jugadores VALUES("${email}", "${user}", ${false},${0})`)
 
         res.send({validar:true});
       } 
@@ -277,7 +277,7 @@ app.post('/newRoom', async function(req, res){
   console.log(vectorGlobalUsuarios)
   let x=await MySQL.realizarQuery(` SELECT nombre_sala FROM Sala WHERE nombre_sala like "${req.body.roomName}"`)
   if(x.length ==0){
-    await MySQL.realizarQuery(` INSERT INTO Sala(nombre_sala) VALUES ("${req.body.roomName}")`)
+    await MySQL.realizarQuery(` INSERT INTO Sala(nombre_sala, ronda) VALUES ("${req.body.roomName}", 0)`)
     res.send({validar:true})
   }else{
     res.send({validar:false})

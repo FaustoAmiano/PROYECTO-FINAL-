@@ -447,13 +447,7 @@ async function palabra_elegida(){
     //En result obtengo la respuesta
     const result = await response.json();
     console.log("Success:", result);
-
-    palabraalea = result.letter; 
-
-    console.log(palabraalea)
-
-    sessionStorage.setItem("letra", palabraalea);
-
+    sessionStorage.letra=result.letter;
     
   } catch (error) {
     console.error("Error:", error);
@@ -504,6 +498,7 @@ function validarInput(input) {
     valor = letraInicial + valor.substring(1);
     input.value = valor;
   }
+
 }
 
 function traerUsuarios(){
@@ -547,3 +542,9 @@ async function tablaUsuarios(dataArray){
   console.error("Error:", error);
 }
 }
+
+function nextRound(){
+  palabra_elegida()
+
+}
+
