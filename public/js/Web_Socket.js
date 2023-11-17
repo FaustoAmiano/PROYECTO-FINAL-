@@ -283,13 +283,11 @@ function votar(){
   bien.addEventListener('click', ()=>{
     contadorBien+=100
     console.log(contadorBien)
-    validaVotoBien()
   })
   let contadorMal=0
   mal.addEventListener('click', ()=>{
     contadorMal-=100
     console.log(contadorMal)
-    validaVotoMal()
   })
   console.log("4hola", contadorMal)
 }

@@ -163,10 +163,11 @@
 }
 
 #votoBien{
-    src: url(https://upload.wikimedia.org/wikipedia/commons/thumb/5/5f/Red_X.svg/2048px-Red_X.svg.png);
+    height:50px; 
+    width:50px;
 }
 
 #votoMal{
-    height:"50px"; 
-    width:"50px";
+    height:50px; 
+    width:50px;
 }
