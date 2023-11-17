@@ -256,10 +256,8 @@ socket.on("vectorRespuestas", (data) => {
     let divsRtas = document.getElementsByClassName("respuestasJugadores");
     console.log(divsRtas.length)
     for(let i = 0; i < divsRtas.length; i++) {
-      console.log("ingresa")
       let rtas = "";
       for(let player = 0; player < data.respuestas.length; player++) {
-        console.log("adzz")
         rtas += `${data.respuestas[player].jugador}: ${data.respuestas[player].respuestas[i]}
         <div style="padding-right: 120px" class="contenedor">
           <div class="cd-switch">
@@ -282,10 +280,8 @@ socket.on("vectorRespuestas", (data) => {
 
 socket.on("returnPlayers", (data)=>{
   console.log("players",data);
-
-}
-,
-
+})
+  
 function votar(){
   let bien = document.getElementById("success-outlined")
   let mal = document.getElementById("danger-outlined")
@@ -301,7 +297,7 @@ function votar(){
   })
   console.log("4hola", contadorMal)
 }
-,
+
 function entrarJuego(){
   data = {
     cat: sessionStorage.categories,
@@ -310,27 +306,20 @@ function entrarJuego(){
   }
   console.log(data)
   socket.emit("empezar", data)
-},
+}
 socket.on("empezarTodos", (data) =>{
   console.log("esto es data", data.a)
   const myJSON = JSON.stringify(data);
   sessionStorage.setItem("testJSON", myJSON);
   irAlJuego()
-}),
+})
 function irAlJuego(){
   location.href = '/pruebaEntrar'
+}
 
-},
-function final(){
-  socket.emit("mandarFinal", {})
-},
 
-socket.on("terminar", (data) => {
-  console.log(data.users)
-  data = {
-    users: data.users
-  }
-  const myJson2 = JSON.stringify(data)
-  sessionStorage.setItem("testJSON2", myJson2);
-  location.href = '/terminar'
-}))
+
+//location.href = '/terminar'
+
+
+
