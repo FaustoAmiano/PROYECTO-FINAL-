@@ -531,20 +531,26 @@ const response = await fetch("/traerUsuarios", {
 const result = await response.json();
 console.log("Success:", result);
 console.log("jug", result)
-let usuarios = result
+let usuarios = result;
+
+// Ordenar el vector de usuarios de acuerdo al puntaje (de mayor a menor)
+usuarios.sort((a, b) => b.puntaje - a.puntaje);
+
 document.getElementById("numero").innerHTML = "";
-for (let i in usuarios){
-  
+for (let i = 0; i < usuarios.length; i++) {
   let filaHtml = `
-  <tr>
-    <th scope="row">${[i] + 1}</th>
-    <td>${usuarios[i].nom_usuario}</td>
-    <td>${usuarios[i].puntaje}</td>
-  </tr>`;
-  document.getElementById("numero").innerHTML += filaHtml
+    <tr>
+      <th scope="row">${i + 1}</th>
+      <td>${usuarios[i].nom_usuario}</td>
+      <td>${usuarios[i].puntaje}</td>
+    </tr>`;
+  document.getElementById("numero").innerHTML += filaHtml;
 }
 
 } catch (error) {
 console.error("Error:", error);
 }
+}
+function comparar(a, b){
+  return a-b
 }
